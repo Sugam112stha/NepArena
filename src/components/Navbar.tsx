@@ -6,7 +6,7 @@ const Navbar = () => {
     const[isOpen, setIsOpen] = useState(false);
     
 const navItems = [
-    { name: "Home", path: "/home"},
+    { name: "Home", path: "/"},
     { name: "About", path: "/about" },
     { name: "Tournaments", path: "/tournaments" },
     { name: "Leaderboard", path: "/leaderboard" },
@@ -16,7 +16,7 @@ const navItems = [
     <nav className="fixed top-0 left-0 z-50 w-full border-b border-white/10 bg-black/60 backdrop-blur-md">
       <div className="mx-auto max-w-7xl flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
 
-        <Link to="/home" onClick={() => setIsOpen}>
+        <Link to="/" onClick={() => setIsOpen}>
           <img src={logo} alt="NepArena" className="h-12 w-auto sm:h-14 hover:scale-105" />
         </Link>
 
