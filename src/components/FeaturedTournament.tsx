@@ -1,4 +1,7 @@
-const UpcomingTournaments = () => {
+import { useNavigate } from "react-router-dom";
+
+const FeaturedTournaments = () => {
+    const navigate = useNavigate();
   const tournaments = [
     {
       name: "Nepal Championship",
@@ -13,7 +16,7 @@ const UpcomingTournaments = () => {
     {
       name: "Summer Cup",
       teams: "40 / 48 Teams",
-      date: "Sep 05, 2026",
+      date: "Aug 15, 2026",
     },
   ];
 
@@ -61,7 +64,8 @@ const UpcomingTournaments = () => {
 
     {/* View More Button */}
     <div className="mt-8 flex justify-center">
-      <button className="rounded-lg border border-white/10 px-6 py-3 text-sm font-semibold transition hover:border-[#E50914] hover:text-[#E50914]">
+      <button onClick={() => navigate("/tournament")}
+      className="rounded-lg border border-white/10 px-6 py-3 text-sm font-semibold transition hover:border-[#E50914] hover:text-[#E50914]">
         View More Tournaments
       </button>
     </div>
@@ -71,4 +75,4 @@ const UpcomingTournaments = () => {
   );
 };
 
-export default UpcomingTournaments;
+export default FeaturedTournaments;
