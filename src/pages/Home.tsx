@@ -1,3 +1,5 @@
+import FeaturedTournament from "../components/FeaturedTournament";
+
 const Home = () => {
   return (
     <main className="min-h-screen bg-[#050505] text-white">
@@ -46,6 +48,8 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      <FeaturedTournament/>
     </main>
   );
 };
