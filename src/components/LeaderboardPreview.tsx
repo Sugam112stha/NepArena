@@ -24,6 +24,12 @@ const LeaderboardPreview = () => {
     points : 1189,
     wins : 122,
   },
+  {
+    rank : 5,
+    name : "Team Salt",
+    points : 1182,
+    wins : 122,
+  },
 ]
   return (
     <section className="bg-[#050505] px-4 py-16 text-white sm:px-6 sm:py-20 lg:px-8">
