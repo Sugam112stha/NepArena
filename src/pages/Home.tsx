@@ -1,4 +1,4 @@
-import { Navigate, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import FeaturedTournament from "../components/FeaturedTournament";
 import LeaderboardPreview from "../components/LeaderboardPreview";
 import Concept from "../components/Concept";
