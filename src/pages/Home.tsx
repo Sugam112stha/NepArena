@@ -1,6 +1,9 @@
+import { Navigate, useNavigate } from "react-router-dom";
 import FeaturedTournament from "../components/FeaturedTournament";
+import LeaderboardPreview from "../components/LeaderboardPreview";
 
 const Home = () => {
+  const navigate = useNavigate();
   return (
     <main className="min-h-screen bg-[#050505] text-white">
       {/* Hero Section */}
@@ -37,7 +40,8 @@ const Home = () => {
           {/* Buttons */}
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
 
-            <button className="w-full rounded-lg bg-[#E50914] px-7 py-3.5 font-semibold text-white transition duration-300 hover:bg-[#ff1e2d] sm:w-auto">
+            <button onClick={() => navigate("/Tournaments")}
+            className="w-full rounded-lg bg-[#E50914] px-7 py-3.5 font-semibold text-white transition duration-300 hover:bg-[#ff1e2d] sm:w-auto">
               Explore Tournaments
             </button>
 
@@ -50,6 +54,7 @@ const Home = () => {
       </section>
 
       <FeaturedTournament/>
+      <LeaderboardPreview/>
     </main>
   );
 };
