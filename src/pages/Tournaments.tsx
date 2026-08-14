@@ -26,9 +26,25 @@ const Tournament = () => {
       <section className="px-4 pb-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+
             <input type="text" 
             placeholder="Search tournaments ...."
             className="w-full rounded-lg border border-white/10 bg-[#0D0D0D] px-4 py-3 text-sm text-white outline-none placeholder:text-gray-500 focus:border-[#E50914] md:max-w-sm"/>
+          
+          <div>
+            <button className="rounded-lg bg-[#E50914] px-4 py-2 text-sm font-semibold">
+              All
+            </button>
+            <button className="rounded-lg border border-white/10 px-4 py-2 text-sm text-gray-400 transition hover:border-[#E50914] hover:text-white">
+              Upcoming
+            </button>
+            <button className="rounded-lg border border-white/10 px-4 py-2 text-sm text-gray-400 transition hover:border-[#E50914] hover:text-white">
+              Ongoing
+            </button>
+            <button className="rounded-lg border border-white/10 px-4 py-2 text-sm text-gray-400 transition hover:border-[#E50914] hover:text-white">
+              Completed
+            </button>
+          </div>
           </div>
         </div>
       </section>
