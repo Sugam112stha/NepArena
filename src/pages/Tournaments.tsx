@@ -28,10 +28,10 @@ const Tournament = () => {
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 
             <input type="text" 
-            placeholder="Search tournaments ...."
+            placeholder="Search tournaments ....."
             className="w-full rounded-lg border border-white/10 bg-[#0D0D0D] px-4 py-3 text-sm text-white outline-none placeholder:text-gray-500 focus:border-[#E50914] md:max-w-sm"/>
           
-          <div>
+          <div className="flex flex-wrap gap-2">
             <button className="rounded-lg bg-[#E50914] px-4 py-2 text-sm font-semibold">
               All
             </button>
