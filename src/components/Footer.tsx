@@ -20,7 +20,7 @@ const Footer = () => {
   return (
     <footer className="border-t border-white/10 bg-[#050505] text-white">
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-10 grid-cols-2 lg:grid-cols-4">
           <div>
             <Link to="/" onClick={() => setIsOpen}>
               <img
