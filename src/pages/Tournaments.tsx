@@ -1,6 +1,26 @@
 import Footer from "../components/Footer";
 
 const Tournament = () => {
+   const tournaments = [
+  {
+    name: "Nepal Championship",
+    status: "Upcoming",
+    teams: "32 / 48 Teams",
+    date: "Aug 20, 2026",
+  },
+  {
+    name: "Everest Clash",
+    status: "Upcoming",
+    teams: "18 / 24 Teams",
+    date: "Aug 28, 2026",
+  },
+  {
+    name: "Summer Cup",
+    status: "Ongoing",
+    teams: "40 / 48 Teams",
+    date: "Sep 05, 2026",
+  },
+];
   return (
     <main className="min-h-screen bg-[#050505] text-white">
 
@@ -47,6 +67,10 @@ const Tournament = () => {
           </div>
           </div>
         </div>
+      </section>
+
+      <section>
+        
       </section>
       <Footer />
 
