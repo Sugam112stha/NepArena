@@ -1,8 +1,8 @@
 import logo from "../assets/logo/logo1.png"
 const Footer = () => {
   return (
-    <footer>
-        <div>
+    <footer className="border-t border-white/10 bg-[#050505] text-white">
+        <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
             <div>
                 <div>
 
