@@ -2,6 +2,7 @@ import {  useNavigate } from "react-router-dom";
 import FeaturedTournament from "../components/FeaturedTournament";
 import LeaderboardPreview from "../components/LeaderboardPreview";
 import Concept from "../components/Concept";
+import Partner from "../components/Partner";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -57,6 +58,7 @@ const Home = () => {
       <FeaturedTournament/>
       <LeaderboardPreview/>
       <Concept/>
+      <Partner/>
     </main>
   );
 };
