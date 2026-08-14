@@ -35,8 +35,8 @@ const Concept = () => {
                     How it Works
                 </p>
 
-                <h2 className="mt-3 text-3xl font-bold uppercase sm:text-4xl">
-                    Start Your Journey With us
+                <h2 className="mt-3 text-3xl font-bold  sm:text-4xl">
+                    Start Your Journey With Us
                 </h2>
 
                 <p className="mx-auto mt-4 max-w-2xl text-sm text-gray-400 sm:text-base">
