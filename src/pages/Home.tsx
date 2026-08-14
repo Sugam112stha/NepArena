@@ -12,7 +12,7 @@ const Home = () => {
       {/* Hero Section */}
       <section
         id="home"
-        className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pt-20"
+        className="flex min-h-screen items-center justify-center overflow-hidden px-6 pt-20"
       >
         {/* Background glow */}
         <div className="absolute left-1/2 top-1/2 z-0 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#E50914]/10 blur-[120px]" />
