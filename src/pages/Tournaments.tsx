@@ -23,6 +23,15 @@ const Tournament = () => {
         </div>
       </section>
 
+      <section className="px-4 pb-16 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <input type="text" 
+            placeholder="Search tournaments ...."
+            className="w-full rounded-lg border border-white/10 bg-[#0D0D0D] px-4 py-3 text-sm text-white outline-none placeholder:text-gray-500 focus:border-[#E50914] md:max-w-sm"/>
+          </div>
+        </div>
+      </section>
       <Footer />
 
     </main>
