@@ -1,6 +1,23 @@
+import logo from "../assets/logo/logo1.png"
 const Footer = () => {
   return (
-    <div>Footer</div>
+    <footer>
+        <div>
+            <div>
+                <div>
+
+                    <img src={logo}
+                    alt="NepArena" 
+                    className="h-10 w-auto"/>
+
+                    <p>
+                        Nepal's esports tournament platform built to connect
+                        teams, players, and competitive opportunities.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
   )
 }
 

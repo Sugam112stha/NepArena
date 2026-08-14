@@ -3,6 +3,7 @@ import FeaturedTournament from "../components/FeaturedTournament";
 import LeaderboardPreview from "../components/LeaderboardPreview";
 import Concept from "../components/Concept";
 import Partner from "../components/Partner";
+import Footer from "../components/Footer";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -59,6 +60,7 @@ const Home = () => {
       <LeaderboardPreview/>
       <Concept/>
       <Partner/>
+      <Footer/>
     </main>
   );
 };
