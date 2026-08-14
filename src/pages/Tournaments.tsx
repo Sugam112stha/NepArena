@@ -70,7 +70,34 @@ const Tournament = () => {
       </section>
 
       <section>
-        
+        <div>
+
+          <div>
+            {tournaments.map((tournament) =>
+            <div key={tournament.name}>
+              <span>
+                Free Fire
+              </span>
+
+              <h2>
+                {tournament.name}
+              </h2>
+
+              <div className="mt-5 space-y-2 text-sm text-gray-400">
+                <p>👥 {tournament.teams}</p>
+                <p>📅 {tournament.date}</p>
+                <p>🎮 Squad</p>
+              </div>
+
+              <button className="mt-6 w-full rounded-lg border border-white/10 px-4 py-3 text-sm font-semibold transition hover:border-[#E50914] hover:text-[#E50914]">
+                View Details
+              </button>
+
+            </div>
+            )}
+          </div>
+
+        </div>
       </section>
       <Footer />
 
