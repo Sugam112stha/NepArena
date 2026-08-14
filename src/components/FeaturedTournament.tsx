@@ -5,17 +5,17 @@ const FeaturedTournaments = () => {
   const tournaments = [
     {
       name: "Nepal Championship",
-      teams: "32 / 48 Teams",
+      teams: "288s Slot",
       date: "Aug 20, 2026",
     },
     {
       name: "Everest Clash",
-      teams: "18 / 24 Teams",
+      teams: "144 slot",
       date: "Aug 28, 2026",
     },
     {
       name: "Summer Cup",
-      teams: "40 / 48 Teams",
+      teams: "144 slot",
       date: "Aug 15, 2026",
     },
   ];

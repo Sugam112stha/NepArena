@@ -5,19 +5,25 @@ const Tournament = () => {
   {
     name: "Nepal Championship",
     status: "Upcoming",
-    teams: "32 / 48 Teams",
+    teams: "288 Slot",
     date: "Aug 20, 2026",
   },
   {
     name: "Everest Clash",
     status: "Upcoming",
-    teams: "18 / 24 Teams",
+    teams: "144 Slot",
     date: "Aug 28, 2026",
   },
   {
     name: "Summer Cup",
     status: "Ongoing",
-    teams: "40 / 48 Teams",
+    teams: "144 slot",
+    date: "Sep 05, 2026",
+  },
+  {
+    name: "Nepal Chaimponship",
+    status: "Completed",
+    teams: "248 Slot",
     date: "Sep 05, 2026",
   },
 ];
@@ -69,17 +75,19 @@ const Tournament = () => {
         </div>
       </section>
 
-      <section>
-        <div>
+      <section className="px-4 pb-20 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl">
 
-          <div>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {tournaments.map((tournament) =>
-            <div key={tournament.name}>
-              <span>
+            <div key={tournament.name}
+            className="rounded-xl border border-white/10 bg-[#0D0D0D] p-6 transition hover:border-[#E50914]/50">
+              
+              <span className="text-xs font-semibold uppercase tracking-wider text-[#E50914]">
                 Free Fire
               </span>
 
-              <h2>
+              <h2 className="mt-4 font-bold text-xl">
                 {tournament.name}
               </h2>
 
