@@ -1,26 +1,32 @@
+import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
 
 const Tournament = () => {
+  const navigate = useNavigate();
    const tournaments = [
   {
+    id : 1,
     name: "Nepal Championship",
     status: "Upcoming",
     teams: "288 Slot",
     date: "Aug 20, 2026",
   },
   {
+    id : 2,
     name: "Everest Clash",
     status: "Upcoming",
     teams: "144 Slot",
     date: "Aug 28, 2026",
   },
   {
+    id : 3,
     name: "Summer Cup",
     status: "Ongoing",
     teams: "144 slot",
     date: "Sep 05, 2026",
   },
   {
+    id : 4,
     name: "Nepal Chaimponship",
     status: "Completed",
     teams: "248 Slot",
@@ -97,7 +103,8 @@ const Tournament = () => {
                 <p>🎮 Squad</p>
               </div>
 
-              <button className="mt-6 w-full rounded-lg border border-white/10 px-4 py-3 text-sm font-semibold transition hover:border-[#E50914] hover:text-[#E50914]">
+              <button onClick={() => navigate(`/tournaments/${tournament.id}`)}
+              className="mt-6 w-full rounded-lg border border-white/10 px-4 py-3 text-sm font-semibold transition hover:border-[#E50914] hover:text-[#E50914]">
                 View Details
               </button>
 
