@@ -13,7 +13,7 @@ const Footer = () => {
   ];
 
   const socialLinks = [
-    { name: "Facebook", icon: FaFacebookF, url: "https://www.facebook.com/" },
+    { name: "Facebook", icon: FaFacebookF, url: "https://www.facebook.com/neparena61" },
     { name: "Instagram", icon: FaInstagram, url: "https://www.instagram.com/neparena/"},
     { name: "Tiktok", icon: FaTiktok, url: "https://www.tiktok.com/@neparena" },
   ];

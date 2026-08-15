@@ -2,7 +2,7 @@ const Contact = () => {
   const socialLinks = [
     {
       name: "Facebook",
-      url: "https://www.facebook.com/"
+      url: "https://www.facebook.com/neparena61"
     },
     {
       name: "Instagram",
@@ -46,7 +46,7 @@ const Contact = () => {
               tournaments, announcements, and esports news.
             </p>
 
-            <div>
+            <div className="mt-8 space-y-4">
               {socialLinks.map((app) =>(
                 <a key={app.name}
                 href={app.url}
@@ -55,6 +55,16 @@ const Contact = () => {
                   {app.name}
                 </a>
               ))}
+            </div>
+
+            <div className="mt-8 border-t border-white/10 pt-6">
+              <p className="text-sm text-gray-400">
+                Email
+              </p>
+              <a href="mailto:sugamstha619@gmail.com"
+              className="mt-2 block text-sm font-semibold text-white hover:text-[#E50914]">
+                sugamstha619@gmail.com
+              </a>
             </div>
           </div>
         </div>
