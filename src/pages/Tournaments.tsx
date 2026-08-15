@@ -38,7 +38,6 @@ const Tournament = () => {
   return (
     <main className="min-h-screen bg-[#050505] text-white">
 
-      {/* Hero */}
       <section className="px-4 py-20 text-center sm:px-6 sm:py-24 lg:px-8">
         <div className="mx-auto max-w-6xl">
 
@@ -58,7 +57,6 @@ const Tournament = () => {
         </div>
       </section>
 
-      {/* Search & Filters */}
       <section className="px-4 pb-12 sm:px-6 lg:px-8">
         <div className="mx-auto flex max-w-6xl flex-col gap-4 md:flex-row md:items-center md:justify-between">
 
@@ -89,7 +87,6 @@ const Tournament = () => {
         </div>
       </section>
 
-      {/* Tournament Cards */}
       <section className="px-4 pb-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
 
