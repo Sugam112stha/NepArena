@@ -48,7 +48,8 @@ const Home = () => {
               Explore Tournaments
             </button>
 
-            <button className="w-full rounded-lg border border-white/20 px-7 py-3.5 font-semibold text-white transition duration-300 hover:border-[#E50914] hover:text-[#E50914] sm:w-auto">
+            <button onClick={() => navigate("/Login")}
+            className="w-full rounded-lg border border-white/20 px-7 py-3.5 font-semibold text-white transition duration-300 hover:border-[#E50914] hover:text-[#E50914] sm:w-auto">
               Create Your Team
             </button>
 
