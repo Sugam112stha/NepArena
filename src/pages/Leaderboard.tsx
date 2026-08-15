@@ -6,6 +6,14 @@ const teams = [
   { rank: 2, name: "Team Phonix", points: 1206, wins: 129 },
   { rank: 3, name: "Team Hawk", points: 1201, wins: 134 },
   { rank: 4, name: "Team Lava", points: 1189, wins: 122 },
+  { rank: 5, name: "Team Salt", points: 1182, wins: 122 },
+  { rank: 6, name: "Team Everest", points: 1175, wins: 119 },
+  { rank: 7, name: "Team Gurkha", points: 1168, wins: 117 },
+  { rank: 8, name: "Team Thunder", points: 1159, wins: 115 },
+  { rank: 9, name: "Team Warriors", points: 1148, wins: 113 },
+  { rank: 10, name: "Team Kings", points: 1135, wins: 110 },
+  { rank: 11, name: "Team Blaze", points: 1120, wins: 108 },
+  { rank: 12, name: "Team Titans", points: 1105, wins: 105 },
 ];
 
 const Leaderboard = () => {
