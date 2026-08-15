@@ -77,7 +77,8 @@ const Footer = () => {
                 return (
                   <a
                     key={media.name}
-                    href={media.url}
+                    href={media.url} 
+                    target="blank"
                     aria-label={media.name}
                     className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-gray-400 transition hover:border-[#E50914] hover:text-[#E50914]">
                     <Icon size={18} />
