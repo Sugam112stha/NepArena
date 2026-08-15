@@ -66,10 +66,11 @@ const Contact = () => {
 
           <div className="rounded-xl border border-white bg-[#0D0D0D] p-6 sm:p-8">
             <h2 className="text-2xl font-bold">Send us Message</h2>
+
             <form className="mt-6 space-y-4">
+
               <div>
                 <label className="text-sm text-gray-300">Name</label>
-
                 <input
                   type="Name"
                   placeholder="Enter Name"
@@ -77,13 +78,23 @@ const Contact = () => {
               </div>
 
               <div>
-                <label className="text-sm text-gra-300">Email</label>
-
+                <label className="text-sm text-gray-300">Email</label>
                 <input
                   type="Email"
                   placeholder="Enter Email"
                   className="mt-2 w-full rounded-lg border border-white/10 bg-[#050505] px-4 py-3 text-sm text-white outline-none placeholder:text-gray-500 focus:border-[#E50914]"/>
               </div>
+
+              <div>
+                <label className="text-sm text-gray-300">Message</label>
+                <textarea rows={5}
+                placeholder="Write your querry ....."
+                className="mt-2 w-full resize-none rounded-lg border border-white/10 bg-[#050505] px-4 py-3 text-sm text-white outline-none placeholder:text-gray-500 focus:border-[#E50914]"/>
+              </div>
+
+              <button type="submit" className="w-full rounded-lg bg-[#E50914] px-5 py-3 text-sm font-semibold transition hover:bg-red-700">
+                Send Message
+              </button>
             </form>
           </div>
         </div>
