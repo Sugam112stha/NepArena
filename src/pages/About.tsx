@@ -18,6 +18,48 @@ const About = () => {
           </p>
         </div>
       </section>
+
+      <section>
+        <div>
+          <div>
+
+            <div>
+              <p>
+                Who we are
+              </p>
+
+              <h2>
+                What is NepArena?
+              </h2>
+
+              <p>
+                NepArena is a competitive esports platform created for
+                players and teams in Nepal. We provide a place where teams
+                can discover tournaments, compete against other teams, and
+                build their reputation through competitive performance.
+              </p>
+
+              <p>
+                Starting with Free Fire, our goal is to create an organized
+                and accessible competitive environment for Nepal's growing
+                esports community.
+              </p>
+            </div>
+
+            <div>
+              <h3>
+                Built for Competition
+              </h3>
+
+              <p>
+                From team creation and tournament registration to rankings
+                and competitive results, NepArena brings the essential
+                parts of competitive esports into one platform.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   )
 }
