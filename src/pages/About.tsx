@@ -19,39 +19,39 @@ const About = () => {
         </div>
       </section>
 
-      <section>
-        <div>
-          <div>
+      <section className="px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+        <div className="mx-auto max-w-6xl">
+          <div className="grid items-center gap-10 lg:grid-cols-2">
 
             <div>
-              <p>
+              <p className="text-sm font-semibold uppercase text-[#E50914] tracking-[0.25em]">
                 Who we are
               </p>
 
-              <h2>
+              <h2 className="mt-3 font-bold text-3xl sm:text-4xl lg:text-5xl">
                 What is NepArena?
               </h2>
 
-              <p>
+              <p className="mt-5 text-sm leading-7 text-gray-400 sm:text-base">
                 NepArena is a competitive esports platform created for
                 players and teams in Nepal. We provide a place where teams
                 can discover tournaments, compete against other teams, and
                 build their reputation through competitive performance.
               </p>
 
-              <p>
+              <p className="mt-5 text-sm leading-7 text-gray-400 sm:text-base">
                 Starting with Free Fire, our goal is to create an organized
                 and accessible competitive environment for Nepal's growing
                 esports community.
               </p>
             </div>
 
-            <div>
-              <h3>
+            <div className="border border-white/10 rounded-xl bg-[#0D0D0D] p-8">
+              <h3 className="text-xl font-bold">
                 Built for Competition
               </h3>
 
-              <p>
+              <p className="mt-5 text-sm leading-7 text-gray-400 sm:text-base">
                 From team creation and tournament registration to rankings
                 and competitive results, NepArena brings the essential
                 parts of competitive esports into one platform.
