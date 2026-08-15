@@ -1,4 +1,18 @@
 const Contact = () => {
+  const socialLinks = [
+    {
+      name: "Facebook",
+      url: "https://www.facebook.com/"
+    },
+    {
+      name: "Instagram",
+      url: "https://www.instagram.com/neparena/"
+    },
+    {
+      name: "Tiktok",
+      url: "https://www.tiktok.com/@neparena"
+    },
+  ];
   return (
     <main className="min-h-screen bg-[#050505] text-white">
       <section className="px-4 py-20 text-center sm:px-6 sm:py-24 lg:px-8">
@@ -18,8 +32,35 @@ const Contact = () => {
           </p>
         </div>
       </section>
+
+      <section className="px-4 pb-20 sm:px-6 lg:px-8">
+        <div className="grid mx-auto max-w-6xl gap-8 lg:grid-cols-2">
+          <div className="rounded-xl border border-white/10 bg-[#0D0D0D] p-6 sm:p-8">
+          
+            <h2 className="text-2xl font-bold">
+              Connect With Us
+            </h2>
+
+            <p className="mt-3 text-sm leading-6 text-gray-400">
+              Follow NepArena on social media to stay updated with
+              tournaments, announcements, and esports news.
+            </p>
+
+            <div>
+              {socialLinks.map((app) =>(
+                <a key={app.name}
+                href={app.url}
+                target="blank"
+                className="block rounded-lg border border-white/10 px-4 py-3 text-sm text-gray-300 transition hover:border-[#E50914] hover:text-white">
+                  {app.name}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   )
 }
 
-export default Contact
+export default Contact;
