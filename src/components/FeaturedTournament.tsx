@@ -64,7 +64,7 @@ const FeaturedTournaments = () => {
 
     {/* View More Button */}
     <div className="mt-8 flex justify-center">
-      <button onClick={() => navigate("/Tournament")}
+      <button onClick={() => navigate("/Tournaments")}
       className="rounded-lg border border-white/10 px-6 py-3 text-sm font-semibold transition hover:border-[#E50914] hover:text-[#E50914]">
         View More Tournaments
       </button>

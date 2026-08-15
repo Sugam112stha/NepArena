@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router-dom";
+
 const LeaderboardPreview = () => {
+  const navigate = useNavigate();
   const teams = [
     {
       rank: 1,
@@ -75,7 +78,7 @@ const LeaderboardPreview = () => {
               {teams.map((team) => (
                 <tr
                   key={team.rank}
-                  className="border-b border-white/10 bg-[#0D0D0D] transition hover:bg-white">
+                  className="border-b border-white/10 bg-[#0D0D0D] transition">
                   <td className="px-5 py-5 font-semibold">#{team.rank}</td>
 
                   <td className="px-5 py-5 font-semibold">{team.name}</td>
@@ -87,6 +90,13 @@ const LeaderboardPreview = () => {
               ))}
             </tbody>
           </table>
+          <div className="mt-8 flex justify-center">
+            <button
+              onClick={() => navigate("/Leaderboard")}
+              className="rounded-lg border bg-[#E50914] border-white/10 px-6 py-3 mb-5 text-sm font-semibold transition] hover:bg-[#ff1e2d]">
+              See More Team
+            </button>
+          </div>
         </div>
       </div>
     </section>

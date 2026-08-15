@@ -57,9 +57,9 @@ const Home = () => {
         </div>
       </section>
 
+      <Concept/>
       <FeaturedTournament/>
       <LeaderboardPreview/>
-      <Concept/>
       <Partner/>
       <Footer/>
     </main>
