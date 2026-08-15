@@ -8,6 +8,7 @@ import Contact from './pages/Contact';
 import Login from './pages/Login';
 import SignUp from './pages/Signup';
 import TournamentDetails from './pages/TournamentDetails';
+import Footer from './components/Footer';
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
       <Route path="/Login" element={<Login />}/>
       <Route path="/Signup" element={<SignUp />}/>
     </Routes>
+      <Footer/>
     </BrowserRouter>
   )
 }

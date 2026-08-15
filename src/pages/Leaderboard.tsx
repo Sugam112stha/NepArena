@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Footer from "../components/Footer";
 
 const teams = [
   { rank: 1, name: "Team Nepal", points: 1210, wins: 131 },
@@ -20,10 +19,9 @@ const Leaderboard = () => {
   const [showMore, setShowMore] = useState(false);
 
   return (
-    <main className="min-h-screen bg-[#050505] text-white">
+    <main className="min-h-screen bg-[#050505] text-white pt-5">
 
-      {/* Header */}
-      <section className="px-4 py-16 text-center sm:px-6 sm:py-20 lg:px-8">
+      <section className="px-4 py-20 text-center sm:px-6 sm:py-20 lg:px-8">
         <div className="mx-auto max-w-6xl">
 
           <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#E50914]">
@@ -93,8 +91,6 @@ const Leaderboard = () => {
 
         </div>
       </section>
-
-      <Footer />
 
     </main>
   );

@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import Footer from "../components/Footer";
 
 const tournaments = [
   {
@@ -132,8 +131,6 @@ const Tournament = () => {
 
         </div>
       </section>
-
-      <Footer />
 
     </main>
   );
