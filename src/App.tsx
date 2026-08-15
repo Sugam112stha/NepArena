@@ -7,6 +7,7 @@ import Tournaments from './pages/Tournaments';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
 import SignUp from './pages/Signup';
+import TournamentDetails from './pages/TournamentDetails';
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
       <Route path="/" element={<Home />}/>
       <Route path="/About" element={<About />}/>
       <Route path="/Tournaments" element={<Tournaments />}/>
+      <Route path="/Tournaments/:id" element={<TournamentDetails />}/>
       <Route path="/Leaderboard" element={<Leaderboard />}/>
       <Route path="/Contact" element={<Contact />}/>
       <Route path="/Login" element={<Login />}/>
