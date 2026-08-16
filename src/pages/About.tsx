@@ -60,6 +60,24 @@ const About = () => {
           </div>
         </div>
       </section>
+
+      <section className="px-4 py-16 sm:px-6 sm:py-20 lg:px-8 bg-[#0A0A0A]">
+        <div className="mx-auto max-w-4xl text-center">
+          <p className="text-sm font-semibold uppercase teacking-[0.25em] text-[#E50914]">
+            Our Mission
+          </p>
+
+          <h2 className="mt-4 text-3xl font-bold sm:text-4xl">
+            Empowering Nepal's Next Generation of Esports Talent
+          </h2>
+
+          <p className="mt-6 text-sm leading-7 text-gray-400 sm:text-base">
+            Our mission is to provide a fair, transparent, and competitive
+            platform where every team in Nepal has the opportunity to grow,
+            compete, and earn recognition through skill and performance.
+          </p>
+        </div>
+      </section>
     </main>
   )
 }
