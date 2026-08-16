@@ -76,6 +76,36 @@ const About = () => {
             platform where every team in Nepal has the opportunity to grow,
             compete, and earn recognition through skill and performance.
           </p>
+
+          <div className="grid mt-10 gap-4 sm:grid-cols-2">
+            <div className="rounded-xl border border-white/10 bg-[#050505] p-5">
+              <h3 className="">
+                Fair
+              </h3>
+              <p>
+                Equal opportunity for every team.
+              </p>
+            </div>
+
+            <div className="rounded-xl border border-white/10 bg-[#050505] p-5">
+            <h3>
+              Competitive
+            </h3>
+            <p>
+              Rankings based on real tournament performance.
+            </p>
+            </div>
+
+            <div className="rounded-xl border border-white/10 bg-[#050505] p-5">
+              <h3>
+                Community
+              </h3>
+              <p>
+                Connecting players, teams, and organizers across Nepal.
+              </p>
+            </div>
+          </div>
+
         </div>
       </section>
     </main>
