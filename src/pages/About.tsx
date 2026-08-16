@@ -122,6 +122,21 @@ const About = () => {
             your place on the leaderboard...
           </p>
         </div>
+
+        <div className="grid mt-10 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="rounded-xl border border-white/10 bg-[#0D0D0D] p-6">
+            <span className="text-3xl font-bold text-[#E50914]">
+              01
+            </span>
+            <h3 className="mt-5 font-bold text-xl">
+              Create Team 
+            </h3>
+            <p className="mt-3 text-sm leading-6 text-gray-400">
+              Create your team and add your players to build
+              your competitive squad.
+            </p>
+          </div>
+        </div>
       </section>
     </main>
   )
