@@ -1,4 +1,26 @@
 const About = () => {
+  const steps = [
+  {
+    number: "01",
+    title: "Create Team",
+    description: "Create your team and add your players.",
+  },
+  {
+    number: "02",
+    title: "Join Tournament",
+    description: "Find a tournament and register your team.",
+  },
+  {
+    number: "03",
+    title: "Compete",
+    description: "Compete against other teams.",
+  },
+  {
+    number: "04",
+    title: "Get Ranked",
+    description: "Earn points and climb the leaderboard.",
+  },
+];
   return (
     <main className="min-h-screen bg-[#050505] text-white">
       <section className="mx-auto max-w-6xl">
@@ -124,18 +146,19 @@ const About = () => {
         </div>
 
         <div className="grid mt-10 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-xl border border-white/10 bg-[#0D0D0D] p-6">
-            <span className="text-3xl font-bold text-[#E50914]">
-              01
-            </span>
-            <h3 className="mt-5 font-bold text-xl">
-              Create Team 
-            </h3>
-            <p className="mt-3 text-sm leading-6 text-gray-400">
-              Create your team and add your players to build
-              your competitive squad.
-            </p>
-          </div>
+          {steps.map((step) =>(
+            <div key={step.number}>
+              <span>
+                {step.number}
+              </span>
+              <h3>
+                {step.title}
+              </h3>
+              <p>
+                {step.description}
+              </p>
+            </div>
+          ))}
         </div>
       </section>
     </main>
