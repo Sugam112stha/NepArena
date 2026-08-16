@@ -147,14 +147,15 @@ const About = () => {
 
         <div className="grid mt-10 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((step) =>(
-            <div key={step.number}>
-              <span>
+            <div key={step.number}
+            className="rounded-xl border border-white/10 bg-[#0D0D0D] p-6">
+              <span className="font-bold text-3xl text-[#E50914]">
                 {step.number}
               </span>
-              <h3>
+              <h3 className="mt-5 text-xl font-bold">
                 {step.title}
               </h3>
-              <p>
+              <p className="text-sm text-gray-400 mt-3 leading-6">
                 {step.description}
               </p>
             </div>
