@@ -77,30 +77,30 @@ const About = () => {
             compete, and earn recognition through skill and performance.
           </p>
 
-          <div className="grid mt-10 gap-4 sm:grid-cols-2">
+          <div className="grid mt-10 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <div className="rounded-xl border border-white/10 bg-[#050505] p-5">
-              <h3 className="">
+              <h3 className="text-2xl font-bold text-[#E50914]">
                 Fair
               </h3>
-              <p>
+              <p className="mt-2 text-sm text-gray-400">
                 Equal opportunity for every team.
               </p>
             </div>
 
             <div className="rounded-xl border border-white/10 bg-[#050505] p-5">
-            <h3>
+            <h3 className="text-2xl font-bold text-[#E50914]">
               Competitive
             </h3>
-            <p>
+            <p className="mt-2 text-sm text-gray-400">
               Rankings based on real tournament performance.
             </p>
             </div>
 
             <div className="rounded-xl border border-white/10 bg-[#050505] p-5">
-              <h3>
+              <h3 className="text-2xl font-bold text-[#E50914]">
                 Community
               </h3>
-              <p>
+              <p className="mt-2 text-sm text-gray-400">
                 Connecting players, teams, and organizers across Nepal.
               </p>
             </div>
