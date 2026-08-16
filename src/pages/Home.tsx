@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import Partner from "../components/Partner";
 
 const Home = () => {
   const navigate = useNavigate();

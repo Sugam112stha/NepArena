@@ -21,6 +21,26 @@ const About = () => {
     description: "Earn points and climb the leaderboard.",
   },
 ];
+
+  const features = [
+        {
+          title: "Competitive Tournaments",
+          description: "Discover organized tournaments and compete against teams across Nepal.",
+        },
+        {
+          title: "Team Rankings",
+          description: "Track your team's performance and climb the NepArena leaderboard.",
+        },
+        {
+          title: "Verified Teams",
+          description: "Build trust through verified teams and registered players.",
+        },
+        {
+          title: "Growing Community",
+          description: "Connect with players and teams and become part of Nepal's esports community.",
+        },
+      ];
+
   return (
     <main className="min-h-screen bg-[#050505] text-white">
       <section className="mx-auto max-w-6xl">
@@ -161,6 +181,37 @@ const About = () => {
             </div>
           ))}
         </div>
+      </section>
+
+      <section className="px-4 py-16 sm:px-6 sm:py-16 lg:py-20">
+
+        <div className="max-w-6xl mx-auto text-center">
+            <p className="text-sm font-semibold tracking-[0.25em] uppercase text-[#E50914]">
+              Why NepArena
+            </p>
+            <h3 className="text-3xl font-bold mt-3 sm:text-4xl">
+              Why Choose NepArena?
+            </h3>
+            <p className="text-sm text-gray-400 mx-auto max-w-2xl mt-4 sm:text-base">
+               Everything you need to compete, connect, and grow in
+               Nepal's esports community.
+            </p>
+        </div>
+
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {features.map((feature) =>(
+            <div key={feature.title}
+            className="rounded-xl border border-white/10 bg-[#050505] p-6 transition hover:border-[#E50914]/50">
+              <h3 className="text-xl font-bold">
+                {feature.title}
+              </h3>
+              <p className="text-sm leading-6 text-gray-400 mt-3">
+                {feature.description}
+              </p>
+            </div>
+          ))}
+        </div>
+
       </section>
     </main>
   )
