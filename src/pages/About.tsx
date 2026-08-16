@@ -108,6 +108,21 @@ const About = () => {
 
         </div>
       </section>
+
+      <section className="px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+        <div className="mx-auto max-w-6xl text-center">
+          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#E50914]">
+            How it works
+          </p>
+          <h3 className="mt-3 text-3xl font-bold sm:text-4xl lg:text-5xl">
+            How NepArena Works
+          </h3>
+          <p className="mx-auto mt-4 max-w-2xl text-sm text-gray-400 sm:text-base">
+            From creating your team to earning
+            your place on the leaderboard...
+          </p>
+        </div>
+      </section>
     </main>
   )
 }
