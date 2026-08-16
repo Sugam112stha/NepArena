@@ -1,32 +1,33 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar'
-import Home from './pages/Home';
-import About from './pages/About';
-import Leaderboard from './pages/Leaderboard';
-import Tournaments from './pages/Tournaments';
-import Contact from './pages/Contact';
-import Login from './pages/Login';
-import SignUp from './pages/Signup';
-import TournamentDetails from './pages/TournamentDetails';
-import Footer from './components/Footer';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Tournament from "./pages/Tournaments";
+import TournamentDetails from "./pages/TournamentDetails";
+import Leaderboard from "./pages/Leaderboard";
+import MainLayout from "./pages/MainLayout";
 
-const App = () => {
+function App() {
   return (
     <BrowserRouter>
-    <Navbar />
-    <Routes>
-      <Route path="/" element={<Home />}/>
-      <Route path="/About" element={<About />}/>
-      <Route path="/Tournaments" element={<Tournaments />}/>
-      <Route path="/Tournaments/:id" element={<TournamentDetails />}/>
-      <Route path="/Leaderboard" element={<Leaderboard />}/>
-      <Route path="/Contact" element={<Contact />}/>
-      <Route path="/Login" element={<Login />}/>
-      <Route path="/Signup" element={<SignUp />}/>
-    </Routes>
-      <Footer/>
+      <Routes>
+      <Route element={<MainLayout />}>
+        <Route path="/" element={<Home />}/>
+        <Route path="/About" element={<About />}/>
+        <Route path="/Tournaments" element={<Tournament />}/>
+        <Route path="/Tournaments/:id" element={<TournamentDetails />}/>
+        <Route path="/Leaderboard" element={<Leaderboard />}/>
+        <Route path="/Contact" element={<Contact />}/>
+      </Route>
+
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+
+      </Routes>
     </BrowserRouter>
-  )
+  );
 }
 
 export default App;
