@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import { HiUsers, HiCalendar } from "react-icons/hi";
+import { HiComputerDesktop } from "react-icons/hi2";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -194,9 +196,9 @@ const Home = () => {
                   <h3 className="mt-4 text-xl font-bold">{tournament.name}</h3>
 
                   <div className="mt-5 space-y-2 text-sm text-gray-400">
-                    <p>👥 {tournament.teams}</p>
-                    <p>📅 {tournament.date}</p>
-                    <p>🎮 Squad</p>
+                    <p className="flex items-center gap-2"><HiUsers className="text-[#E50914]" /> {tournament.teams}</p>
+                    <p className="flex items-center gap-2"><HiCalendar className="text-[#E50914]" /> {tournament.date}</p>
+                    <p className="flex items-center gap-2"><HiComputerDesktop className="text-[#E50914]" /> Squad</p>
                   </div>
                 </div>
               ))}
