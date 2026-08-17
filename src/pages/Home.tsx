@@ -178,26 +178,29 @@ const Home = () => {
             </p>
           </div>
 
-          {/* Tournament Cards */}
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {tournaments.map((tournament) => (
-              <div
-                key={tournament.name}
-                className="rounded-xl border border-white/10 bg-[#0D0D0D] p-6 transition hover:border-[#E50914]/50"
-              >
-                <span className="text-xs font-semibold uppercase tracking-wider text-[#E50914]">
-                  Free Fire
-                </span>
+          {/* Tournament Cards – Scrolling Marquee */}
+          <div className="marquee-wrapper">
+            <div className="marquee-track">
+              {/* Render cards twice for seamless infinite loop */}
+              {[...tournaments, ...tournaments].map((tournament, i) => (
+                <div
+                  key={`${tournament.name}-${i}`}
+                  className="w-[320px] shrink-0 rounded-xl border border-white/10 bg-[#0D0D0D] p-6 transition hover:border-[#E50914]/50"
+                >
+                  <span className="text-xs font-semibold uppercase tracking-wider text-[#E50914]">
+                    Free Fire
+                  </span>
 
-                <h3 className="mt-4 text-xl font-bold">{tournament.name}</h3>
+                  <h3 className="mt-4 text-xl font-bold">{tournament.name}</h3>
 
-                <div className="mt-5 space-y-2 text-sm text-gray-400">
-                  <p>👥 {tournament.teams}</p>
-                  <p>📅 {tournament.date}</p>
-                  <p>🎮 Squad</p>
+                  <div className="mt-5 space-y-2 text-sm text-gray-400">
+                    <p>👥 {tournament.teams}</p>
+                    <p>📅 {tournament.date}</p>
+                    <p>🎮 Squad</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
           {/* View More Button */}
