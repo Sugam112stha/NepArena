@@ -1,220 +1,188 @@
-const About = () => {
-  const steps = [
+import React from 'react';
+import { 
+  FaTrophy, 
+  FaShieldHalved, 
+  FaGlobe, 
+  FaUsers, 
+  FaBullseye, 
+  FaEye, 
+  FaHandshake, 
+  FaGamepad 
+} from 'react-icons/fa6';
+import { HiSparkles } from 'react-icons/hi2';
+
+const VALUES = [
   {
-    number: "01",
-    title: "Create Team",
-    description: "Create your team and add your players.",
+    title: 'Fair Play & Integrity',
+    desc: 'Strict player identity verification and transparent rules ensure an authentic competitive environment without ringers or cheaters.',
+    icon: FaShieldHalved
   },
   {
-    number: "02",
-    title: "Join Tournament",
-    description: "Find a tournament and register your team.",
+    title: 'Regional Empowerment',
+    desc: 'Creating direct opportunities for grassroots Nepali teams to gain national visibility and rise through structured rankings.',
+    icon: FaGlobe
   },
   {
-    number: "03",
-    title: "Compete",
-    description: "Compete against other teams.",
+    title: 'Community First',
+    desc: 'Building an inclusive ecosystem that bridges players, team managers, and tournament organizers under one unified platform.',
+    icon: FaUsers
   },
   {
-    number: "04",
-    title: "Get Ranked",
-    description: "Earn points and climb the leaderboard.",
-  },
+    title: 'Standardized Excellence',
+    desc: 'Elevating regional esports production standards through automated brackets, live tracking, and verified statistics.',
+    icon: FaTrophy
+  }
 ];
 
-  const features = [
-        {
-          title: "Competitive Tournaments",
-          description: "Discover organized tournaments and compete against teams across Nepal.",
-        },
-        {
-          title: "Team Rankings",
-          description: "Track your team's performance and climb the NepArena leaderboard.",
-        },
-        {
-          title: "Verified Teams",
-          description: "Build trust through verified teams and registered players.",
-        },
-        {
-          title: "Growing Community",
-          description: "Connect with players and teams and become part of Nepal's esports community.",
-        },
-      ];
+const PLATFORM_STATS = [
+  { label: 'Active Teams Registered', value: '100+' },
+  { label: 'Verified Players', value: '500+' },
+  { label: 'Tournaments Hosted', value: '25+' },
+  { label: 'Supported Titles', value: 'Multi-Game Architecture' }
+];
 
+export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-[#050505] text-white">
-      <section className="mx-auto max-w-6xl">
-        <div className="px-4 py-20 text-center sm:px-6 sm:py-24 lg:px-8">
-          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#E50914]">
-            About NepArena
-          </p>
+    <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-[#E50914] selection:text-white">
+      
+      {/* 1. HERO / BANNER SECTION */}
+      <section className="relative py-24 flex items-center justify-center overflow-hidden border-b border-white/10">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20 filter grayscale"
+          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1920')` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent" />
 
-          <h1 className="mt-4 text-3xl font-bold sm:text-4xl lg:text-5xl">
-            Building Nepal's Competitive Esports Community
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
+          <div className="inline-flex items-center gap-2 bg-[#E50914]/10 border border-[#E50914]/30 px-4 py-1.5 rounded-full mb-6">
+            <HiSparkles size={16} className="text-[#E50914]" />
+            <span className="text-xs font-bold tracking-widest text-[#E50914] uppercase">ABOUT NEPARENA</span>
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-white uppercase mb-6 leading-none">
+            Empowering Nepal's <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E50914] to-red-500">
+              Esports Ecosystem
+            </span>
           </h1>
 
-          <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-gray-400 sm:text-base">
-            NepArena is a platform built to connect players, teams,
-            and tournaments while creating a stronger competitive
-            esports community across Nepal.
+          <p className="max-w-3xl mx-auto text-gray-400 text-base sm:text-lg leading-relaxed">
+            NepArena is a dedicated tournament management and ranking platform built to organize, standardize, and elevate competitive gaming across Nepal.
           </p>
         </div>
       </section>
 
-      <section className="px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid items-center gap-10 lg:grid-cols-2">
-
+      {/* 2. OUR STORY & MISSION / VISION */}
+      <section className="py-20 border-b border-white/10 bg-[#0D0D0D]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          {/* Grid Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
             <div>
-              <p className="text-sm font-semibold uppercase text-[#E50914] tracking-[0.25em]">
-                Who we are
-              </p>
-
-              <h2 className="mt-3 font-bold text-3xl sm:text-4xl lg:text-5xl">
-                What is NepArena?
+              <h2 className="text-3xl font-black uppercase tracking-tight text-white mb-6">
+                Bridging the Gap in <span className="text-[#E50914]">Nepali Esports</span>
               </h2>
-
-              <p className="mt-5 text-sm leading-7 text-gray-400 sm:text-base">
-                NepArena is a competitive esports platform created for
-                players and teams in Nepal. We provide a place where teams
-                can discover tournaments, compete against other teams, and
-                build their reputation through competitive performance.
+              <p className="text-gray-400 text-sm leading-relaxed mb-4">
+                Despite Nepal's massive competitive gaming talent—demonstrated on international stages—the local ecosystem has historically suffered from fragmented tournament communication, unverified rosters, and a lack of standardized national rankings.
               </p>
-
-              <p className="mt-5 text-sm leading-7 text-gray-400 sm:text-base">
-                Starting with Free Fire, our goal is to create an organized
-                and accessible competitive environment for Nepal's growing
-                esports community.
+              <p className="text-gray-400 text-sm leading-relaxed mb-6">
+                NepArena was designed to provide a robust technological backbone for competitive play. Beginning with titles like Free Fire, our game-independent infrastructure is built to scale across PUBG Mobile, Valorant, Mobile Legends, and future esports titles.
               </p>
+              <div className="inline-flex items-center gap-3 bg-[#050505] border border-white/10 p-4 rounded-xl">
+                <FaGamepad className="text-[#E50914] text-2xl" />
+                <span className="text-xs font-semibold text-gray-300">
+                  Game-Independent Platform Architecture
+                </span>
+              </div>
             </div>
 
-            <div className="border border-white/10 rounded-xl bg-[#0D0D0D] p-8">
-              <h3 className="text-xl font-bold">
-                Built for Competition
-              </h3>
+            {/* Mission & Vision Cards */}
+            <div className="space-y-6">
+              <div className="bg-[#050505] border border-white/10 p-8 rounded-xl hover:border-[#E50914]/40 transition">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="bg-[#E50914]/10 border border-[#E50914]/20 p-3 rounded-lg text-[#E50914]">
+                    <FaBullseye size={20} />
+                  </div>
+                  <h3 className="text-xl font-bold text-white uppercase">Our Mission</h3>
+                </div>
+                <p className="text-gray-400 text-sm leading-relaxed">
+                  To empower Nepali players and teams with a centralized platform that simplifies tournament registration, guarantees player identity verification, and delivers transparent performance statistics.
+                </p>
+              </div>
 
-              <p className="mt-5 text-sm leading-7 text-gray-400 sm:text-base">
-                From team creation and tournament registration to rankings
-                and competitive results, NepArena brings the essential
-                parts of competitive esports into one platform.
-              </p>
+              <div className="bg-[#050505] border border-white/10 p-8 rounded-xl hover:border-[#E50914]/40 transition">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="bg-[#E50914]/10 border border-[#E50914]/20 p-3 rounded-lg text-[#E50914]">
+                    <FaEye size={20} />
+                  </div>
+                  <h3 className="text-xl font-bold text-white uppercase">Our Vision</h3>
+                </div>
+                <p className="text-gray-400 text-sm leading-relaxed">
+                  To become the definitive national esports infrastructure for Nepal—a launchpad where grassroots teams evolve into recognized professional organizations competing globally.
+                </p>
+              </div>
             </div>
+          </div>
+
+          {/* Stats Bar */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-[#050505] border border-white/10 rounded-xl p-6 text-center">
+            {PLATFORM_STATS.map((stat, idx) => (
+              <div key={idx}>
+                <p className="text-2xl sm:text-3xl font-black text-[#E50914]">{stat.value}</p>
+                <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mt-1">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* 3. CORE VALUES */}
+      <section className="py-20 border-b border-white/10 bg-[#050505]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <h2 className="text-3xl font-black uppercase tracking-tight text-white">
+              Core <span className="text-[#E50914]">Pillars</span>
+            </h2>
+            <p className="text-gray-400 text-sm mt-2">The principles driving the development of NepArena.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {VALUES.map((val, idx) => {
+              const Icon = val.icon;
+              return (
+                <div key={idx} className="bg-[#0D0D0D] border border-white/10 p-8 rounded-xl hover:border-[#E50914]/50 transition group">
+                  <div className="bg-[#E50914]/10 border border-[#E50914]/20 w-12 h-12 rounded-lg flex items-center justify-center text-[#E50914] mb-6 group-hover:bg-[#E50914] group-hover:text-white transition duration-300">
+                    <Icon size={20} />
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-2">{val.title}</h3>
+                  <p className="text-gray-400 text-sm leading-relaxed">{val.desc}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      <section className="px-4 py-16 sm:px-6 sm:py-20 lg:px-8 bg-[#0A0A0A]">
-        <div className="mx-auto max-w-4xl text-center">
-          <p className="text-sm font-semibold uppercase teacking-[0.25em] text-[#E50914]">
-            Our Mission
-          </p>
-
-          <h2 className="mt-4 text-3xl font-bold sm:text-4xl">
-            Empowering Nepal's Next Generation of Esports Talent
+      {/* 4. CALL TO ACTION */}
+      <section className="py-20 bg-[#0D0D0D] relative overflow-hidden">
+        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8 relative z-10">
+          <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white mb-4">
+            Ready to Prove Your <span className="text-[#E50914]">Squad?</span>
           </h2>
-
-          <p className="mt-6 text-sm leading-7 text-gray-400 sm:text-base">
-            Our mission is to provide a fair, transparent, and competitive
-            platform where every team in Nepal has the opportunity to grow,
-            compete, and earn recognition through skill and performance.
+          <p className="text-gray-400 text-sm sm:text-base max-w-xl mx-auto mb-8">
+            Create your team, verify your roster, and start competing for national rankings on NepArena today.
           </p>
-
-          <div className="grid mt-10 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <div className="rounded-xl border border-white/10 bg-[#050505] p-5">
-              <h3 className="text-2xl font-bold text-[#E50914]">
-                Fair
-              </h3>
-              <p className="mt-2 text-sm text-gray-400">
-                Equal opportunity for every team.
-              </p>
-            </div>
-
-            <div className="rounded-xl border border-white/10 bg-[#050505] p-5">
-            <h3 className="text-2xl font-bold text-[#E50914]">
-              Competitive
-            </h3>
-            <p className="mt-2 text-sm text-gray-400">
-              Rankings based on real tournament performance.
-            </p>
-            </div>
-
-            <div className="rounded-xl border border-white/10 bg-[#050505] p-5">
-              <h3 className="text-2xl font-bold text-[#E50914]">
-                Community
-              </h3>
-              <p className="mt-2 text-sm text-gray-400">
-                Connecting players, teams, and organizers across Nepal.
-              </p>
-            </div>
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+            <button className="w-full sm:w-auto bg-[#E50914] hover:bg-[#c20711] text-white font-bold px-8 py-4 rounded transition shadow-xl shadow-[#E50914]/25">
+              Register Your Team
+            </button>
+            <button className="w-full sm:w-auto bg-[#050505] hover:bg-white/10 text-white border border-white/10 font-bold px-8 py-4 rounded transition">
+              Explore Tournaments
+            </button>
           </div>
-
         </div>
       </section>
-
-      <section className="px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-        <div className="mx-auto max-w-6xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#E50914]">
-            How it works
-          </p>
-          <h3 className="mt-3 text-3xl font-bold sm:text-4xl lg:text-5xl">
-            How NepArena Works
-          </h3>
-          <p className="mx-auto mt-4 max-w-2xl text-sm text-gray-400 sm:text-base">
-            From creating your team to earning
-            your place on the leaderboard...
-          </p>
-        </div>
-
-        <div className="grid mt-10 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {steps.map((step) =>(
-            <div key={step.number}
-            className="rounded-xl border border-white/10 bg-[#0D0D0D] p-6">
-              <span className="font-bold text-3xl text-[#E50914]">
-                {step.number}
-              </span>
-              <h3 className="mt-5 text-xl font-bold">
-                {step.title}
-              </h3>
-              <p className="text-sm text-gray-400 mt-3 leading-6">
-                {step.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="px-4 py-16 sm:px-6 sm:py-16 lg:py-20">
-
-        <div className="max-w-6xl mx-auto text-center">
-            <p className="text-sm font-semibold tracking-[0.25em] uppercase text-[#E50914]">
-              Why NepArena
-            </p>
-            <h3 className="text-3xl font-bold mt-3 sm:text-4xl">
-              Why Choose NepArena?
-            </h3>
-            <p className="text-sm text-gray-400 mx-auto max-w-2xl mt-4 sm:text-base">
-               Everything you need to compete, connect, and grow in
-               Nepal's esports community.
-            </p>
-        </div>
-
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {features.map((feature) =>(
-            <div key={feature.title}
-            className="rounded-xl border border-white/10 bg-[#050505] p-6 transition hover:border-[#E50914]/50">
-              <h3 className="text-xl font-bold">
-                {feature.title}
-              </h3>
-              <p className="text-sm leading-6 text-gray-400 mt-3">
-                {feature.description}
-              </p>
-            </div>
-          ))}
-        </div>
-
-      </section>
-    </main>
-  )
+    </div>
+  );
 }
-
-export default About;

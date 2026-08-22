@@ -1,6 +1,4 @@
-import React from 'react';
 import { 
-  FaTrophy, 
   FaUsers, 
   FaShieldHalved, 
   FaAward, 
@@ -10,6 +8,7 @@ import {
   FaChevronRight 
 } from 'react-icons/fa6';
 import { HiSparkles } from 'react-icons/hi2';
+import { useNavigate } from 'react-router-dom';
 
 const FEATURED_TOURNAMENTS = [
   {
@@ -85,6 +84,7 @@ const WHY_US = [
 ];
 
 export default function HomePage() {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-[#E50914] selection:text-white">
       
@@ -114,7 +114,8 @@ export default function HomePage() {
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-16">
-            <button className="w-full sm:w-auto bg-[#E50914] hover:bg-[#c20711] text-white font-bold px-8 py-4 rounded transition flex items-center justify-center gap-2 shadow-xl shadow-[#E50914]/25">
+            <button onClick={() => navigate('/tournaments')}
+            className="w-full sm:w-auto bg-[#E50914] hover:bg-[#c20711] text-white font-bold px-8 py-4 rounded transition flex items-center justify-center gap-2 shadow-xl shadow-[#E50914]/25">
               Explore Tournaments <FaChevronRight size={14} />
             </button>
             <button className="w-full sm:w-auto bg-[#0D0D0D] hover:bg-white/10 text-white border border-white/10 font-bold px-8 py-4 rounded transition">
