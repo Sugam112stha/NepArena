@@ -1,317 +1,310 @@
-import { useNavigate } from "react-router-dom";
-import { HiUsers, HiCalendar } from "react-icons/hi";
-import { HiComputerDesktop } from "react-icons/hi2";
+import React from 'react';
+import { 
+  FaTrophy, 
+  FaUsers, 
+  FaShieldHalved, 
+  FaAward, 
+  FaBolt, 
+  FaChartSimple, 
+  FaGlobe, 
+  FaChevronRight 
+} from 'react-icons/fa6';
+import { HiSparkles } from 'react-icons/hi2';
 
-const Home = () => {
-  const navigate = useNavigate();
-  const steps = [
-    {
-      number: "01",
-      title: "Create Account",
-      description: "Register on NepArena.",
-    },
-    {
-      number: "02",
-      title: "Create Team",
-      description: "Build your team with your player.",
-    },
-    {
-      number: "03",
-      title: "Verify Team",
-      description: "Verify your player with their IGN and UID.",
-    },
-    {
-      number: "04",
-      title: "Join Tournament",
-      description: "Register and compite with your rivals.",
-    },
-    {
-      number: "05",
-      title: "Complete & Rank",
-      description: "Rise your team in the Top of the Nation.",
-    },
-  ];
+const FEATURED_TOURNAMENTS = [
+  {
+    id: 1,
+    title: 'Nepal Championship 2026',
+    game: 'Free Fire',
+    status: 'Upcoming',
+    slots: '288 Slots',
+    date: 'Aug 28, 2026',
+    prize: 'Rs. 50,000',
+    banner: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=800'
+  },
+  {
+    id: 2,
+    title: 'Himalayan Esports Invitational',
+    game: 'PUBG Mobile',
+    status: 'Registration Open',
+    slots: '64 Teams',
+    date: 'Sep 05, 2026',
+    prize: 'Rs. 1,00,000',
+    banner: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=800'
+  },
+  {
+    id: 3,
+    title: 'Kathmandu Valorant Cup',
+    game: 'Valorant',
+    status: 'Live Now',
+    slots: '16 Teams',
+    date: 'Aug 22, 2026',
+    prize: 'Rs. 30,000',
+    banner: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&q=80&w=800'
+  }
+];
 
-  const tournaments = [
-    {
-      name: "Nepal Championship",
-      teams: "288s Slot",
-      date: "Aug 20, 2026",
-    },
-    {
-      name: "Everest Clash",
-      teams: "144 slot",
-      date: "Aug 28, 2026",
-    },
-    {
-      name: "Summer Cup",
-      teams: "144 slot",
-      date: "Aug 15, 2026",
-    },
-  ];
+const LEADERBOARD_PREVIEW = [
+  { rank: 1, team: 'DRS Gaming', points: 2450, wins: 14, tournaments: 18 },
+  { rank: 2, team: 'Trained to Kill (T2K)', points: 2210, wins: 11, tournaments: 16 },
+  { rank: 3, team: 'Abrupt Slayers', points: 1980, wins: 9, tournaments: 15 },
+  { rank: 4, team: 'High Voltage', points: 1750, wins: 7, tournaments: 12 },
+  { rank: 5, team: 'Elementrix', points: 1620, wins: 6, tournaments: 11 },
+];
 
-  const teams = [
-    {
-      rank: 1,
-      name: "Team Nepal",
-      points: 1210,
-      wins: 131,
-    },
-    {
-      rank: 2,
-      name: "Team Phonix",
-      points: 1206,
-      wins: 129,
-    },
-    {
-      rank: 3,
-      name: "Team Hawk",
-      points: 1201,
-      wins: 134,
-    },
-    {
-      rank: 4,
-      name: "Team Lava",
-      points: 1189,
-      wins: 122,
-    },
-    {
-      rank: 5,
-      name: "Team Salt",
-      points: 1182,
-      wins: 122,
-    },
-  ];
+const HOW_IT_WORKS = [
+  {
+    step: '01',
+    title: 'Create Your Team',
+    desc: 'Build your esports team and add your competitive players to the roster.'
+  },
+  {
+    step: '02',
+    title: 'Verify Your Players',
+    desc: 'Submit player details and in-game IDs for identity verification.'
+  },
+  {
+    step: '03',
+    title: 'Join Tournaments',
+    desc: 'Register your verified squad for active and upcoming tournaments.'
+  },
+  {
+    step: '04',
+    title: 'Compete & Get Ranked',
+    desc: 'Play matches, earn points, and climb the national NepArena leaderboard.'
+  }
+];
 
+const WHY_US = [
+  { title: 'Verified Teams', desc: 'Ensure legitimate competitive teams participate through mandatory ID verification.', icon: FaShieldHalved },
+  { title: 'Fair Rankings', desc: 'Dynamic national leaderboards calculated from tournament performance.', icon: FaAward },
+  { title: 'Tournament Management', desc: 'End-to-end automated group stages, matches, and bracket management.', icon: FaBolt },
+  { title: 'Competitive Community', desc: 'Connecting aspiring players, pros, and tournament organizers across Nepal.', icon: FaGlobe },
+  { title: 'Transparent Results', desc: 'Publicly verifiable match scores, points breakdowns, and team logs.', icon: FaChartSimple },
+  { title: 'Team Profiles', desc: 'Showcase roster history, tournament wins, career achievements, and stats.', icon: FaUsers }
+];
+
+export default function HomePage() {
   return (
-    <main className="min-h-screen bg-[#050505] text-white">
-      <section
-        id="home"
-        className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pt-20">
-        <div className="absolute left-1/2 top-1/2 z-0 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#E50914]/10 blur-[120px]" />
-        
-        <div className="relative z-10 mx-auto max-w-4xl text-center">
-          <p className="mb-5 text-sm font-semibold uppercase tracking-[0.3em] text-[#E50914] sm:text-base">
-            Nepal's Esports Platform
-          </p>
+    <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-[#E50914] selection:text-white">
+      
+      {/* 1. HERO SECTION */}
+      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden border-b border-white/10">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-25 filter grayscale"
+          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=1920')` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent" />
 
-          <h1 className="text-5xl font-extrabold leading-tight tracking-tight sm:text-6xl md:text-7xl">
-            Compete.
-            <br />
-            <span className="text-[#E50914]">Represent.</span>
-            <br />
-            Conquer.
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center z-10">
+          <div className="inline-flex items-center gap-2 bg-[#E50914]/10 border border-[#E50914]/30 px-4 py-1.5 rounded-full mb-6">
+            <HiSparkles size={16} className="text-[#E50914]" />
+            <span className="text-xs font-bold tracking-widest text-[#E50914] uppercase">NEPAL'S ESPORTS PLATFORM</span>
+          </div>
+
+          <h1 className="text-5xl sm:text-6xl md:text-7xl font-black tracking-tight text-white uppercase mb-6 leading-none">
+            Compete. Conquer. <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E50914] to-red-500">
+              Get Ranked.
+            </span>
           </h1>
 
-          <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-gray-400 sm:text-lg">
-            Join competitive esports tournaments, represent your team, and climb
-            the national leaderboard.
+          <p className="max-w-2xl mx-auto text-gray-400 text-base sm:text-lg mb-10 leading-relaxed">
+            Build your team, enter tournaments, compete against Nepal's best teams, and climb the national leaderboard.
           </p>
 
-          <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <button
-              onClick={() => navigate("/Tournaments")}
-              className="w-full rounded-lg bg-[#E50914] px-7 py-3.5 font-semibold text-white transition duration-300 hover:bg-[#ff1e2d] sm:w-auto">
-              Explore Tournaments
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-16">
+            <button className="w-full sm:w-auto bg-[#E50914] hover:bg-[#c20711] text-white font-bold px-8 py-4 rounded transition flex items-center justify-center gap-2 shadow-xl shadow-[#E50914]/25">
+              Explore Tournaments <FaChevronRight size={14} />
             </button>
-
-            <button
-              onClick={() => navigate("/Login")}
-              className="w-full rounded-lg border border-white/20 px-7 py-3.5 font-semibold text-white transition duration-300 hover:border-[#E50914] hover:text-[#E50914] sm:w-auto">
+            <button className="w-full sm:w-auto bg-[#0D0D0D] hover:bg-white/10 text-white border border-white/10 font-bold px-8 py-4 rounded transition">
               Create Your Team
             </button>
           </div>
 
+          {/* Trust/Stats Bar */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto bg-[#0D0D0D]/80 border border-white/10 rounded-xl p-6 backdrop-blur-md">
+            <div>
+              <p className="text-2xl sm:text-3xl font-black text-[#E50914]">500+</p>
+              <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mt-1">Players</p>
+            </div>
+            <div>
+              <p className="text-2xl sm:text-3xl font-black text-white">100+</p>
+              <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mt-1">Teams</p>
+            </div>
+            <div>
+              <p className="text-2xl sm:text-3xl font-black text-white">25+</p>
+              <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mt-1">Tournaments</p>
+            </div>
+            <div>
+              <p className="text-2xl sm:text-3xl font-black text-[#E50914]">10K+</p>
+              <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mt-1">Matches</p>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section className="bg-[#050505] px-4 py-16 text-white sm:px-6 sm-py-20">
-        <div className="mx-auto max-w-6xl">
-          
-          <div className="text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#E50914]">
-              How it Works
-            </p>
-
-            <h2 className="mt-3 text-3xl font-bold  sm:text-4xl">
-              Start Your Journey With Us
-            </h2>
-
-            <p className="mx-auto mt-4 max-w-2xl text-sm text-gray-400 sm:text-base">
-              Create your team, join tournaments, and compete for the top spot.
-            </p>
+      {/* 2. FEATURED TOURNAMENTS */}
+      <section className="py-20 border-b border-white/10 bg-[#050505]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12">
+            <div>
+              <h2 className="text-3xl font-black uppercase tracking-tight text-white">
+                Featured <span className="text-[#E50914]">Tournaments</span>
+              </h2>
+              <p className="text-gray-400 text-sm mt-1">Find your next competition and test your squad.</p>
+            </div>
+            <a href="#" className="mt-4 sm:mt-0 text-sm font-bold text-[#E50914] hover:underline flex items-center gap-1">
+              View All Tournaments <FaChevronRight size={12} />
+            </a>
           </div>
 
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
-            {steps.map((step) => (
-              <div
-                key={step.number}
-                className="rounded-xl border border-white/10 bg-[#0D0D0D] p-6"
-              >
-                <span className="font-bold text-[#E50914] text-sm">
-                  {step.number}
-                </span>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {FEATURED_TOURNAMENTS.map((item) => (
+              <div key={item.id} className="bg-[#0D0D0D] border border-white/10 rounded-xl overflow-hidden group hover:border-[#E50914]/50 transition duration-300">
+                <div className="relative h-48 overflow-hidden">
+                  <img src={item.banner} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                  <div className="absolute top-3 left-3 bg-[#050505]/80 backdrop-blur-md px-3 py-1 rounded text-xs font-bold uppercase tracking-wider border border-white/10 text-gray-300">
+                    {item.game}
+                  </div>
+                  <div className="absolute top-3 right-3 bg-[#E50914] text-white px-3 py-1 rounded text-xs font-bold uppercase tracking-wider">
+                    {item.status}
+                  </div>
+                </div>
 
-                <h3 className="mt-4 text-lg font-bold">{step.title}</h3>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-white mb-4 group-hover:text-[#E50914] transition">{item.title}</h3>
+                  
+                  <div className="grid grid-cols-2 gap-4 border-t border-b border-white/10 py-4 mb-6 text-sm">
+                    <div>
+                      <p className="text-xs text-gray-500 uppercase">Available Slots</p>
+                      <p className="font-semibold text-gray-200 mt-0.5">{item.slots}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500 uppercase">Date</p>
+                      <p className="font-semibold text-gray-200 mt-0.5">{item.date}</p>
+                    </div>
+                  </div>
 
-                <p className="mt-2 text-sm leading-6 text-gray-400">
-                  {step.description}
-                </p>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-xs text-gray-500 uppercase">Prize Pool</p>
+                      <p className="text-lg font-black text-[#E50914]">{item.prize}</p>
+                    </div>
+                    <button className="bg-white/5 hover:bg-[#E50914] border border-white/10 hover:border-[#E50914] text-white text-xs font-bold px-4 py-2.5 rounded transition">
+                      View Details
+                    </button>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="bg-[#050505] px-4 py-16 text-white sm:px-6 sm:py-20 lg:px-8">
-        <div className="mx-auto max-w-6xl">
-          {/* Heading */}
-          <div className="mb-10 text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#E50914]">
-              Tournaments
-            </p>
-
-            <h2 className="mt-3 text-3xl font-bold sm:text-4xl">
-              Ongoing Tournaments
+      {/* 3. HOW NEPARENA WORKS */}
+      <section className="py-20 border-b border-white/10 bg-[#0D0D0D]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <h2 className="text-3xl font-black uppercase tracking-tight text-white">
+              How <span className="text-[#E50914]">NepArena</span> Works
             </h2>
-
-            <p className="mx-auto mt-4 max-w-2xl text-sm text-gray-400 sm:text-base">
-              Find a tournament and compete with teams across Nepal.
-            </p>
+            <p className="text-gray-400 text-sm mt-2">Four simple steps to register, compete, and climb the esports leaderboards.</p>
           </div>
 
-          {/* Tournament Cards – Scrolling Marquee */}
-          <div className="marquee-wrapper">
-            <div className="marquee-track">
-              {/* Render cards twice for seamless infinite loop */}
-              {[...tournaments, ...tournaments].map((tournament, i) => (
-                <div
-                  key={`${tournament.name}-${i}`}
-                  className="w-[320px] shrink-0 rounded-xl border border-white/10 bg-[#0D0D0D] p-6 transition hover:border-[#E50914]/50"
-                >
-                  <span className="text-xs font-semibold uppercase tracking-wider text-[#E50914]">
-                    Free Fire
-                  </span>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {HOW_IT_WORKS.map((step) => (
+              <div key={step.step} className="bg-[#050505] border border-white/10 p-8 rounded-xl relative overflow-hidden group hover:border-[#E50914]/50 transition">
+                <span className="text-5xl font-black text-white/5 group-hover:text-[#E50914]/10 transition absolute right-4 top-4">
+                  {step.step}
+                </span>
+                <div className="text-xs font-bold text-[#E50914] tracking-widest uppercase mb-2">Step {step.step}</div>
+                <h3 className="text-xl font-bold text-white mb-3">{step.title}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">{step.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-                  <h3 className="mt-4 text-xl font-bold">{tournament.name}</h3>
+      {/* 4. WHY NEPARENA */}
+      <section className="py-20 border-b border-white/10 bg-[#050505]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <h2 className="text-3xl font-black uppercase tracking-tight text-white">
+              Why <span className="text-[#E50914]">NepArena</span>
+            </h2>
+            <p className="text-gray-400 text-sm mt-2">Built to solve competitive gaming challenges in Nepal.</p>
+          </div>
 
-                  <div className="mt-5 space-y-2 text-sm text-gray-400">
-                    <p className="flex items-center gap-2"><HiUsers className="text-[#E50914]" /> {tournament.teams}</p>
-                    <p className="flex items-center gap-2"><HiCalendar className="text-[#E50914]" /> {tournament.date}</p>
-                    <p className="flex items-center gap-2"><HiComputerDesktop className="text-[#E50914]" /> Squad</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {WHY_US.map((item, idx) => {
+              const Icon = item.icon;
+              return (
+                <div key={idx} className="bg-[#0D0D0D] border border-white/10 p-8 rounded-xl hover:border-white/20 transition">
+                  <div className="bg-[#E50914]/10 border border-[#E50914]/20 w-12 h-12 rounded-lg flex items-center justify-center text-[#E50914] mb-6">
+                    <Icon size={22} />
                   </div>
+                  <h3 className="text-lg font-bold text-white mb-2">{item.title}</h3>
+                  <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* View More Button */}
-          <div className="mt-8 flex justify-center">
-            <button
-              onClick={() => navigate("/Tournaments")}
-              className="rounded-lg border border-white/10 px-6 py-3 text-sm font-semibold transition hover:border-[#E50914] hover:text-[#E50914]"
-            >
-              View More Tournaments
-            </button>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      <section className="bg-[#050505] px-4 py-16 text-white sm:px-6 sm:py-20 lg:px-8">
-        <div className="mx-auto max-w-6xl">
-          {/* Heading */}
-          <div className="mb-10 text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#E50914]">
-              Rankings
-            </p>
-
-            <h2 className="mt-3 text-3xl font-bold sm:text-4xl">
-              Neparena Ranking
-            </h2>
-
-            <p className="mx-auto mt-4 max-w-2xl text-sm text-gray-400 sm:text-base">
-              See which teams are leading the Nepali esports scene.
-            </p>
+      {/* 5. LEADERBOARD SECTION */}
+      <section className="py-20 border-b border-white/10 bg-[#0D0D0D]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12">
+            <div>
+              <h2 className="text-3xl font-black uppercase tracking-tight text-white">
+                NepArena <span className="text-[#E50914]">Ranking</span>
+              </h2>
+              <p className="text-gray-400 text-sm mt-1">See the top teams competing across Nepal.</p>
+            </div>
+            <a href="#" className="mt-4 sm:mt-0 text-sm font-bold text-[#E50914] hover:underline flex items-center gap-1">
+              View Full Leaderboard <FaChevronRight size={12} />
+            </a>
           </div>
 
-          <div className="overflow-x-auto rounded-xl border border-white/10">
-            <table className="w-full min-w-[600px] text-left">
-              <thead className="border-b border-white/10 bg-[#0D0D0D]">
-                <tr>
-                  <th className="px-5 py-4 text-sm font-semibold text-gray-400">
-                    Rank
-                  </th>
-
-                  <th className="px-5 py-4 text-sm font-semibold text-gray-400">
-                    Team
-                  </th>
-
-                  <th className="px-5 py-4 text-sm font-semibold text-gray-400">
-                    Points
-                  </th>
-
-                  <th className="px-5 py-4 text-sm font-semibold text-gray-400">
-                    Wins
-                  </th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {teams.map((team) => (
-                  <tr
-                    key={team.rank}
-                    className="border-b border-white/10 bg-[#0D0D0D] transition"
-                  >
-                    <td className="px-5 py-5 font-semibold">#{team.rank}</td>
-
-                    <td className="px-5 py-5 font-semibold">{team.name}</td>
-
-                    <td className="px-5 py-5 text-gray-300">{team.points}</td>
-
-                    <td className="px-5 py-5 text-gray-300">{team.wins}</td>
+          <div className="bg-[#050505] border border-white/10 rounded-xl overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="border-b border-white/10 bg-white/5 text-xs text-gray-400 uppercase tracking-wider">
+                    <th className="py-4 px-6">Rank</th>
+                    <th className="py-4 px-6">Team</th>
+                    <th className="py-4 px-6">Points</th>
+                    <th className="py-4 px-6">Tournament Wins</th>
+                    <th className="py-4 px-6">Tournaments Played</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-            <div className="mt-8 flex justify-center">
-              <button
-                onClick={() => navigate("/Leaderboard")}
-                className="rounded-lg border bg-[#E50914] border-white/10 px-6 py-3 mb-5 text-sm font-semibold transition] hover:bg-[#ff1e2d]"
-              >
-                See More Team
-              </button>
+                </thead>
+                <tbody className="divide-y divide-white/10 text-sm font-medium">
+                  {LEADERBOARD_PREVIEW.map((row) => (
+                    <tr key={row.rank} className="hover:bg-white/[0.02] transition">
+                      <td className="py-4 px-6 font-bold">
+                        <span className={`inline-flex items-center justify-center w-8 h-8 rounded-full ${
+                          row.rank === 1 ? 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20' :
+                          row.rank === 2 ? 'bg-gray-300/10 text-gray-300 border border-gray-300/20' :
+                          row.rank === 3 ? 'bg-amber-600/10 text-amber-600 border border-amber-600/20' : 'text-gray-500'
+                        }`}>
+                          #{row.rank}
+                        </span>
+                      </td>
+                      <td className="py-4 px-6 font-bold text-white">{row.team}</td>
+                      <td className="py-4 px-6 font-black text-[#E50914]">{row.points}</td>
+                      <td className="py-4 px-6 text-gray-300">{row.wins}</td>
+                      <td className="py-4 px-6 text-gray-400">{row.tournaments}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
       </section>
-
-      <section className="bg-[#050505] px-4 py-16 text-white sm:px-6 sm:py-20">
-        <div className="mx-auto max-w-6xl">
-          <div className="text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#E50914]">
-              Our Partners
-            </p>
-
-            <h2 className="mt-3 font-bold text-3xl sm:text-4xl">
-              Grow Esport With NepArena
-            </h2>
-
-            <p className="mx-auto mt-4 max-w-2xl text-sm text-gray-400 sm:text-base">
-              Partner with NepArena to support competitive esports and help
-              create more opportunities for teams and players across Nepal.
-            </p>
-
-            <button
-              onClick={() => navigate("/Contact")}
-              className="mt-8 rounded-lg bg-[#E50914] px-6 py-3 text-sm font-semibold transition hover:bg-[#ff1e2d]"
-            >
-              Become a Partner
-            </button>
-          </div>
-        </div>
-      </section>
-    </main>
+    </div>
   );
-};
-
-export default Home;
+}
