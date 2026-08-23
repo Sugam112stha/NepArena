@@ -9,37 +9,40 @@ import {
 } from 'react-icons/fa6';
 import { HiSparkles } from 'react-icons/hi2';
 import { useNavigate } from 'react-router-dom';
+import Gorkhalicup from "../assets/tournament/GorkhaliCup.png"
+import EpicBrawal from "../assets/tournament/EpicBrawl.png"
+import BattleOfGurkha from "../assets/tournament/BattleOfGurkha.png"
 
 const FEATURED_TOURNAMENTS = [
   {
     id: 1,
-    title: 'Nepal Championship 2026',
+    title: 'Gorkhali Cup',
     game: 'Free Fire',
-    status: 'Upcoming',
+    status: 'Completed',
     slots: '288 Slots',
     date: 'Aug 28, 2026',
     prize: 'Rs. 50,000',
-    banner: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=800'
+    banner: Gorkhalicup
   },
   {
     id: 2,
-    title: 'Himalayan Esports Invitational',
+    title: 'Epic Brawal S-4',
     game: 'PUBG Mobile',
-    status: 'Registration Open',
-    slots: '64 Teams',
-    date: 'Sep 05, 2026',
-    prize: 'Rs. 1,00,000',
-    banner: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=800'
+    status: 'Completed',
+    slots: '220 Teams',
+    date: 'Aug 05, 2026',
+    prize: 'INR. 10,000',
+    banner: EpicBrawal
   },
   {
     id: 3,
-    title: 'Kathmandu Valorant Cup',
-    game: 'Valorant',
-    status: 'Live Now',
+    title: 'Battle Of Gurkhas',
+    game: 'Mobile Legend',
+    status: 'Completed',
     slots: '16 Teams',
     date: 'Aug 22, 2026',
-    prize: 'Rs. 30,000',
-    banner: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&q=80&w=800'
+    prize: 'Rs. 50,000',
+    banner: BattleOfGurkha
   }
 ];
 
@@ -164,7 +167,7 @@ export default function HomePage() {
             {FEATURED_TOURNAMENTS.map((item) => (
               <div key={item.id} className="bg-[#0D0D0D] border border-white/10 rounded-xl overflow-hidden group hover:border-[#E50914]/50 transition duration-300">
                 <div className="relative h-48 overflow-hidden">
-                  <img src={item.banner} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                  <img src={item.banner} alt={item.title} className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out will-change-transform" />
                   <div className="absolute top-3 left-3 bg-[#050505]/80 backdrop-blur-md px-3 py-1 rounded text-xs font-bold uppercase tracking-wider border border-white/10 text-gray-300">
                     {item.game}
                   </div>
@@ -265,7 +268,7 @@ export default function HomePage() {
               </h2>
               <p className="text-gray-400 text-sm mt-1">See the top teams competing across Nepal.</p>
             </div>
-            <a href="#" className="mt-4 sm:mt-0 text-sm font-bold text-[#E50914] hover:underline flex items-center gap-1">
+            <a href="/tournaments" className="mt-4 sm:mt-0 text-sm font-bold text-[#E50914] hover:underline flex items-center gap-1">
               View Full Leaderboard <FaChevronRight size={12} />
             </a>
           </div>
