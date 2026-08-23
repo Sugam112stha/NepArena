@@ -8,7 +8,7 @@ import {
   FaChevronRight 
 } from 'react-icons/fa6';
 import { HiSparkles } from 'react-icons/hi2';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Gorkhalicup from "../assets/tournament/GorkhaliCup.png"
 import EpicBrawal from "../assets/tournament/EpicBrawl.png"
 import BattleOfGurkha from "../assets/tournament/BattleOfGurkha.png"
@@ -158,9 +158,9 @@ export default function HomePage() {
               </h2>
               <p className="text-gray-400 text-sm mt-1">Find your next competition and test your squad.</p>
             </div>
-            <a href="#" className="mt-4 sm:mt-0 text-sm font-bold text-[#E50914] hover:underline flex items-center gap-1">
-              View All Tournaments <FaChevronRight size={12} />
-            </a>
+            <Link to="/Tournaments" className='mt-4 sm:mt-0 text-sm font-bold text-[#E50914] hover:underline flex items-center gap-1'>
+            View All Tournaments <FaChevronRight size={12} />
+            </Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -268,9 +268,10 @@ export default function HomePage() {
               </h2>
               <p className="text-gray-400 text-sm mt-1">See the top teams competing across Nepal.</p>
             </div>
-            <a href="/tournaments" className="mt-4 sm:mt-0 text-sm font-bold text-[#E50914] hover:underline flex items-center gap-1">
-              View Full Leaderboard <FaChevronRight size={12} />
-            </a>
+
+            <Link to="/Leaderboard" className='mt-4 sm:mt-0 text-sm font-bold text-[#E50914] hover:underline flex items-center gap-1'>
+            View Full Leaderboard <FaChevronRight size={12} />
+            </Link>
           </div>
 
           <div className="bg-[#050505] border border-white/10 rounded-xl overflow-hidden">
