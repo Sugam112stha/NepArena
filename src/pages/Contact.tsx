@@ -16,15 +16,50 @@ export default function ContactPage() {
     subject: 'Tournament Support',
     message: ''
   });
+  const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({ name: '', email: '', subject: 'Tournament Support', message: '' });
-    }, 4000);
+    setLoading(true);
+    setErrorMessage('');
+
+    try {
+      // Send form data to Web3Forms API
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          // Free Web3Forms Access Key linked to neparena1@gmail.com
+          access_key: '7c49e000-7138-47c9-bd88-1dbbb8bcd94e', 
+          name: formData.name,
+          email: formData.email,
+          subject: `[NepArena Contact] ${formData.subject}`,
+          message: formData.message,
+          to_email: 'neparena1@gmail.com',
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setSubmitted(true);
+        setFormData({ name: '', email: '', subject: 'Tournament Support', message: '' });
+        setTimeout(() => {
+          setSubmitted(false);
+        }, 5000);
+      } else {
+        setErrorMessage(result.message || 'Failed to send message. Please try again.');
+      }
+    } catch (error) {
+      setErrorMessage('Network error. Please check your connection and try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -84,16 +119,13 @@ export default function ContactPage() {
             <div className="bg-[#0D0D0D] border border-white/10 p-6 rounded-xl">
               <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">Join Our Community</h3>
               <div className="flex items-center gap-3">
-                <a href="https://www.tiktok.com/@neparena" className="flex-1 bg-[#050505] border border-white/10 hover:border-[#5865F2] hover:text-[#5865F2] py-3 rounded-lg flex items-center justify-center transition">
+                <a href="https://www.tiktok.com/@neparena" target="_blank" rel="noreferrer" className="flex-1 bg-[#050505] border border-white/10 hover:border-[#5865F2] hover:text-[#5865F2] py-3 rounded-lg flex items-center justify-center transition">
                   <FaTiktok size={18} />
                 </a>
-                <a href="https://www.facebook.com/neparena61" 
-                target="blank"
-                className="flex-1 bg-[#050505] border border-white/10 hover:border-[#1877F2] hover:text-[#1877F2] py-3 rounded-lg flex items-center justify-center transition">
+                <a href="https://www.facebook.com/neparena61" target="_blank" rel="noreferrer" className="flex-1 bg-[#050505] border border-white/10 hover:border-[#1877F2] hover:text-[#1877F2] py-3 rounded-lg flex items-center justify-center transition">
                   <FaFacebook size={18} />
                 </a>
-                <a href="https://www.instagram.com/neparena/" 
-                className="flex-1 bg-[#050505] border border-white/10 hover:border-[#E4405F] hover:text-[#E4405F] py-3 rounded-lg flex items-center justify-center transition">
+                <a href="https://www.instagram.com/neparena/" target="_blank" rel="noreferrer" className="flex-1 bg-[#050505] border border-white/10 hover:border-[#E4405F] hover:text-[#E4405F] py-3 rounded-lg flex items-center justify-center transition">
                   <FaInstagram size={18} />
                 </a>
               </div>
@@ -110,7 +142,7 @@ export default function ContactPage() {
               <div className="bg-emerald-500/10 border border-emerald-500/30 p-6 rounded-xl text-center py-12">
                 <FaPaperPlane className="text-emerald-500 text-3xl mx-auto mb-3 animate-bounce" />
                 <h3 className="text-lg font-bold text-white">Message Sent Successfully!</h3>
-                <p className="text-xs text-gray-400 mt-1">Thank you for reaching out. We will review your message shortly.</p>
+                <p className="text-xs text-gray-400 mt-1">Thank you for reaching out. We have received your query at neparena1@gmail.com.</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -119,6 +151,7 @@ export default function ContactPage() {
                     <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Your Name</label>
                     <input 
                       type="text" 
+                      name="name"
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -130,6 +163,7 @@ export default function ContactPage() {
                     <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Email Address</label>
                     <input 
                       type="email" 
+                      name="email"
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -142,6 +176,7 @@ export default function ContactPage() {
                 <div>
                   <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Subject</label>
                   <select 
+                    name="subject"
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                     className="w-full bg-[#050505] border border-white/10 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-[#E50914] transition"
@@ -157,6 +192,7 @@ export default function ContactPage() {
                 <div>
                   <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Message</label>
                   <textarea 
+                    name="message"
                     rows={5}
                     required
                     value={formData.message}
@@ -166,11 +202,18 @@ export default function ContactPage() {
                   />
                 </div>
 
+                {errorMessage && (
+                  <p className="text-xs font-semibold text-red-500 bg-red-500/10 border border-red-500/20 p-3 rounded-lg text-center">
+                    {errorMessage}
+                  </p>
+                )}
+
                 <button 
                   type="submit"
-                  className="w-full bg-[#E50914] hover:bg-[#b80710] text-white font-bold py-3.5 rounded-lg text-sm tracking-wider uppercase transition flex items-center justify-center gap-2 shadow-lg shadow-[#E50914]/20"
+                  disabled={loading}
+                  className="w-full bg-[#E50914] hover:bg-[#b80710] text-white font-bold py-3.5 rounded-lg text-sm tracking-wider uppercase transition flex items-center justify-center gap-2 shadow-lg shadow-[#E50914]/20 disabled:opacity-50"
                 >
-                  <FaPaperPlane size={14} /> Send Message
+                  <FaPaperPlane size={14} /> {loading ? 'Sending Email...' : 'Send Message'}
                 </button>
               </form>
             )}
