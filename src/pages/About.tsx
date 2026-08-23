@@ -43,7 +43,7 @@ const PLATFORM_STATS = [
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-[#E50914] selection:text-white">
+    <div className="min-h-screen pt-5 bg-[#050505] text-white font-sans selection:bg-[#E50914] selection:text-white">
       
       {/* 1. HERO / BANNER SECTION */}
       <section className="relative py-24 flex items-center justify-center overflow-hidden border-b border-white/10">

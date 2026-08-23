@@ -86,7 +86,7 @@ const WHY_US = [
 export default function HomePage() {
   const navigate = useNavigate();
   return (
-    <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-[#E50914] selection:text-white">
+    <div className="min-h-screen pt-5 bg-[#050505] text-white font-sans selection:bg-[#E50914] selection:text-white">
       
       {/* 1. HERO SECTION */}
       <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden border-b border-white/10">

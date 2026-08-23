@@ -38,13 +38,13 @@ const ALL_TOURNAMENTS = [
   {
     id: 3,
     title: 'Kathmandu Valorant Cup',
-    game: 'Valorant',
+    game: 'eFootball',
     status: 'Ongoing',
     filterCategory: 'Ongoing',
     slots: '16 Teams',
     date: 'Aug 22, 2026',
     prize: 'Rs. 30,000',
-    mode: '5v5 Competitive',
+    mode: '1v1 Competitive',
     banner: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&q=80&w=800'
   },
   {
@@ -99,7 +99,7 @@ export default function TournamentsPage() {
   });
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white font-sans selection:bg-[#E50914] selection:text-white pb-20">
+    <div className="min-h-screen pt-5 bg-[#050505] text-white font-sans selection:bg-[#E50914] selection:text-white pb-20">
       
       {/* 1. HERO BANNER */}
       <section className="relative py-20 flex items-center justify-center overflow-hidden border-b border-white/10">
