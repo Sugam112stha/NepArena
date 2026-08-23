@@ -1,4 +1,3 @@
-import React from 'react';
 import { 
   FaTrophy, 
   FaShieldHalved, 
@@ -6,7 +5,6 @@ import {
   FaUsers, 
   FaBullseye, 
   FaEye, 
-  FaHandshake, 
   FaGamepad 
 } from 'react-icons/fa6';
 import { HiSparkles } from 'react-icons/hi2';
