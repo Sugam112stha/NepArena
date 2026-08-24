@@ -8,6 +8,10 @@ import {
   FaTrashCan,
   FaShieldHalved
 } from 'react-icons/fa6';
+import FreeFire from "../../assets/gameLogo/freefire.png"
+import PubG from "../../assets/gameLogo/pubg.png"
+import MobileLegend from "../../assets/gameLogo/mobileLegend.png"
+import eFootabll from "../../assets/gameLogo/eFootball.png"
 
 interface CreateTeamModalProps {
   isOpen: boolean;
@@ -15,10 +19,10 @@ interface CreateTeamModalProps {
 }
 
 const GAMES = [
-  { id: 'free-fire', name: 'Free Fire', image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=600' },
-  { id: 'pubg-mobile', name: 'PUBG Mobile', image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=600' },
-  { id: 'mobile-legends', name: 'Mobile Legends', image: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&q=80&w=600' },
-  { id: 'efootball', name: 'eFootball', image: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&q=80&w=600' },
+  { id: 'free-fire', name: 'Free Fire', image: FreeFire },
+  { id: 'pubg-mobile', name: 'PUBG Mobile', image: PubG },
+  { id: 'mobile-legends', name: 'Mobile Legends', image: MobileLegend },
+  { id: 'efootball', name: 'eFootball', image: eFootabll },
 ];
 
 export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProps) {
@@ -32,7 +36,7 @@ export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProp
 
   // Players Roster
   const [players, setPlayers] = useState([
-    { name: '', inGameId: '', role: 'Captain' }
+    { name: '', inGameId: '', role: 'IGL' }
   ]);
 
   if (!isOpen) return null;
