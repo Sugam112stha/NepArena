@@ -7,6 +7,7 @@ import Signup from "./auth/Signup";
 import Tournament from "./pages/Tournaments";
 import Leaderboard from "./pages/Leaderboard";
 import MainLayout from "./pages/MainLayout";
+import CreateTeamModal from "./components/teams/CreateTeamModels";
 
 function App() {
   return (
@@ -18,8 +19,9 @@ function App() {
         <Route path="/Tournaments" element={<Tournament />}/>
         <Route path="/Leaderboard" element={<Leaderboard />}/>
         <Route path="/Contact" element={<Contact />}/>
+        <Route path="/createteam" element={<CreateTeamModal isOpen={true} onClose={() => window.history.back()} />}/>
       </Route>
-
+        
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 

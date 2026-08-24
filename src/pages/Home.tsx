@@ -121,7 +121,8 @@ export default function HomePage() {
             className="w-full sm:w-auto bg-[#E50914] hover:bg-[#c20711] text-white font-bold px-8 py-4 rounded transition flex items-center justify-center gap-2 shadow-xl shadow-[#E50914]/25">
               Explore Tournaments <FaChevronRight size={14} />
             </button>
-            <button className="w-full sm:w-auto bg-[#0D0D0D] hover:bg-white/10 text-white border border-white/10 font-bold px-8 py-4 rounded transition">
+            <button onClick={() => navigate('/createteam')}
+            className="w-full sm:w-auto bg-[#0D0D0D] hover:bg-white/10 text-white border border-white/10 font-bold px-8 py-4 rounded transition">
               Create Your Team
             </button>
           </div>
