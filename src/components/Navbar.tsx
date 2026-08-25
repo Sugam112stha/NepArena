@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom'; // or your router link
-import { FaXmark, FaBars, FaShieldHalved, FaRightToBracket, FaUserPlus } from 'react-icons/fa6';
+import { FaXmark, FaBars, FaRightToBracket, FaUserPlus } from 'react-icons/fa6';
 import Logo from '../assets/logo/logo1.png'; // Adjust path
 
 export default function Navbar() {
