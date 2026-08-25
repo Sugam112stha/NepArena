@@ -8,6 +8,7 @@ import {
   FaGamepad 
 } from 'react-icons/fa6';
 import { HiSparkles } from 'react-icons/hi2';
+import { useNavigate } from 'react-router-dom';
 
 const VALUES = [
   {
@@ -40,6 +41,7 @@ const PLATFORM_STATS = [
 ];
 
 export default function AboutPage() {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen pt-5 bg-[#050505] text-white font-sans selection:bg-[#E50914] selection:text-white">
       
@@ -172,10 +174,12 @@ export default function AboutPage() {
             Create your team, verify your roster, and start competing for national rankings on NepArena today.
           </p>
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-            <button className="w-full sm:w-auto bg-[#E50914] hover:bg-[#c20711] text-white font-bold px-8 py-4 rounded transition shadow-xl shadow-[#E50914]/25">
+            <button onClick={() => navigate('/createteam')}
+            className="w-full sm:w-auto bg-[#E50914] hover:bg-[#c20711] text-white font-bold px-8 py-4 rounded transition shadow-xl shadow-[#E50914]/25">
               Register Your Team
             </button>
-            <button className="w-full sm:w-auto bg-[#050505] hover:bg-white/10 text-white border border-white/10 font-bold px-8 py-4 rounded transition">
+            <button onClick={() => navigate('/Tournaments')}
+            className="w-full sm:w-auto bg-[#050505] hover:bg-white/10 text-white border border-white/10 font-bold px-8 py-4 rounded transition">
               Explore Tournaments
             </button>
           </div>
