@@ -1,117 +1,115 @@
-import { Link, useLocation } from "react-router-dom";
-import logo from "../assets/logo/logo1.png";
-import { useState } from "react";
-import { FiMenu, FiX } from "react-icons/fi";
+import { useState } from 'react';
+import { Link } from 'react-router-dom'; // or your router link
+import { FaXmark, FaBars, FaShieldHalved, FaRightToBracket, FaUserPlus } from 'react-icons/fa6';
+import Logo from '../assets/logo/logo1.png'; // Adjust path
 
-const Navbar = () => { 
-  const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation();
-    
-  const navItems = [
-    { name: "Home", path: "/"},
-    { name: "About", path: "/About" },
-    { name: "Tournaments", path: "/Tournaments" },
-    { name: "Leaderboard", path: "/Leaderboard" },
-    { name: "Contact", path: "/Contact" },
+export default function Navbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const navLinks = [
+    { name: 'Home', path: '/' },
+    { name: 'About', path: '/about' },
+    { name: 'Tournaments', path: '/tournaments' },
+    { name: 'Leaderboard', path: '/leaderboard' },
+    { name: 'Contact', path: '/contact' },
   ];
 
   return (
-    <nav className="fixed top-0 left-0 z-50 w-full border-b border-white/10 bg-black/80 backdrop-blur-md">
-      <div className="mx-auto max-w-7xl flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
-
-        {/* LOGO */}
-        <Link to="/" onClick={() => setIsOpen(false)} className="z-50">
-          <img src={logo} alt="NepArena" className="h-12 w-auto sm:h-14 transition hover:scale-105" />
-        </Link>
-
-        {/* DESKTOP NAV ITEMS */}
-        <div className="hidden items-center gap-6 lg:flex">
-          {navItems.map((item) => {
-            const isActive = location.pathname === item.path;
-            return (
-              <Link 
-                key={item.name} 
-                to={item.path} 
-                className={`text-sm font-semibold transition hover:text-white ${
-                  isActive ? "text-[#E50914]" : "text-gray-300"
-                }`}
-              >
-                {item.name}
-              </Link>
-            );
-          })}
-        </div>
-
-        {/* DESKTOP AUTH BUTTONS */}
-        <div className="hidden items-center gap-3 lg:flex">
-          <Link 
-            to="/login" 
-            className="px-4 py-2 text-sm text-gray-300 font-semibold border border-white/20 rounded-lg transition hover:text-white hover:border-white"
-          >
-            Login
-          </Link>
-
-          <Link 
-            to="/signup" 
-            className="px-4 py-2 text-sm bg-[#E50914] text-white font-bold rounded-lg transition hover:bg-[#b80710] shadow-lg shadow-[#E50914]/20"
-          >
-            Sign Up
-          </Link>
-        </div>
-
-        {/* MOBILE HAMBURGER BUTTON */}
-        <button 
-          onClick={() => setIsOpen(!isOpen)} 
-          className="z-50 rounded-lg p-2 text-2xl text-white lg:hidden focus:outline-none"
-          aria-label="Toggle navigation menu"
-        >
-          {isOpen ? <FiX /> : <FiMenu />}
-        </button>
-
-      </div>
-
-      {/* MOBILE FULL-SCREEN MENU DRAWER */}
-      {isOpen && (
-        <div className="fixed inset-0 top-20 z-40 bg-[#050505] flex flex-col justify-between px-6 py-8 lg:hidden animate-in fade-in slide-in-from-top duration-300">
+    <nav className="bg-[#0D0D0D] border-b border-white/10 sticky top-0 z-40">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20">
           
-          {/* NAVIGATION LINKS */}
-          <div className="flex flex-col gap-2">
-            {navItems.map((item) => {
-              const isActive = location.pathname === item.path;
-              return (
-                <Link 
-                  key={item.name} 
-                  to={item.path} 
-                  onClick={() => setIsOpen(false)}
-                  className={`flex items-center justify-between py-3 px-4 rounded-xl text-base font-bold tracking-wider uppercase transition ${
-                    isActive 
-                      ? "bg-[#E50914]/10 text-[#E50914] border border-[#E50914]/30" 
-                      : "text-gray-300 hover:bg-white/5 hover:text-white"
-                  }`}
-                >
-                  <span>{item.name}</span>
-                  {isActive && <div className="w-2 h-2 rounded-full bg-[#E50914]" />}
-                </Link>
-              );
-            })}
+          {/* LOGO */}
+          <Link to="/" className="flex items-center gap-3">
+            <img src={Logo} alt="NepArena Logo" className="h-10 w-auto" />
+          </Link>
+
+          {/* DESKTOP LINKS */}
+          <div className="hidden md:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <Link 
+                key={link.name} 
+                to={link.path}
+                className="text-xs font-bold uppercase tracking-wider text-gray-300 hover:text-[#E50914] transition"
+              >
+                {link.name}
+              </Link>
+            ))}
           </div>
 
-          {/* ACTION BUTTONS AT BOTTOM */}
-          <div className="space-y-3 pt-6 border-t border-white/10">
-            <Link
-              to="/login"
-              onClick={() => setIsOpen(false)}
-              className="w-full block text-center rounded-xl border border-white/20 py-3.5 text-sm font-bold text-white uppercase tracking-wider transition active:scale-95"
+          {/* DESKTOP CTA BUTTONS */}
+          <div className="hidden md:flex items-center gap-3">
+            <Link 
+              to="/login" 
+              className="px-4 py-2 text-xs font-bold uppercase text-gray-300 hover:text-white transition"
             >
               Login
             </Link>
-
-            <Link
-              to="/signup"
-              onClick={() => setIsOpen(false)}
-              className="w-full block text-center rounded-xl bg-[#E50914] py-3.5 text-sm font-bold text-white uppercase tracking-wider transition active:scale-95 shadow-lg shadow-[#E50914]/30"
+            <Link 
+              to="/signup" 
+              className="px-5 py-2.5 bg-[#E50914] hover:bg-[#b80710] text-white font-bold text-xs uppercase tracking-wider rounded-xl transition shadow-lg shadow-[#E50914]/20"
             >
               Sign Up
+            </Link>
+          </div>
+
+          {/* MOBILE MENU TOGGLE BUTTON */}
+          <div className="flex md:hidden">
+            <button
+              onClick={() => setIsMenuOpen(true)}
+              className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-300 hover:text-white focus:outline-none"
+            >
+              <FaBars size={20} />
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      {/* FULL SCREEN MOBILE MENU OVERLAY */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 z-50 bg-[#050505] flex flex-col justify-between p-6 md:hidden transition-all duration-300">
+          
+          {/* MENU HEADER */}
+          <div className="flex items-center justify-between border-b border-white/10 pb-5">
+            <img src={Logo} alt="NepArena Logo" className="h-9 w-auto" />
+            <button
+              onClick={() => setIsMenuOpen(false)}
+              className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-400 hover:text-white"
+            >
+              <FaXmark size={20} />
+            </button>
+          </div>
+
+          {/* MENU NAVIGATION LINKS */}
+          <div className="flex flex-col gap-6 py-8 my-auto">
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                to={link.path}
+                onClick={() => setIsMenuOpen(false)}
+                className="text-2xl font-black uppercase text-gray-200 hover:text-[#E50914] transition tracking-tight"
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
+
+          {/* MOBILE ACTION BUTTONS */}
+          <div className="space-y-3 pt-6 border-t border-white/10">
+            <Link
+              to="/login"
+              onClick={() => setIsMenuOpen(false)}
+              className="w-full py-3.5 bg-[#0D0D0D] border border-white/10 hover:border-white/20 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition flex items-center justify-center gap-2"
+            >
+              <FaRightToBracket size={14} /> Login
+            </Link>
+            <Link
+              to="/signup"
+              onClick={() => setIsMenuOpen(false)}
+              className="w-full py-3.5 bg-[#E50914] hover:bg-[#b80710] text-white font-bold text-xs uppercase tracking-wider rounded-xl transition shadow-lg shadow-[#E50914]/20 flex items-center justify-center gap-2"
+            >
+              <FaUserPlus size={14} /> Sign Up
             </Link>
           </div>
 
@@ -119,6 +117,4 @@ const Navbar = () => {
       )}
     </nav>
   );
-};
-
-export default Navbar;
+}

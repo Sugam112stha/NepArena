@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ChangeEvent} from 'react';
 import { 
   FaXmark, 
   FaArrowRight, 
@@ -6,12 +6,15 @@ import {
   FaCheck, 
   FaUserPlus, 
   FaTrashCan,
-  FaShieldHalved
+  FaShieldHalved,
+  FaImage,
+  FaUsers,
+  FaQuoteLeft
 } from 'react-icons/fa6';
-import FreeFire from "../../assets/gameLogo/freefire.png"
-import PubG from "../../assets/gameLogo/pubg.png"
-import MobileLegend from "../../assets/gameLogo/mobileLegend.png"
-import eFootabll from "../../assets/gameLogo/eFootball.png"
+import FreeFire from "../../assets/gameLogo/freefire.png";
+import PubG from "../../assets/gameLogo/pubg.png";
+import MobileLegend from "../../assets/gameLogo/mobileLegend.png";
+import eFootabll from "../../assets/gameLogo/eFootball.png";
 
 interface CreateTeamModalProps {
   isOpen: boolean;
@@ -32,14 +35,26 @@ export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProp
   // Team Details
   const [teamName, setTeamName] = useState('');
   const [teamTag, setTeamTag] = useState('');
-  const [logoUrl, setLogoUrl] = useState('');
+  const [teamSlogan, setTeamSlogan] = useState('');
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
 
   // Players Roster
   const [players, setPlayers] = useState([
-    { name: '', inGameId: '', role: 'IGL' }
+    { name: '', inGameId: '', role: 'Captain' }
   ]);
 
   if (!isOpen) return null;
+
+  const handleLogoUpload = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setLogoPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleAddPlayer = () => {
     if (players.length < 6) {
@@ -58,7 +73,6 @@ export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProp
   };
 
   const handleSubmit = () => {
-    // Submit payload logic goes here
     alert(`Team "${teamName}" created successfully for ${selectedGame}!`);
     onClose();
     setStep(1);
@@ -138,39 +152,79 @@ export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProp
 
           {/* STEP 2: TEAM INFO */}
           {step === 2 && (
-            <div className="space-y-4 max-w-xl mx-auto">
+            <div className="space-y-5 max-w-xl mx-auto">
+              {/* TEAM LOGO UPLOAD */}
               <div>
-                <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Team Name *</label>
-                <input 
-                  type="text" 
-                  value={teamName}
-                  onChange={(e) => setTeamName(e.target.value)}
-                  placeholder="e.g. Abrupt Slayers"
-                  className="w-full bg-[#050505] border border-white/10 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-[#E50914]"
-                />
+                <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Team Logo</label>
+                <div className="flex items-center justify-center w-full">
+                  <label className="relative flex flex-col items-center justify-center w-32 h-32 border-2 border-dashed border-white/20 hover:border-[#E50914] rounded-2xl cursor-pointer bg-[#050505] transition group overflow-hidden">
+                    {logoPreview ? (
+                      <img src={logoPreview} alt="Team Logo Preview" className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="flex flex-col items-center justify-center">
+                        <div className="p-3 bg-white/5 rounded-full text-gray-400 group-hover:text-[#E50914] group-hover:scale-110 transition">
+                          <FaImage size={22} />
+                        </div>
+                        <span className="text-xs font-bold text-gray-400 group-hover:text-white mt-2">Upload Logo</span>
+                      </div>
+                    )}
+                    <input type="file" accept="image/*" onChange={handleLogoUpload} className="hidden" />
+                  </label>
+                </div>
               </div>
 
+              {/* TEAM NAME */}
               <div>
-                <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Team Tag (3–4 Chars) *</label>
+                <label className="block text-xs font-bold text-gray-400 uppercase mb-2">
+                  Team Name <span className="text-[#E50914]">*</span>
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-500">
+                    <FaUsers size={14} />
+                  </div>
+                  <input 
+                    type="text" 
+                    value={teamName}
+                    onChange={(e) => setTeamName(e.target.value)}
+                    placeholder="e.g. Abrupt Slayers"
+                    className="w-full bg-[#050505] border border-white/10 rounded-xl pl-10 pr-4 py-3 text-sm text-white focus:outline-none focus:border-[#E50914] transition"
+                  />
+                </div>
+              </div>
+
+              {/* TEAM TAG */}
+              <div>
+                <label className="block text-xs font-bold text-gray-400 uppercase mb-2">
+                  Team Tag (3–4 Chars) <span className="text-[#E50914]">*</span>
+                </label>
                 <input 
                   type="text" 
                   maxLength={4}
                   value={teamTag}
                   onChange={(e) => setTeamTag(e.target.value.toUpperCase())}
                   placeholder="e.g. AS"
-                  className="w-full bg-[#050505] border border-white/10 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-[#E50914]"
+                  className="w-full bg-[#050505] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#E50914] transition uppercase"
                 />
               </div>
 
+              {/* TEAM SLOGAN / DESCRIPTION */}
               <div>
-                <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Team Logo URL</label>
-                <input 
-                  type="url" 
-                  value={logoUrl}
-                  onChange={(e) => setLogoUrl(e.target.value)}
-                  placeholder="https://example.com/logo.png"
-                  className="w-full bg-[#050505] border border-white/10 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-[#E50914]"
-                />
+                <div className="flex justify-between items-center mb-2">
+                  <label className="block text-xs font-bold text-gray-400 uppercase">Team Description / Slogan</label>
+                  <span className="text-[10px] text-gray-500 font-semibold uppercase">Optional</span>
+                </div>
+                <div className="relative">
+                  <div className="absolute top-3.5 left-3.5 pointer-events-none text-gray-500">
+                    <FaQuoteLeft size={12} />
+                  </div>
+                  <textarea 
+                    rows={3}
+                    value={teamSlogan}
+                    onChange={(e) => setTeamSlogan(e.target.value)}
+                    placeholder="Describe your team's playstyle, history, or goals..."
+                    className="w-full bg-[#050505] border border-white/10 rounded-xl pl-10 pr-4 py-3 text-sm text-white focus:outline-none focus:border-[#E50914] transition resize-none"
+                  />
+                </div>
               </div>
             </div>
           )}
@@ -199,7 +253,7 @@ export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProp
                     onChange={(e) => handlePlayerChange(index, 'role', e.target.value)}
                     className="w-full sm:w-32 bg-[#0D0D0D] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#E50914]"
                   >
-                    <option value="Captain">Captain</option>
+                    <option value="IGL">IGL</option>
                     <option value="Player">Player</option>
                     <option value="Substitute">Substitute</option>
                   </select>
@@ -220,7 +274,7 @@ export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProp
                   onClick={handleAddPlayer}
                   className="w-full py-3 border border-dashed border-white/20 hover:border-[#E50914] text-gray-400 hover:text-white rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition"
                 >
-                  <FaUserPlus size={14} /> Add Roster Member
+                  <FaUserPlus size={14} /> Add Player
                 </button>
               )}
             </div>
@@ -230,12 +284,17 @@ export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProp
           {step === 4 && (
             <div className="max-w-xl mx-auto bg-[#050505] border border-white/10 p-6 rounded-xl space-y-4">
               <div className="flex items-center gap-4 border-b border-white/10 pb-4">
-                <div className="w-16 h-16 bg-[#0D0D0D] border border-white/10 rounded-xl flex items-center justify-center font-black text-xl text-[#E50914]">
-                  {teamTag || 'TAG'}
-                </div>
+                {logoPreview ? (
+                  <img src={logoPreview} alt="Team Logo" className="w-16 h-16 rounded-xl object-cover border border-white/10" />
+                ) : (
+                  <div className="w-16 h-16 bg-[#0D0D0D] border border-white/10 rounded-xl flex items-center justify-center font-black text-xl text-[#E50914]">
+                    {teamTag || 'TAG'}
+                  </div>
+                )}
                 <div>
                   <h3 className="text-xl font-black text-white">{teamName || 'Squad Name'}</h3>
                   <span className="text-xs text-gray-400 font-bold uppercase">{selectedGame}</span>
+                  {teamSlogan && <p className="text-xs text-gray-400 italic mt-1">"{teamSlogan}"</p>}
                 </div>
               </div>
 
