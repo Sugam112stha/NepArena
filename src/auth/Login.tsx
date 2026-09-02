@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FiEye, FiEyeOff, FiMail, FiLock } from "react-icons/fi";
 import { FaDiscord, FaGoogle } from "react-icons/fa";
+import { useAuth } from "../auth/authContext";
 import logo from "../assets/logo/logo1.png";
 import authBg from "../assets/authbg.png";
 
@@ -10,13 +11,16 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>(
-    {}
-  );
-  const [touched, setTouched] = useState<{
-    email?: boolean;
-    password?: boolean;
-  }>({});
+  const [authError, setAuthError] = useState("");
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+  const [touched, setTouched] = useState<{ email?: boolean; password?: boolean }>({});
+
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Get the target route passed from home page button or default to homepage
+  const redirectPath = location.state?.from || "/";
 
   const validateEmail = (value: string) => {
     if (!value) return "Email is required.";
@@ -40,8 +44,9 @@ const Login = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setAuthError("");
     const emailErr = validateEmail(email);
     const passwordErr = validatePassword(password);
     setErrors({ email: emailErr, password: passwordErr });
@@ -50,10 +55,14 @@ const Login = () => {
     if (emailErr || passwordErr) return;
 
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      await login(email, password);
       setIsLoading(false);
-    }, 2000);
+      navigate(redirectPath, { replace: true });
+    } catch (err) {
+      setIsLoading(false);
+      setAuthError("Failed to login. Please check your credentials.");
+    }
   };
 
   const isFormValid = !validateEmail(email) && !validatePassword(password);
@@ -77,6 +86,13 @@ const Login = () => {
         <p className="mt-3 text-sm leading-6 text-[#9CA3AF] sm:text-base">
           Login to manage your team and compete in tournaments.
         </p>
+
+        {/* Auth Error Toast */}
+        {authError && (
+          <div className="mt-4 rounded-lg bg-red-500/10 border border-red-500/20 p-3 text-xs font-semibold text-red-400 text-center">
+            {authError}
+          </div>
+        )}
 
         {/* Social Auth */}
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -237,6 +253,7 @@ const Login = () => {
           Don&apos;t have an account?{" "}
           <Link
             to="/signup"
+            state={{ from: redirectPath }}
             className="font-semibold text-[#E50914] transition hover:text-[#ff1e2d]"
           >
             Sign Up
@@ -246,18 +263,13 @@ const Login = () => {
 
       {/* ── Right: Visual Panel (desktop only) ── */}
       <div className="relative hidden lg:block lg:w-[45%]">
-        {/* Gradient overlay blending into left panel */}
         <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#050505] via-[#050505]/60 to-transparent" />
-
-        {/* Background image */}
         <img
           src={authBg}
           alt=""
           className="h-full w-full object-cover"
           aria-hidden="true"
         />
-
-        {/* Branding text */}
         <div className="absolute bottom-16 left-12 z-20 max-w-xs">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#E50914]">
             NepArena
@@ -275,7 +287,7 @@ const Login = () => {
         </div>
       </div>
 
-      {/* ── Mobile background (subtle, behind the form) ── */}
+      {/* ── Mobile background ── */}
       <div
         className="fixed inset-0 z-0 bg-cover bg-center lg:hidden"
         style={{ backgroundImage: `url(${authBg})` }}

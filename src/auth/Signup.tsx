@@ -1,12 +1,12 @@
 import { useState, useMemo } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FiEye, FiEyeOff, FiMail, FiLock, FiUser } from "react-icons/fi";
 import { HiAtSymbol } from "react-icons/hi";
 import { FaDiscord, FaGoogle } from "react-icons/fa";
+import { useAuth } from "../auth/authContext";
 import logo from "../assets/logo/logo1.png";
 import authBg from "../assets/authbg.png";
 
-/* ── Password Strength ── */
 type Strength = "empty" | "weak" | "medium" | "strong";
 
 const getPasswordStrength = (pw: string): Strength => {
@@ -30,7 +30,6 @@ const strengthConfig: Record<
   strong: { label: "Strong", color: "bg-green-500", width: "w-full" },
 };
 
-/* ── Component ── */
 const Signup = () => {
   const [form, setForm] = useState({
     fullName: "",
@@ -43,15 +42,21 @@ const Signup = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const [agreed, setAgreed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [authError, setAuthError] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  const { signup } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const redirectPath = location.state?.from || "/";
 
   const strength = useMemo(
     () => getPasswordStrength(form.password),
     [form.password]
   );
 
-  /* Validators */
   const validators: Record<string, (v: string) => string> = {
     fullName: (v) => (v.trim() ? "" : "Full name is required."),
     username: (v) => {
@@ -94,8 +99,9 @@ const Signup = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setAuthError("");
     const newErrors: Record<string, string> = {};
     const allTouched: Record<string, boolean> = {};
     for (const key of Object.keys(validators)) {
@@ -108,9 +114,19 @@ const Signup = () => {
     if (Object.values(newErrors).some((e) => e) || !agreed) return;
 
     setIsLoading(true);
-    setTimeout(() => {
+    try {
+      await signup({
+        fullName: form.fullName,
+        username: form.username,
+        email: form.email,
+        pass: form.password,
+      });
       setIsLoading(false);
-    }, 2000);
+      navigate(redirectPath, { replace: true });
+    } catch (err) {
+      setIsLoading(false);
+      setAuthError("Failed to register account. Try again.");
+    }
   };
 
   const isFormValid =
@@ -118,7 +134,6 @@ const Signup = () => {
       (k) => !validators[k](form[k as keyof typeof form])
     ) && agreed;
 
-  /* ── Shared input classes ── */
   const inputBase =
     "w-full rounded-lg border bg-[#0D0D0D] py-3 text-sm text-white placeholder-[#9CA3AF]/50 outline-none transition focus:ring-1";
   const inputOk =
@@ -149,6 +164,13 @@ const Signup = () => {
           Join Nepal&apos;s competitive esports community.
         </p>
 
+        {/* Auth Error Toast */}
+        {authError && (
+          <div className="mt-4 rounded-lg bg-red-500/10 border border-red-500/20 p-3 text-xs font-semibold text-red-400 text-center">
+            {authError}
+          </div>
+        )}
+
         {/* Social Auth */}
         <div className="mt-7 flex flex-col gap-3 sm:flex-row">
           <button
@@ -178,9 +200,7 @@ const Signup = () => {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Full Name & Username row */}
           <div className="grid gap-4 sm:grid-cols-2">
-            {/* Full Name */}
             <div>
               <label
                 htmlFor="signup-fullname"
@@ -207,7 +227,6 @@ const Signup = () => {
               )}
             </div>
 
-            {/* Username */}
             <div>
               <label
                 htmlFor="signup-username"
@@ -235,7 +254,6 @@ const Signup = () => {
             </div>
           </div>
 
-          {/* Email */}
           <div>
             <label
               htmlFor="signup-email"
@@ -260,7 +278,6 @@ const Signup = () => {
             )}
           </div>
 
-          {/* Password */}
           <div>
             <label
               htmlFor="signup-password"
@@ -296,7 +313,6 @@ const Signup = () => {
               <p className="mt-1.5 text-xs text-red-400">{errors.password}</p>
             )}
 
-            {/* Password Strength */}
             {form.password && strength !== "empty" && (
               <div className="mt-2.5">
                 <div className="h-1 w-full overflow-hidden rounded-full bg-white/10">
@@ -319,7 +335,6 @@ const Signup = () => {
             )}
           </div>
 
-          {/* Confirm Password */}
           <div>
             <label
               htmlFor="signup-confirm"
@@ -360,7 +375,6 @@ const Signup = () => {
             )}
           </div>
 
-          {/* Terms Checkbox */}
           <label
             htmlFor="signup-agree"
             className="flex cursor-pointer items-start gap-3 pt-1"
@@ -382,7 +396,6 @@ const Signup = () => {
             </span>
           </label>
 
-          {/* Submit */}
           <button
             type="submit"
             disabled={!isFormValid || isLoading}
@@ -415,11 +428,11 @@ const Signup = () => {
           </button>
         </form>
 
-        {/* Footer */}
         <p className="mt-7 text-center text-sm text-[#9CA3AF]">
           Already have an account?{" "}
           <Link
             to="/login"
+            state={{ from: redirectPath }}
             className="font-semibold text-[#E50914] transition hover:text-[#ff1e2d]"
           >
             Login
@@ -427,20 +440,15 @@ const Signup = () => {
         </p>
       </div>
 
-      {/* ── Right: Visual Panel (desktop only) ── */}
+      {/* ── Right: Visual Panel ── */}
       <div className="relative hidden lg:block lg:w-[45%]">
-        {/* Gradient overlay */}
         <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#050505] via-[#050505]/60 to-transparent" />
-
-        {/* Background image */}
         <img
           src={authBg}
           alt=""
           className="h-full w-full object-cover"
           aria-hidden="true"
         />
-
-        {/* Branding text */}
         <div className="absolute bottom-16 left-12 z-20 max-w-xs">
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#E50914]">
             NepArena
