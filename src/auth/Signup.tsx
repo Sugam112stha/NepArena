@@ -4,7 +4,7 @@ import { FiEye, FiEyeOff, FiMail, FiLock, FiUser } from "react-icons/fi";
 import { HiAtSymbol } from "react-icons/hi";
 import { FaDiscord, FaGoogle } from "react-icons/fa";
 import logo from "../assets/logo/logo1.png";
-import authBg from "../assets/auth-bg.png";
+import authBg from "../assets/authbg.png";
 
 /* ── Password Strength ── */
 type Strength = "empty" | "weak" | "medium" | "strong";

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { 
   FaUsers, 
   FaShieldHalved, 
@@ -88,6 +89,20 @@ const WHY_US = [
 
 export default function HomePage() {
   const navigate = useNavigate();
+
+  // Replace this state with your actual global auth state (e.g., useAuth() hook or Context API)
+  const [isLoggedIn] = useState(false);
+
+  // Click handler enforcing authentication before creating a team
+  const handleCreateTeamClick = () => {
+    if (!isLoggedIn) {
+      // Pass the intended target path so the login page can redirect back after successful sign in
+      navigate('/login', { state: { from: '/createteam' } });
+    } else {
+      navigate('/createteam');
+    }
+  };
+
   return (
     <div className="min-h-screen pt-5 bg-[#050505] text-white font-sans selection:bg-[#E50914] selection:text-white">
       
@@ -117,12 +132,16 @@ export default function HomePage() {
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-16">
-            <button onClick={() => navigate('/tournaments')}
-            className="w-full sm:w-auto bg-[#E50914] hover:bg-[#c20711] text-white font-bold px-8 py-4 rounded transition flex items-center justify-center gap-2 shadow-xl shadow-[#E50914]/25">
+            <button 
+              onClick={() => navigate('/tournaments')}
+              className="w-full sm:w-auto bg-[#E50914] hover:bg-[#c20711] text-white font-bold px-8 py-4 rounded transition flex items-center justify-center gap-2 shadow-xl shadow-[#E50914]/25"
+            >
               Explore Tournaments <FaChevronRight size={14} />
             </button>
-            <button onClick={() => navigate('/createteam')}
-            className="w-full sm:w-auto bg-[#0D0D0D] hover:bg-white/10 text-white border border-white/10 font-bold px-8 py-4 rounded transition">
+            <button 
+              onClick={handleCreateTeamClick}
+              className="w-full sm:w-auto bg-[#0D0D0D] hover:bg-white/10 text-white border border-white/10 font-bold px-8 py-4 rounded transition"
+            >
               Create Your Team
             </button>
           </div>
@@ -160,7 +179,7 @@ export default function HomePage() {
               <p className="text-gray-400 text-sm mt-1">Find your next competition and test your squad.</p>
             </div>
             <Link to="/Tournaments" className='mt-4 sm:mt-0 text-sm font-bold text-[#E50914] hover:underline flex items-center gap-1'>
-            View All Tournaments <FaChevronRight size={12} />
+              View All Tournaments <FaChevronRight size={12} />
             </Link>
           </div>
 
@@ -271,7 +290,7 @@ export default function HomePage() {
             </div>
 
             <Link to="/Leaderboard" className='mt-4 sm:mt-0 text-sm font-bold text-[#E50914] hover:underline flex items-center gap-1'>
-            View Full Leaderboard <FaChevronRight size={12} />
+              View Full Leaderboard <FaChevronRight size={12} />
             </Link>
           </div>
 

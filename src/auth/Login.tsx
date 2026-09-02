@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { FiEye, FiEyeOff, FiMail, FiLock } from "react-icons/fi";
 import { FaDiscord, FaGoogle } from "react-icons/fa";
 import logo from "../assets/logo/logo1.png";
-import authBg from "../assets/auth-bg.png";
+import authBg from "../assets/authbg.png";
 
 const Login = () => {
   const [email, setEmail] = useState("");
