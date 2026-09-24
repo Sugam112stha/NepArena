@@ -61,7 +61,7 @@ const Login = () => {
       navigate(redirectPath, { replace: true });
     } catch (err) {
       setIsLoading(false);
-      setAuthError("Failed to login. Please check your credentials.");
+      setAuthError(err instanceof Error ? err.message : "Failed to login. Please check your credentials.");
     }
   };
 

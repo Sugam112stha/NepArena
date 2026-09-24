@@ -16,7 +16,7 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-const apiUrl = `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api`;
+const apiUrl = `${import.meta.env.VITE_API_URL || "http://localhost:5001"}/api`;
 
 interface AuthResponse {
   success: boolean;
@@ -26,12 +26,18 @@ interface AuthResponse {
 }
 
 const requestAuth = async (path: string, body: Record<string, string>) => {
-  const response = await fetch(`${apiUrl}/auth/${path}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
-  const result = (await response.json()) as AuthResponse;
+  let response: Response;
+  try {
+    response = await fetch(`${apiUrl}/auth/${path}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+  } catch {
+    throw new Error("Unable to reach the server. Make sure the backend is running.");
+  }
+
+  const result = (await response.json().catch(() => ({}))) as AuthResponse;
 
   if (!response.ok || !result.user || !result.token) {
     throw new Error(result.message || "Authentication request failed");

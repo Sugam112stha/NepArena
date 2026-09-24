@@ -125,7 +125,7 @@ const Signup = () => {
       navigate(redirectPath, { replace: true });
     } catch (err) {
       setIsLoading(false);
-      setAuthError("Failed to register account. Try again.");
+      setAuthError(err instanceof Error ? err.message : "Failed to register account. Try again.");
     }
   };
 
