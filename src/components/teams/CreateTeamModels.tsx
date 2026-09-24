@@ -43,6 +43,12 @@ export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProp
     { name: '', inGameId: '', role: 'Captain' }
   ]);
 
+  const selectedGameDetails = GAMES.find((game) => game.name === selectedGame);
+  const completedPlayers = players.filter((player) => player.name.trim() && player.inGameId.trim()).length;
+  const setupProgress = Math.round(
+    ([Boolean(selectedGame), Boolean(teamName.trim() && teamTag.trim()), completedPlayers > 0, step === 4].filter(Boolean).length / 4) * 100
+  );
+
   if (!isOpen) return null;
 
   const handleLogoUpload = (e: ChangeEvent<HTMLInputElement>) => {
@@ -83,10 +89,13 @@ export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProp
       <div className="bg-[#0D0D0D] border border-white/10 w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl relative flex flex-col max-h-[90vh]">
         
         {/* HEADER */}
-        <div className="flex items-start justify-between p-6 border-b border-white/10">
+        <div className="flex items-start justify-between border-b border-white/10 bg-[#0b0b0b] p-6">
           <div>
-            <h2 className="text-3xl font-black text-white uppercase tracking-tight">Create New Team</h2>
-            <p className="text-xs text-gray-400 mt-1">
+            <div className="mb-2 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.24em] text-[#E50914]">
+              <FaShieldHalved size={11} /> NepArena Team Forge
+            </div>
+            <h2 className="text-3xl font-black uppercase tracking-tight text-white">Create New Team</h2>
+            <p className="mt-1 text-xs text-gray-400">
               Step {step}: {
                 step === 1 ? 'Select the game for your team' :
                 step === 2 ? 'Provide basic squad information' :
@@ -94,16 +103,22 @@ export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProp
               }
             </p>
           </div>
-          <button 
+          <div className="flex items-center gap-4">
+            <div className="hidden text-right sm:block">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Setup progress</p>
+              <p className="text-sm font-black text-white">{setupProgress}% ready</p>
+            </div>
+            <button 
             onClick={onClose} 
-            className="text-gray-400 hover:text-white p-2 bg-white/5 rounded-lg border border-white/10 transition"
-          >
-            <FaXmark size={18} />
-          </button>
+              className="rounded-lg border border-white/10 bg-white/5 p-2 text-gray-400 transition hover:text-white"
+            >
+              <FaXmark size={18} />
+            </button>
+          </div>
         </div>
 
         {/* STEPPER PROGRESS */}
-        <div className="px-8 py-4 bg-[#050505] border-b border-white/10">
+        <div className="border-b border-white/10 bg-[#050505] px-8 py-5">
           <div className="flex items-center justify-between max-w-xl mx-auto">
             {['Game', 'Info', 'Players', 'Review'].map((label, index) => {
               const currentStep = index + 1;
@@ -126,28 +141,54 @@ export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProp
               );
             })}
           </div>
+          <div className="mx-auto mt-4 h-1 max-w-xl overflow-hidden rounded-full bg-white/10">
+            <div className="h-full rounded-full bg-[#E50914] transition-all duration-500" style={{ width: `${step * 25}%` }} />
+          </div>
         </div>
 
         {/* STEP CONTENT BODY */}
-        <div className="p-8 overflow-y-auto flex-1">
+        <div className="flex-1 overflow-y-auto p-6 sm:p-8">
+          <div className="mb-7 flex items-center gap-4 rounded-xl border border-white/10 bg-gradient-to-r from-[#151515] to-[#0b0b0b] p-4">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-[#E50914]/40 bg-[#050505] text-lg font-black text-[#E50914] shadow-lg shadow-[#E50914]/10">
+              {logoPreview ? <img src={logoPreview} alt="Team logo preview" className="h-full w-full object-cover" /> : teamTag || 'N'}
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-lg font-black uppercase text-white">{teamName || 'Your team name'}</p>
+              <p className="mt-0.5 text-xs font-bold uppercase tracking-wider text-gray-500">
+                {selectedGameDetails && <img src={selectedGameDetails.image} alt="" className="mr-1 inline-block h-4 w-4 rounded object-cover align-middle" />}
+                {selectedGame || 'Choose your battlefield'} {teamTag && <span className="text-[#E50914]"> · {teamTag}</span>}
+              </p>
+            </div>
+            <div className="hidden text-right sm:block">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Roster</p>
+              <p className="text-sm font-black text-white">{completedPlayers}<span className="text-gray-500">/6</span></p>
+            </div>
+          </div>
           
           {/* STEP 1: GAME SELECTION */}
           {step === 1 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              {GAMES.map((game) => (
-                <div
-                  key={game.id}
-                  onClick={() => setSelectedGame(game.name)}
-                  className={`group relative rounded-xl overflow-hidden cursor-pointer border-2 transition-all h-44 ${
-                    selectedGame === game.name ? 'border-[#E50914] ring-2 ring-[#E50914]/30' : 'border-white/10 hover:border-white/30'
-                  }`}
-                >
-                  <img src={game.image} alt={game.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
-                  <h3 className="absolute bottom-4 left-4 font-black text-lg text-white uppercase">{game.name}</h3>
-                </div>
-              ))}
-            </div>
+            <>
+              <div className="mb-5">
+                <p className="text-sm font-bold text-white">Pick the game your squad is built to dominate.</p>
+                <p className="mt-1 text-xs text-gray-500">Your game selection will shape your team profile and tournament eligibility.</p>
+              </div>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {GAMES.map((game) => (
+                  <div
+                    key={game.id}
+                    onClick={() => setSelectedGame(game.name)}
+                    className={`group relative h-40 cursor-pointer overflow-hidden rounded-xl border-2 transition-all ${
+                      selectedGame === game.name ? 'border-[#E50914] ring-2 ring-[#E50914]/30' : 'border-white/10 hover:border-white/30'
+                    }`}
+                  >
+                    <img src={game.image} alt={game.name} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+                    {selectedGame === game.name && <div className="absolute right-3 top-3 rounded-full bg-[#E50914] p-2 text-white"><FaCheck size={11} /></div>}
+                    <div className="absolute bottom-4 left-4"><p className="text-[10px] font-bold uppercase tracking-widest text-white/60">Arena title</p><h3 className="text-lg font-black uppercase text-white">{game.name}</h3></div>
+                  </div>
+                ))}
+              </div>
+            </>
           )}
 
           {/* STEP 2: TEAM INFO */}
@@ -232,26 +273,36 @@ export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProp
           {/* STEP 3: PLAYERS ROSTER */}
           {step === 3 && (
             <div className="space-y-4 max-w-2xl mx-auto">
+              <div className="mb-5 flex items-end justify-between">
+                <div>
+                  <p className="text-sm font-bold text-white">Build your active roster.</p>
+                  <p className="mt-1 text-xs text-gray-500">Add player names and in-game IDs so your squad is ready for verification.</p>
+                </div>
+                <span className="text-xs font-black text-[#E50914]">{completedPlayers}/6 ready</span>
+              </div>
               {players.map((player, index) => (
-                <div key={index} className="flex flex-col sm:flex-row items-center gap-3 bg-[#050505] p-4 border border-white/10 rounded-xl">
+                <div key={index} className="flex flex-col items-center gap-3 rounded-xl border border-white/10 bg-[#050505] p-4 sm:flex-row">
+                  <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-xs font-black ${index === 0 ? 'bg-[#E50914] text-white' : 'bg-white/10 text-gray-400'}`}>
+                    {String(index + 1).padStart(2, '0')}
+                  </div>
                   <input 
                     type="text"
                     placeholder="Player Name"
                     value={player.name}
                     onChange={(e) => handlePlayerChange(index, 'name', e.target.value)}
-                    className="flex-1 w-full bg-[#0D0D0D] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#E50914]"
+                    className="w-full flex-1 rounded-lg border border-white/10 bg-[#0D0D0D] px-3 py-2 text-sm text-white focus:border-[#E50914] focus:outline-none"
                   />
                   <input 
                     type="text"
                     placeholder="In-Game ID (UID)"
                     value={player.inGameId}
                     onChange={(e) => handlePlayerChange(index, 'inGameId', e.target.value)}
-                    className="flex-1 w-full bg-[#0D0D0D] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#E50914]"
+                    className="w-full flex-1 rounded-lg border border-white/10 bg-[#0D0D0D] px-3 py-2 text-sm text-white focus:border-[#E50914] focus:outline-none"
                   />
                   <select
                     value={player.role}
                     onChange={(e) => handlePlayerChange(index, 'role', e.target.value)}
-                    className="w-full sm:w-32 bg-[#0D0D0D] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#E50914]"
+                    className="w-full rounded-lg border border-white/10 bg-[#0D0D0D] px-3 py-2 text-sm text-white focus:border-[#E50914] focus:outline-none sm:w-32"
                   >
                     <option value="IGL">IGL</option>
                     <option value="Player">Player</option>
@@ -282,12 +333,16 @@ export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProp
 
           {/* STEP 4: REVIEW & CONFIRM */}
           {step === 4 && (
-            <div className="max-w-xl mx-auto bg-[#050505] border border-white/10 p-6 rounded-xl space-y-4">
+            <div className="mx-auto max-w-xl space-y-5 rounded-2xl border border-white/10 bg-gradient-to-br from-[#171717] to-[#080808] p-6 shadow-2xl">
+              <div className="mb-1 flex items-center justify-between">
+                <div><p className="text-sm font-bold text-white">Final team check</p><p className="mt-1 text-xs text-gray-500">Everything look right before you enter the arena?</p></div>
+                <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-[10px] font-black uppercase tracking-wider text-emerald-400">Ready</span>
+              </div>
               <div className="flex items-center gap-4 border-b border-white/10 pb-4">
                 {logoPreview ? (
                   <img src={logoPreview} alt="Team Logo" className="w-16 h-16 rounded-xl object-cover border border-white/10" />
                 ) : (
-                  <div className="w-16 h-16 bg-[#0D0D0D] border border-white/10 rounded-xl flex items-center justify-center font-black text-xl text-[#E50914]">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-xl border border-[#E50914]/30 bg-[#0D0D0D] text-xl font-black text-[#E50914]">
                     {teamTag || 'TAG'}
                   </div>
                 )}
@@ -302,7 +357,7 @@ export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProp
                 <h4 className="text-xs font-bold text-gray-400 uppercase mb-2">Roster Summary ({players.length} Players)</h4>
                 <div className="space-y-2">
                   {players.map((p, i) => (
-                    <div key={i} className="flex justify-between items-center bg-[#0D0D0D] px-3 py-2 rounded text-xs">
+                    <div key={i} className="flex items-center justify-between rounded-lg border border-white/5 bg-[#0D0D0D] px-3 py-2.5 text-xs">
                       <span className="font-bold text-white">{p.name || 'Unnamed Player'} <span className="text-gray-500">({p.inGameId || 'No ID'})</span></span>
                       <span className="text-[#E50914] font-semibold">{p.role}</span>
                     </div>
