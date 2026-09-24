@@ -46,7 +46,7 @@ const Signup = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
 
-  const { signup } = useAuth();
+  const { signup, socialLogin } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -175,6 +175,7 @@ const Signup = () => {
         <div className="mt-7 flex flex-col gap-3 sm:flex-row">
           <button
             type="button"
+            onClick={() => socialLogin("discord")}
             className="flex flex-1 items-center justify-center gap-3 rounded-lg border border-white/10 bg-[#0D0D0D] px-5 py-3 text-sm font-medium text-white transition hover:border-[#5865F2] hover:bg-[#5865F2]/10"
           >
             <FaDiscord className="text-lg text-[#5865F2]" />
@@ -182,6 +183,7 @@ const Signup = () => {
           </button>
           <button
             type="button"
+            onClick={() => socialLogin("google")}
             className="flex flex-1 items-center justify-center gap-3 rounded-lg border border-white/10 bg-[#0D0D0D] px-5 py-3 text-sm font-medium text-white transition hover:border-white/30 hover:bg-white/5"
           >
             <FaGoogle className="text-lg" />

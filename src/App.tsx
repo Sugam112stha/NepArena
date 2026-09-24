@@ -4,6 +4,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Login from "./auth/Login";
 import Signup from "./auth/Signup";
+import AuthCallback from "./auth/AuthCallback";
 import Tournament from "./pages/Tournaments";
 import Leaderboard from "./pages/Leaderboard";
 import MainLayout from "./pages/MainLayout";
@@ -41,6 +42,7 @@ function App() {
           {/* Standalone Auth Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

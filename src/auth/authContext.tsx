@@ -12,6 +12,8 @@ interface AuthContextType {
   isLoggedIn: boolean;
   login: (email: string, pass: string) => Promise<void>;
   signup: (data: { fullName: string; username: string; email: string; pass: string }) => Promise<void>;
+  socialLogin: (provider: "google" | "discord") => void;
+  completeSocialLogin: (token: string, user: User) => void;
   logout: () => void;
 }
 
@@ -81,6 +83,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem("neparena_token", result.token!);
   };
 
+  const socialLogin = (provider: "google" | "discord") => {
+    window.location.assign(`${apiUrl}/auth/${provider}`);
+  };
+
+  const completeSocialLogin = (token: string, socialUser: User) => {
+    setUser(socialUser);
+    localStorage.setItem("neparena_user", JSON.stringify(socialUser));
+    localStorage.setItem("neparena_token", token);
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem("neparena_user");
@@ -88,7 +100,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoggedIn: !!user, login, signup, logout }}>
+    <AuthContext.Provider value={{ user, isLoggedIn: !!user, login, signup, socialLogin, completeSocialLogin, logout }}>
       {children}
     </AuthContext.Provider>
   );

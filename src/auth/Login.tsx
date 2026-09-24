@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FiEye, FiEyeOff, FiMail, FiLock } from "react-icons/fi";
 import { FaDiscord, FaGoogle } from "react-icons/fa";
@@ -15,12 +15,17 @@ const Login = () => {
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const [touched, setTouched] = useState<{ email?: boolean; password?: boolean }>({});
 
-  const { login } = useAuth();
+  const { login, socialLogin } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
   // Get the target route passed from home page button or default to homepage
   const redirectPath = location.state?.from || "/";
+
+  useEffect(() => {
+    const oauthError = new URLSearchParams(location.search).get("oauthError");
+    if (oauthError) setAuthError(oauthError);
+  }, [location.search]);
 
   const validateEmail = (value: string) => {
     if (!value) return "Email is required.";
@@ -98,6 +103,7 @@ const Login = () => {
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <button
             type="button"
+            onClick={() => socialLogin("discord")}
             className="flex flex-1 items-center justify-center gap-3 rounded-lg border border-white/10 bg-[#0D0D0D] px-5 py-3 text-sm font-medium text-white transition hover:border-[#5865F2] hover:bg-[#5865F2]/10"
           >
             <FaDiscord className="text-lg text-[#5865F2]" />
@@ -105,6 +111,7 @@ const Login = () => {
           </button>
           <button
             type="button"
+            onClick={() => socialLogin("google")}
             className="flex flex-1 items-center justify-center gap-3 rounded-lg border border-white/10 bg-[#0D0D0D] px-5 py-3 text-sm font-medium text-white transition hover:border-white/30 hover:bg-white/5"
           >
             <FaGoogle className="text-lg" />
