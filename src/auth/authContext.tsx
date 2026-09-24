@@ -48,6 +48,19 @@ const requestAuth = async (path: string, body: Record<string, string>) => {
   return result;
 };
 
+const requestCurrentUser = async (token: string) => {
+  const response = await fetch(`${apiUrl}/auth/me`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  const result = (await response.json().catch(() => ({}))) as AuthResponse;
+
+  if (!response.ok || !result.user) {
+    throw new Error(result.message || "Session validation failed");
+  }
+
+  return result.user;
+};
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
@@ -55,12 +68,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const storedUser = localStorage.getItem("neparena_user");
     const token = localStorage.getItem("neparena_token");
     if (storedUser && token) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch (e) {
+      requestCurrentUser(token)
+        .then((currentUser) => {
+          setUser(currentUser);
+          localStorage.setItem("neparena_user", JSON.stringify(currentUser));
+        })
+        .catch(() => {
         localStorage.removeItem("neparena_user");
         localStorage.removeItem("neparena_token");
-      }
+        });
     }
   }, []);
 
