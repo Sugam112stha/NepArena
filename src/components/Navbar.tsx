@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom'; // or your router link
+import { Link, useNavigate } from 'react-router-dom'; // or your router link
 import { FaXmark, FaBars, FaRightToBracket, FaUserPlus } from 'react-icons/fa6';
 import Logo from '../assets/logo/logo1.png'; // Adjust path
 import { useAuth } from '../auth/authContext';
@@ -7,6 +7,12 @@ import { useAuth } from '../auth/authContext';
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isLoggedIn, user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -45,6 +51,7 @@ export default function Navbar() {
               <>
                 <span className="hidden text-xs font-bold text-gray-400 lg:block">Hi, {user?.fullName.split(' ')[0]}</span>
                 <Link to="/dashboard" className="rounded-xl bg-[#E50914] px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white transition shadow-lg shadow-[#E50914]/20 hover:bg-[#b80710]">My Profile</Link>
+                <button onClick={handleLogout} className="flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-gray-300 transition hover:border-[#E50914]/50 hover:text-white"><FaRightToBracket size={13} /> Log out</button>
               </>
             ) : (
               <>
