@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FiEye, FiEyeOff, FiMail, FiLock } from "react-icons/fi";
-import { FaDiscord, FaGoogle } from "react-icons/fa";
+import { FaGoogle } from "react-icons/fa";
 import { useAuth } from "../auth/authContext";
 import logo from "../assets/logo/logo1.png";
 import authBg from "../assets/authbg.png";
@@ -103,16 +103,8 @@ const Login = () => {
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <button
             type="button"
-            onClick={() => socialLogin("discord")}
-            className="flex flex-1 items-center justify-center gap-3 rounded-lg border border-white/10 bg-[#0D0D0D] px-5 py-3 text-sm font-medium text-white transition hover:border-[#5865F2] hover:bg-[#5865F2]/10"
-          >
-            <FaDiscord className="text-lg text-[#5865F2]" />
-            Continue with Discord
-          </button>
-          <button
-            type="button"
             onClick={() => socialLogin("google")}
-            className="flex flex-1 items-center justify-center gap-3 rounded-lg border border-white/10 bg-[#0D0D0D] px-5 py-3 text-sm font-medium text-white transition hover:border-white/30 hover:bg-white/5"
+            className="flex w-full items-center justify-center gap-3 rounded-lg border border-white/10 bg-[#0D0D0D] px-5 py-3 text-sm font-medium text-white transition hover:border-white/30 hover:bg-white/5 sm:w-1/2"
           >
             <FaGoogle className="text-lg" />
             Continue with Google

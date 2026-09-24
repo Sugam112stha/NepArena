@@ -12,7 +12,7 @@ interface AuthContextType {
   isLoggedIn: boolean;
   login: (email: string, pass: string) => Promise<void>;
   signup: (data: { fullName: string; username: string; email: string; pass: string }) => Promise<void>;
-  socialLogin: (provider: "google" | "discord") => void;
+  socialLogin: (provider: "google") => void;
   completeSocialLogin: (token: string, user: User) => void;
   logout: () => void;
 }
@@ -83,7 +83,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem("neparena_token", result.token!);
   };
 
-  const socialLogin = (provider: "google" | "discord") => {
+  const socialLogin = (provider: "google") => {
     window.location.assign(`${apiUrl}/auth/${provider}`);
   };
 
