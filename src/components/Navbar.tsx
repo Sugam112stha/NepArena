@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom'; // or your router link
 import { FaXmark, FaBars, FaRightToBracket, FaUserPlus } from 'react-icons/fa6';
 import Logo from '../assets/logo/logo1.png'; // Adjust path
+import { useAuth } from '../auth/authContext';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isLoggedIn, user, logout } = useAuth();
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -39,18 +41,17 @@ export default function Navbar() {
 
           {/* DESKTOP CTA BUTTONS */}
           <div className="hidden md:flex items-center gap-3">
-            <Link 
-              to="/login" 
-              className="px-4 py-2 text-xs font-bold uppercase text-gray-300 hover:text-white transition"
-            >
-              Login
-            </Link>
-            <Link 
-              to="/signup" 
-              className="px-5 py-2.5 bg-[#E50914] hover:bg-[#b80710] text-white font-bold text-xs uppercase tracking-wider rounded-xl transition shadow-lg shadow-[#E50914]/20"
-            >
-              Sign Up
-            </Link>
+            {isLoggedIn ? (
+              <>
+                <span className="hidden text-xs font-bold text-gray-400 lg:block">Hi, {user?.fullName.split(' ')[0]}</span>
+                <Link to="/dashboard" className="rounded-xl bg-[#E50914] px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white transition shadow-lg shadow-[#E50914]/20 hover:bg-[#b80710]">My Profile</Link>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="px-4 py-2 text-xs font-bold uppercase text-gray-300 transition hover:text-white">Login</Link>
+                <Link to="/signup" className="rounded-xl bg-[#E50914] px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white transition shadow-lg shadow-[#E50914]/20 hover:bg-[#b80710]">Sign Up</Link>
+              </>
+            )}
           </div>
 
           {/* MOBILE MENU TOGGLE BUTTON */}
@@ -97,20 +98,17 @@ export default function Navbar() {
 
           {/* MOBILE ACTION BUTTONS */}
           <div className="space-y-3 pt-6 border-t border-white/10">
-            <Link
-              to="/login"
-              onClick={() => setIsMenuOpen(false)}
-              className="w-full py-3.5 bg-[#0D0D0D] border border-white/10 hover:border-white/20 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition flex items-center justify-center gap-2"
-            >
-              <FaRightToBracket size={14} /> Login
-            </Link>
-            <Link
-              to="/signup"
-              onClick={() => setIsMenuOpen(false)}
-              className="w-full py-3.5 bg-[#E50914] hover:bg-[#b80710] text-white font-bold text-xs uppercase tracking-wider rounded-xl transition shadow-lg shadow-[#E50914]/20 flex items-center justify-center gap-2"
-            >
-              <FaUserPlus size={14} /> Sign Up
-            </Link>
+            {isLoggedIn ? (
+              <>
+                <Link to="/dashboard" onClick={() => setIsMenuOpen(false)} className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#E50914] py-3.5 text-xs font-bold uppercase tracking-wider text-white transition shadow-lg shadow-[#E50914]/20 hover:bg-[#b80710]">Dashboard</Link>
+                <button onClick={() => { logout(); setIsMenuOpen(false); }} className="flex w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-[#0D0D0D] py-3.5 text-xs font-bold uppercase tracking-wider text-white transition hover:border-white/20"><FaRightToBracket size={14} /> Log out</button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" onClick={() => setIsMenuOpen(false)} className="flex w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-[#0D0D0D] py-3.5 text-xs font-bold uppercase tracking-wider text-white transition hover:border-white/20"><FaRightToBracket size={14} /> Login</Link>
+                <Link to="/signup" onClick={() => setIsMenuOpen(false)} className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#E50914] py-3.5 text-xs font-bold uppercase tracking-wider text-white transition shadow-lg shadow-[#E50914]/20 hover:bg-[#b80710]"><FaUserPlus size={14} /> Sign Up</Link>
+              </>
+            )}
           </div>
 
         </div>
