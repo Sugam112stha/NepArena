@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { 
   FaUsers, 
   FaShieldHalved, 
@@ -10,6 +9,7 @@ import {
 } from 'react-icons/fa6';
 import { HiSparkles } from 'react-icons/hi2';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../auth/authContext';
 import Gorkhalicup from "../assets/tournament/GorkhaliCup.png"
 import EpicBrawal from "../assets/tournament/EpicBrawl.png"
 import BattleOfGurkha from "../assets/tournament/BattleOfGurkha.png"
@@ -89,14 +89,11 @@ const WHY_US = [
 
 export default function HomePage() {
   const navigate = useNavigate();
-
-  // Replace this state with your actual global auth state (e.g., useAuth() hook or Context API)
-  const [isLoggedIn] = useState(false);
+  const { isLoggedIn } = useAuth();
 
   // Click handler enforcing authentication before creating a team
   const handleCreateTeamClick = () => {
     if (!isLoggedIn) {
-      // Pass the intended target path so the login page can redirect back after successful sign in
       navigate('/login', { state: { from: '/createteam' } });
     } else {
       navigate('/createteam');

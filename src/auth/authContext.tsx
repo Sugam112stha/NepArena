@@ -16,48 +16,69 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const apiUrl = `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api`;
+
+interface AuthResponse {
+  success: boolean;
+  user?: User;
+  token?: string;
+  message?: string;
+}
+
+const requestAuth = async (path: string, body: Record<string, string>) => {
+  const response = await fetch(`${apiUrl}/auth/${path}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  const result = (await response.json()) as AuthResponse;
+
+  if (!response.ok || !result.user || !result.token) {
+    throw new Error(result.message || "Authentication request failed");
+  }
+
+  return result;
+};
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("neparena_user");
-    if (storedUser) {
+    const token = localStorage.getItem("neparena_token");
+    if (storedUser && token) {
       try {
         setUser(JSON.parse(storedUser));
       } catch (e) {
         localStorage.removeItem("neparena_user");
+        localStorage.removeItem("neparena_token");
       }
     }
   }, []);
 
-  const login = async (email: string) => {
-    // Replace with your API endpoint / Firebase / Supabase call
-    const mockUser: User = {
-      id: "usr_" + Date.now(),
-      fullName: email.split("@")[0],
-      username: email.split("@")[0].toLowerCase(),
-      email,
-    };
-    setUser(mockUser);
-    localStorage.setItem("neparena_user", JSON.stringify(mockUser));
+  const login = async (email: string, pass: string) => {
+    const result = await requestAuth("login", { email, password: pass });
+    setUser(result.user!);
+    localStorage.setItem("neparena_user", JSON.stringify(result.user));
+    localStorage.setItem("neparena_token", result.token!);
   };
 
-  const signup = async ({ fullName, username, email }: { fullName: string; username: string; email: string }) => {
-    // Replace with your backend registration API endpoint
-    const newUser: User = {
-      id: "usr_" + Date.now(),
+  const signup = async ({ fullName, username, email, pass }: { fullName: string; username: string; email: string; pass: string }) => {
+    const result = await requestAuth("signup", {
       fullName,
       username,
       email,
-    };
-    setUser(newUser);
-    localStorage.setItem("neparena_user", JSON.stringify(newUser));
+      password: pass,
+    });
+    setUser(result.user!);
+    localStorage.setItem("neparena_user", JSON.stringify(result.user));
+    localStorage.setItem("neparena_token", result.token!);
   };
 
   const logout = () => {
     setUser(null);
     localStorage.removeItem("neparena_user");
+    localStorage.removeItem("neparena_token");
   };
 
   return (
