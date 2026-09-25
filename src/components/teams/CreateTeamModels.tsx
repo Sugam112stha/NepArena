@@ -231,7 +231,9 @@ export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProp
                       selectedGame === game.name ? 'border-[#E50914] ring-2 ring-[#E50914]/30' : 'border-white/10 hover:border-white/30'
                     }`}
                   >
-                    <img src={game.image} alt={game.name} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                    <div className="absolute inset-0 flex items-center justify-center bg-[#171717] p-5 sm:p-7">
+                      <img src={game.image} alt={game.name} className="h-full w-full object-contain transition duration-500 group-hover:scale-105" />
+                    </div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
                     {selectedGame === game.name && <div className="absolute right-3 top-3 rounded-full bg-[#E50914] p-2 text-white"><FaCheck size={11} /></div>}
                     <div className="absolute bottom-4 left-4"><p className="text-[10px] font-bold uppercase tracking-widest text-white/60">Arena title</p><h3 className="text-lg font-black uppercase text-white">{game.name}</h3></div>
