@@ -10,6 +10,7 @@ import {
   FaRightFromBracket,
   FaFloppyDisk,
   FaShieldHalved,
+  FaTrashCan,
   FaXmark,
   FaTrophy,
   FaUsers,
@@ -46,6 +47,13 @@ interface Team {
   players: TeamPlayer[];
 }
 
+interface NotificationItem {
+  _id: string;
+  message: string;
+  read: boolean;
+  createdAt: string;
+}
+
 const Dashboard = () => {
   const { user, logout } = useAuth();
   const [teams, setTeams] = useState<Team[]>([]);
@@ -53,6 +61,8 @@ const Dashboard = () => {
   const [editingTeamId, setEditingTeamId] = useState<string | null>(null);
   const [editTeam, setEditTeam] = useState<Team | null>(null);
   const [teamMessage, setTeamMessage] = useState("");
+  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
+  const [showNotifications, setShowNotifications] = useState(false);
   const apiUrl = `${import.meta.env.VITE_API_URL || "http://localhost:5001"}/api`;
   const location = useLocation();
   const navigate = useNavigate();
@@ -82,6 +92,37 @@ const Dashboard = () => {
     };
     loadTeams();
   }, [apiUrl]);
+
+  useEffect(() => {
+    const loadNotifications = async () => {
+      const token = localStorage.getItem("neparena_token");
+      const response = await fetch(`${apiUrl}/notifications`, { headers: { Authorization: `Bearer ${token || ""}` } });
+      const result = await response.json() as { notifications?: NotificationItem[] };
+      if (response.ok) setNotifications(result.notifications || []);
+    };
+    loadNotifications();
+  }, [apiUrl]);
+
+  const markNotificationsRead = async () => {
+    const token = localStorage.getItem("neparena_token");
+    await fetch(`${apiUrl}/notifications/read`, { method: "PATCH", headers: { Authorization: `Bearer ${token || ""}` } });
+    setNotifications((current) => current.map((notification) => ({ ...notification, read: true })));
+  };
+
+  const deleteTeam = async (team: Team) => {
+    if (!window.confirm(`Delete ${team.name}? This cannot be undone.`)) return;
+    setTeamMessage("");
+    const token = localStorage.getItem("neparena_token");
+    const response = await fetch(`${apiUrl}/teams/${team._id}`, { method: "DELETE", headers: { Authorization: `Bearer ${token || ""}` } });
+    const result = await response.json() as { success?: boolean; message?: string };
+    if (!response.ok || !result.success) {
+      setTeamMessage(result.message || "Unable to delete team.");
+      return;
+    }
+    setTeams((current) => current.filter((currentTeam) => currentTeam._id !== team._id));
+    setTeamMessage(`${team.name} was deleted.`);
+    setNotifications((current) => [{ _id: `local-${Date.now()}`, message: `${team.name} was deleted.`, read: false, createdAt: new Date().toISOString() }, ...current]);
+  };
 
   const startEditingTeam = (team: Team) => {
     setTeamMessage("");
@@ -165,10 +206,13 @@ const Dashboard = () => {
               <p className="mt-1 text-xs text-gray-500">@{user?.username || "player"} <span className="mx-1 text-gray-700">•</span> Season 14 <span className="mx-1 text-gray-700">•</span> Global rank pending</p>
             </div>
             <div className="flex items-center gap-3">
-              <button className="relative hidden h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-[#111] text-gray-400 transition hover:text-white sm:flex" aria-label="Notifications">
-                <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-[#ed1b2f]" />
+              <div className="relative hidden sm:block">
+              <button onClick={() => { setShowNotifications((current) => !current); if (notifications.some((notification) => !notification.read)) markNotificationsRead(); }} className="relative flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-[#111] text-gray-400 transition hover:text-white" aria-label="Notifications">
+                {notifications.some((notification) => !notification.read) && <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-[#ed1b2f]" />}
                 <FaAward size={16} />
               </button>
+              {showNotifications && <div className="absolute right-0 top-12 z-30 w-80 rounded-xl border border-white/10 bg-[#151515] p-3 shadow-2xl"><div className="flex items-center justify-between border-b border-white/10 px-2 pb-3"><p className="text-xs font-black uppercase tracking-wider text-white">Notifications</p><button onClick={markNotificationsRead} className="text-[10px] font-bold text-[#ed1b2f]">Mark read</button></div><div className="max-h-72 overflow-y-auto pt-2">{notifications.length === 0 ? <p className="px-2 py-5 text-xs text-gray-500">No updates yet.</p> : notifications.map((notification) => <div key={notification._id} className={`rounded-lg px-2 py-3 text-xs ${notification.read ? "text-gray-500" : "bg-[#ed1b2f]/10 text-gray-200"}`}><p>{notification.message}</p><p className="mt-1 text-[10px] text-gray-600">{new Date(notification.createdAt).toLocaleString()}</p></div>)}</div></div>}
+              </div>
               <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#ed1b2f]/30 bg-[#ed1b2f]/10 text-sm font-black text-[#ffb2a7]">{initials}</div>
             </div>
           </header>
@@ -223,7 +267,7 @@ const Dashboard = () => {
                       </div>
                     ) : (
                       <>
-                        <div className="flex items-start justify-between gap-4"><div><p className="text-lg font-black text-white">{team.name} <span className="text-[#ed1b2f]">[{team.tag}]</span></p><p className="mt-1 text-xs font-bold uppercase tracking-wider text-gray-500">{team.game} <span className="mx-1 text-gray-700">•</span> {team.players.length}/6 players</p></div><button onClick={() => startEditingTeam(team)} className="flex items-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-xs font-bold text-gray-400 hover:border-[#ed1b2f]/50 hover:text-white"><FaPenToSquare size={12} /> Edit</button></div>
+                        <div className="flex items-start justify-between gap-4"><div><p className="text-lg font-black text-white">{team.name} <span className="text-[#ed1b2f]">[{team.tag}]</span></p><p className="mt-1 text-xs font-bold uppercase tracking-wider text-gray-500">{team.game} <span className="mx-1 text-gray-700">•</span> {team.players.length}/6 players</p></div><div className="flex gap-2"><button onClick={() => startEditingTeam(team)} className="flex items-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-xs font-bold text-gray-400 hover:border-[#ed1b2f]/50 hover:text-white"><FaPenToSquare size={12} /> Edit</button><button onClick={() => deleteTeam(team)} className="flex items-center gap-2 rounded-lg border border-red-500/20 px-3 py-2 text-xs font-bold text-red-400 hover:bg-red-500/10"><FaTrashCan size={12} /> Delete</button></div></div>
                         {team.slogan && <p className="mt-3 text-xs italic text-gray-500">“{team.slogan}”</p>}
                         <div className="mt-4 grid gap-2 sm:grid-cols-2">{team.players.map((player) => <div key={player.username} className="flex items-center justify-between rounded-lg border border-white/5 bg-[#151515] px-3 py-2.5"><div><p className="text-xs font-bold text-white">@{player.username}</p><p className="mt-1 text-[10px] text-gray-500">UID: {player.inGameId}</p></div><span className="text-[10px] font-black uppercase tracking-wider text-[#ed1b2f]">{player.role}</span></div>)}</div>
                       </>
