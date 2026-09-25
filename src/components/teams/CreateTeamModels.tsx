@@ -84,9 +84,9 @@ export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProp
     if (field === 'username') setInviteStatus((current) => ({ ...current, [index]: '' }));
   };
 
-  const verifyPlayerUsername = async (index: number) => {
+  const verifyPlayerUsername = async (index: number): Promise<boolean> => {
     const username = players[index].username.trim().toLowerCase();
-    if (!username) return;
+    if (!username) return false;
 
     setInviteStatus((current) => ({ ...current, [index]: 'Checking username...' }));
     try {
@@ -100,9 +100,21 @@ export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProp
       const invitedPlayer = result.player;
       setPlayers((current) => current.map((player, playerIndex) => playerIndex === index ? { ...player, username: invitedPlayer.username, verified: true } : player));
       setInviteStatus((current) => ({ ...current, [index]: `${invitedPlayer.fullName} invited` }));
+      return true;
     } catch (error) {
       setInviteStatus((current) => ({ ...current, [index]: error instanceof Error ? error.message : 'Player not found.' }));
+      return false;
     }
+  };
+
+  const handleNextStep = async () => {
+    if (step === 3) {
+      const verificationResults = await Promise.all(
+        players.map((player, index) => player.verified ? true : verifyPlayerUsername(index))
+      );
+      if (!verificationResults.every(Boolean) || players.some((player) => !player.inGameId.trim())) return;
+    }
+    setStep(step + 1);
   };
 
   const handleSubmit = async () => {
@@ -328,7 +340,7 @@ export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProp
               <div className="mb-5 flex items-end justify-between">
                 <div>
                   <p className="text-sm font-bold text-white">Build your active roster.</p>
-                    <p className="mt-1 text-xs text-gray-500">Invite registered players by username and add their game IDs for verification.</p>
+                  <p className="mt-1 text-xs text-gray-500">Only registered NepArena users can join your team. Invite them by username.</p>
                 </div>
                 <span className="text-xs font-black text-[#E50914]">{completedPlayers}/6 ready</span>
               </div>
@@ -439,9 +451,9 @@ export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProp
             {submitError && <p className="max-w-xs text-right text-xs font-semibold text-red-400">{submitError}</p>}
           {step < 4 ? (
             <button 
+              onClick={handleNextStep}
               disabled={step === 1 && !selectedGame}
-              onClick={() => setStep(step + 1)}
-              className="px-6 py-2.5 rounded-lg bg-[#E50914] hover:bg-[#b80710] text-xs font-bold text-white uppercase tracking-wider disabled:opacity-50 transition flex items-center gap-2"
+              className="px-6 py-2.5 rounded-lg bg-[#E50914] hover:bg-[#b80710] text-xs font-bold text-white uppercase tracking-wider disabled:cursor-not-allowed disabled:opacity-50 transition flex items-center gap-2"
             >
               Next Step <FaArrowRight size={12} />
             </button>
