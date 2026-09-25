@@ -58,6 +58,7 @@ const Dashboard = () => {
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#252525] text-sm font-black text-[#ffb2a7]">{initials}</div>
             <div className="min-w-0">
               <p className="truncate text-sm font-bold text-white">{user?.fullName || "Player"}</p>
+              <p className="truncate text-[11px] text-gray-500">@{user?.username || "player"}</p>
               <p className="text-[10px] font-bold uppercase tracking-wider text-[#ffb2a7]">Rookie tier</p>
             </div>
           </div>
@@ -94,7 +95,7 @@ const Dashboard = () => {
             <div>
               <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#ed1b2f]">Player dashboard</p>
               <h1 className="mt-1 text-2xl font-black tracking-tight text-white sm:text-3xl">Welcome back, <span className="text-[#ed1b2f]">{firstName}</span></h1>
-              <p className="mt-1 text-xs text-gray-500">Season 14 <span className="mx-1 text-gray-700">•</span> Global rank pending</p>
+              <p className="mt-1 text-xs text-gray-500">@{user?.username || "player"} <span className="mx-1 text-gray-700">•</span> Season 14 <span className="mx-1 text-gray-700">•</span> Global rank pending</p>
             </div>
             <div className="flex items-center gap-3">
               <button className="relative hidden h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-[#111] text-gray-400 transition hover:text-white sm:flex" aria-label="Notifications">
