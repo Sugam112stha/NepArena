@@ -46,11 +46,11 @@ const Signup = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
 
-  const { signup, socialLogin } = useAuth();
+  const { signup, socialLogin, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const redirectPath = location.state?.from || "/";
+  const redirectPath = location.state?.from || "/dashboard";
 
   const strength = useMemo(
     () => getPasswordStrength(form.password),
@@ -121,8 +121,14 @@ const Signup = () => {
         email: form.email,
         pass: form.password,
       });
+      logout();
       setIsLoading(false);
-      navigate(redirectPath, { replace: true });
+      navigate("/login", {
+        replace: true,
+        state: {
+          signupSuccess: "Account created successfully. Please log in to continue.",
+        },
+      });
     } catch (err) {
       setIsLoading(false);
       setAuthError(err instanceof Error ? err.message : "Failed to register account. Try again.");

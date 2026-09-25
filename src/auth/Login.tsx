@@ -12,6 +12,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [authError, setAuthError] = useState("");
+  const [signupSuccess, setSignupSuccess] = useState("");
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const [touched, setTouched] = useState<{ email?: boolean; password?: boolean }>({});
 
@@ -19,12 +20,15 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Get the target route passed from home page button or default to homepage
-  const redirectPath = location.state?.from || "/";
+  // Return to the requested protected page, otherwise open the user dashboard.
+  const redirectPath = location.state?.from || "/dashboard";
 
   useEffect(() => {
     const oauthError = new URLSearchParams(location.search).get("oauthError");
     if (oauthError) setAuthError(oauthError);
+    if (location.state?.signupSuccess) {
+      setSignupSuccess(location.state.signupSuccess);
+    }
   }, [location.search]);
 
   const validateEmail = (value: string) => {
@@ -96,6 +100,11 @@ const Login = () => {
         {authError && (
           <div className="mt-4 rounded-lg bg-red-500/10 border border-red-500/20 p-3 text-xs font-semibold text-red-400 text-center">
             {authError}
+          </div>
+        )}
+        {signupSuccess && (
+          <div className="mt-4 rounded-lg border border-emerald-500/20 bg-emerald-500/10 p-3 text-center text-xs font-semibold text-emerald-400">
+            {signupSuccess}
           </div>
         )}
 
