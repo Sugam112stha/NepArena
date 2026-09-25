@@ -64,6 +64,7 @@ const Signup = () => {
       if (v.length < 3) return "Username must be at least 3 characters.";
       if (!/^[a-zA-Z0-9_]+$/.test(v))
         return "Only letters, numbers and underscores.";
+      if (!/\d/.test(v)) return "Username must include at least 1 number.";
       return "";
     },
     email: (v) => {
