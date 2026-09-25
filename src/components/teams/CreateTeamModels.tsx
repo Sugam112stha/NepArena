@@ -15,6 +15,7 @@ import FreeFire from "../../assets/gameLogo/freefire.png";
 import PubG from "../../assets/gameLogo/pubg.png";
 import MobileLegend from "../../assets/gameLogo/mobileLegend.png";
 import eFootabll from "../../assets/gameLogo/eFootball.png";
+import { useAuth } from "../../auth/authContext";
 
 interface CreateTeamModalProps {
   isOpen: boolean;
@@ -29,6 +30,7 @@ const GAMES = [
 ];
 
 export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProps) {
+  const { user } = useAuth();
   const [step, setStep] = useState(1);
   const [selectedGame, setSelectedGame] = useState('');
   
@@ -40,11 +42,14 @@ export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProp
 
   // Players Roster
   const [players, setPlayers] = useState([
-    { name: '', inGameId: '', role: 'Captain' }
+    { username: user?.username || '', inGameId: '', role: 'Captain', verified: Boolean(user?.username) }
   ]);
+  const [inviteStatus, setInviteStatus] = useState<Record<number, string>>({});
+  const [submitError, setSubmitError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const selectedGameDetails = GAMES.find((game) => game.name === selectedGame);
-  const completedPlayers = players.filter((player) => player.name.trim() && player.inGameId.trim()).length;
+  const completedPlayers = players.filter((player) => player.verified && player.inGameId.trim()).length;
   const setupProgress = Math.round(
     ([Boolean(selectedGame), Boolean(teamName.trim() && teamTag.trim()), completedPlayers > 0, step === 4].filter(Boolean).length / 4) * 100
   );
@@ -64,7 +69,7 @@ export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProp
 
   const handleAddPlayer = () => {
     if (players.length < 6) {
-      setPlayers([...players, { name: '', inGameId: '', role: 'Player' }]);
+      setPlayers([...players, { username: '', inGameId: '', role: 'Player', verified: false }]);
     }
   };
 
@@ -74,14 +79,59 @@ export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProp
 
   const handlePlayerChange = (index: number, field: string, value: string) => {
     const updated = [...players];
-    updated[index] = { ...updated[index], [field]: value };
+    updated[index] = { ...updated[index], [field]: value, ...(field === 'username' ? { verified: false } : {}) };
     setPlayers(updated);
+    if (field === 'username') setInviteStatus((current) => ({ ...current, [index]: '' }));
   };
 
-  const handleSubmit = () => {
-    alert(`Team "${teamName}" created successfully for ${selectedGame}!`);
-    onClose();
-    setStep(1);
+  const verifyPlayerUsername = async (index: number) => {
+    const username = players[index].username.trim().toLowerCase();
+    if (!username) return;
+
+    setInviteStatus((current) => ({ ...current, [index]: 'Checking username...' }));
+    try {
+      const token = localStorage.getItem('neparena_token');
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5001'}/api/auth/users/${encodeURIComponent(username)}`, {
+        headers: { Authorization: `Bearer ${token || ''}` },
+      });
+      const result = await response.json() as { success?: boolean; player?: { fullName: string; username: string }; message?: string };
+      if (!response.ok || !result.player) throw new Error(result.message || 'Player not found.');
+
+      const invitedPlayer = result.player;
+      setPlayers((current) => current.map((player, playerIndex) => playerIndex === index ? { ...player, username: invitedPlayer.username, verified: true } : player));
+      setInviteStatus((current) => ({ ...current, [index]: `${invitedPlayer.fullName} invited` }));
+    } catch (error) {
+      setInviteStatus((current) => ({ ...current, [index]: error instanceof Error ? error.message : 'Player not found.' }));
+    }
+  };
+
+  const handleSubmit = async () => {
+    setSubmitError('');
+    setIsSubmitting(true);
+    try {
+      const token = localStorage.getItem('neparena_token');
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5001'}/api/teams`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token || ''}` },
+        body: JSON.stringify({
+          name: teamName,
+          tag: teamTag,
+          game: selectedGame,
+          slogan: teamSlogan,
+          logo: logoPreview,
+          players: players.map(({ username, inGameId, role }) => ({ username, inGameId, role })),
+        }),
+      });
+      const result = await response.json() as { success?: boolean; message?: string };
+      if (!response.ok || !result.success) throw new Error(result.message || 'Unable to create the team.');
+      alert(`Team "${teamName}" created successfully for ${selectedGame}!`);
+      onClose();
+      setStep(1);
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : 'Unable to create the team.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -276,7 +326,7 @@ export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProp
               <div className="mb-5 flex items-end justify-between">
                 <div>
                   <p className="text-sm font-bold text-white">Build your active roster.</p>
-                  <p className="mt-1 text-xs text-gray-500">Add player names and in-game IDs so your squad is ready for verification.</p>
+                    <p className="mt-1 text-xs text-gray-500">Invite registered players by username and add their game IDs for verification.</p>
                 </div>
                 <span className="text-xs font-black text-[#E50914]">{completedPlayers}/6 ready</span>
               </div>
@@ -285,13 +335,17 @@ export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProp
                   <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-xs font-black ${index === 0 ? 'bg-[#E50914] text-white' : 'bg-white/10 text-gray-400'}`}>
                     {String(index + 1).padStart(2, '0')}
                   </div>
-                  <input 
+                  <div className="w-full flex-1">
+                    <input 
                     type="text"
-                    placeholder="Player Name"
-                    value={player.name}
-                    onChange={(e) => handlePlayerChange(index, 'name', e.target.value)}
+                    placeholder="Invite by username"
+                    value={player.username}
+                    onChange={(e) => handlePlayerChange(index, 'username', e.target.value)}
+                    onBlur={() => verifyPlayerUsername(index)}
                     className="w-full flex-1 rounded-lg border border-white/10 bg-[#0D0D0D] px-3 py-2 text-sm text-white focus:border-[#E50914] focus:outline-none"
-                  />
+                    />
+                    {inviteStatus[index] && <p className={`mt-1 text-[10px] font-bold ${player.verified ? 'text-emerald-400' : 'text-red-400'}`}>{inviteStatus[index]}</p>}
+                  </div>
                   <input 
                     type="text"
                     placeholder="In-Game ID (UID)"
@@ -358,7 +412,7 @@ export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProp
                 <div className="space-y-2">
                   {players.map((p, i) => (
                     <div key={i} className="flex items-center justify-between rounded-lg border border-white/5 bg-[#0D0D0D] px-3 py-2.5 text-xs">
-                      <span className="font-bold text-white">{p.name || 'Unnamed Player'} <span className="text-gray-500">({p.inGameId || 'No ID'})</span></span>
+                      <span className="font-bold text-white">@{p.username || 'username'} <span className="text-gray-500">({p.inGameId || 'No ID'})</span></span>
                       <span className="text-[#E50914] font-semibold">{p.role}</span>
                     </div>
                   ))}
@@ -379,6 +433,8 @@ export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProp
             <FaArrowLeft size={12} /> Back
           </button>
 
+          <div className="flex items-center gap-4">
+            {submitError && <p className="max-w-xs text-right text-xs font-semibold text-red-400">{submitError}</p>}
           {step < 4 ? (
             <button 
               disabled={step === 1 && !selectedGame}
@@ -390,11 +446,13 @@ export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProp
           ) : (
             <button 
               onClick={handleSubmit}
-              className="px-6 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-xs font-bold text-white uppercase tracking-wider transition flex items-center gap-2"
+              disabled={isSubmitting}
+              className="flex items-center gap-2 rounded-lg bg-emerald-600 px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              <FaShieldHalved size={14} /> Create Team
+              <FaShieldHalved size={14} /> {isSubmitting ? 'Creating...' : 'Create Team'}
             </button>
           )}
+          </div>
         </div>
 
       </div>
