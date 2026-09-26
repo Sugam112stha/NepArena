@@ -1,5 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
-
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 export interface User {
   id: string;
   fullName: string;
@@ -106,11 +105,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     window.location.assign(`${apiUrl}/auth/${provider}`);
   };
 
-  const completeSocialLogin = (token: string, socialUser: User) => {
-    setUser(socialUser);
-    localStorage.setItem("neparena_user", JSON.stringify(socialUser));
-    localStorage.setItem("neparena_token", token);
-  };
+  const completeSocialLogin = useCallback((token: string, socialUser: User) => {
+  setUser(socialUser);
+  localStorage.setItem("neparena_user", JSON.stringify(socialUser));
+  localStorage.setItem("neparena_token", token);
+}, []);
 
   const updateProfile = async (profile: { fullName: string; profilePicture: string; gameProfiles: Array<{ game: string; ign: string; uid: string }> }) => {
     const token = localStorage.getItem("neparena_token");
