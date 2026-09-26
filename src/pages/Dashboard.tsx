@@ -13,8 +13,9 @@ import {
   FaXmark,
   FaTrophy,
   FaUsers,
+  FaCamera,
 } from "react-icons/fa6";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/authContext";
 import { IoIosNotifications } from "react-icons/io";
@@ -30,6 +31,14 @@ const tournaments = [
   { name: "Nepal Esports League", game: "PUBG Mobile", date: "Oct 18, 2026", status: "Registration open", tone: "red" },
   { name: "Gorkhali Clash S2", game: "Free Fire", date: "Oct 24, 2026", status: "Team required", tone: "slate" },
 ];
+
+const profileGames = ["Free Fire", "PUBG Mobile", "Mobile Legends", "eFootball"];
+
+interface GameProfile {
+  game: string;
+  ign: string;
+  uid: string;
+}
 
 interface TeamPlayer {
   username: string;
@@ -55,7 +64,7 @@ interface NotificationItem {
 }
 
 const Dashboard = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, updateProfile } = useAuth();
   const [teams, setTeams] = useState<Team[]>([]);
   const [isLoadingTeams, setIsLoadingTeams] = useState(true);
   const [editingTeamId, setEditingTeamId] = useState<string | null>(null);
@@ -63,6 +72,17 @@ const Dashboard = () => {
   const [teamMessage, setTeamMessage] = useState("");
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showProfileEditor, setShowProfileEditor] = useState(false);
+  const [profileName, setProfileName] = useState(user?.fullName || "");
+  const [profilePicture, setProfilePicture] = useState(user?.profilePicture || "");
+  const [gameProfiles, setGameProfiles] = useState<GameProfile[]>(profileGames.map((game) => ({
+    game,
+    ign: user?.gameProfiles?.find((profile) => profile.game === game)?.ign || "",
+    uid: user?.gameProfiles?.find((profile) => profile.game === game)?.uid || "",
+  })));
+  const [profileError, setProfileError] = useState("");
+  const [profileSaved, setProfileSaved] = useState("");
+  const [isSavingProfile, setIsSavingProfile] = useState(false);
   const apiUrl = `${import.meta.env.VITE_API_URL || "http://localhost:5001"}/api`;
   const location = useLocation();
   const navigate = useNavigate();
@@ -77,6 +97,55 @@ const Dashboard = () => {
   const handleLogout = () => {
     logout();
     navigate("/login");
+  };
+
+  const openProfileEditor = () => {
+    setProfileName(user?.fullName || "");
+    setProfilePicture(user?.profilePicture || "");
+    setGameProfiles(profileGames.map((game) => ({
+      game,
+      ign: user?.gameProfiles?.find((profile) => profile.game === game)?.ign || "",
+      uid: user?.gameProfiles?.find((profile) => profile.game === game)?.uid || "",
+    })));
+    setProfileError("");
+    setProfileSaved("");
+    setShowProfileEditor(true);
+  };
+
+  const handleProfilePicture = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      setProfileError("Choose an image file.");
+      return;
+    }
+    if (file.size > 1_500_000) {
+      setProfileError("Choose an image smaller than 1.5 MB.");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === "string") {
+        setProfilePicture(reader.result);
+        setProfileError("");
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const saveProfile = async () => {
+    setProfileError("");
+    setProfileSaved("");
+    setIsSavingProfile(true);
+    try {
+      await updateProfile({ fullName: profileName, profilePicture, gameProfiles });
+      setProfileSaved("Profile saved successfully.");
+      setShowProfileEditor(false);
+    } catch (error) {
+      setProfileError(error instanceof Error ? error.message : "Unable to save your profile.");
+    } finally {
+      setIsSavingProfile(false);
+    }
   };
 
   useEffect(() => {
@@ -163,7 +232,9 @@ const Dashboard = () => {
           </div>
 
           <div className="mx-5 mt-7 flex items-center gap-3 rounded-xl border border-white/10 bg-[#151515] p-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#252525] text-sm font-black text-[#ffb2a7]">{initials}</div>
+            <button onClick={openProfileEditor} aria-label="Edit profile" className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[#252525] text-sm font-black text-[#ffb2a7]">
+              {user?.profilePicture ? <img src={user.profilePicture} alt="" className="h-full w-full object-cover" /> : initials}
+            </button>
             <div className="min-w-0">
               <p className="truncate text-sm font-bold text-white">{user?.fullName || "Player"}</p>
               <p className="truncate text-[11px] text-gray-500">@{user?.username || "player"}</p>
@@ -213,7 +284,9 @@ const Dashboard = () => {
               </button>
               {showNotifications && <div className="absolute right-0 top-12 z-30 w-80 rounded-xl border border-white/10 bg-[#151515] p-3 shadow-2xl"><div className="flex items-center justify-between border-b border-white/10 px-2 pb-3"><p className="text-xs font-black uppercase tracking-wider text-white">Notifications</p><button onClick={markNotificationsRead} className="text-[10px] font-bold text-[#ed1b2f]">Mark read</button></div><div className="max-h-72 overflow-y-auto pt-2">{notifications.length === 0 ? <p className="px-2 py-5 text-xs text-gray-500">No updates yet.</p> : notifications.map((notification) => <div key={notification._id} className={`rounded-lg px-2 py-3 text-xs ${notification.read ? "text-gray-500" : "bg-[#ed1b2f]/10 text-gray-200"}`}><p>{notification.message}</p><p className="mt-1 text-[10px] text-gray-600">{new Date(notification.createdAt).toLocaleString()}</p></div>)}</div></div>}
               </div>
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#ed1b2f]/30 bg-[#ed1b2f]/10 text-sm font-black text-[#ffb2a7]">{initials}</div>
+              <button onClick={openProfileEditor} aria-label="Edit user profile" title="Edit profile" className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg border border-[#ed1b2f]/30 bg-[#ed1b2f]/10 text-sm font-black text-[#ffb2a7] transition hover:border-[#ed1b2f]">
+                {user?.profilePicture ? <img src={user.profilePicture} alt="Profile" className="h-full w-full object-cover" /> : initials}
+              </button>
             </div>
           </header>
 
@@ -302,6 +375,29 @@ const Dashboard = () => {
           </div>
         </main>
       </div>
+      {showProfileEditor && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm" onMouseDown={(event) => { if (event.target === event.currentTarget) setShowProfileEditor(false); }}>
+          <section role="dialog" aria-modal="true" aria-labelledby="profile-editor-title" className="max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-xl border border-white/10 bg-[#111] shadow-2xl">
+            <header className="flex items-start justify-between border-b border-white/10 p-5 sm:p-6">
+              <div><p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#ed1b2f]">Player account</p><h2 id="profile-editor-title" className="mt-1 text-xl font-black text-white">Edit your profile</h2><p className="mt-1 text-xs text-gray-500">Manage your identity and game accounts.</p></div>
+              <button onClick={() => setShowProfileEditor(false)} aria-label="Close profile editor" className="rounded-lg border border-white/10 p-2 text-gray-400 hover:text-white"><FaXmark /></button>
+            </header>
+            <div className="space-y-6 p-5 sm:p-6">
+              <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
+                <div className="relative flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-[#ed1b2f]/40 bg-[#1b1b1b] text-2xl font-black text-[#ffb2a7]">
+                  {profilePicture ? <img src={profilePicture} alt="Profile preview" className="h-full w-full object-cover" /> : initials}
+                </div>
+                <div className="flex-1"><label className="mb-2 block text-xs font-bold uppercase tracking-wider text-gray-400">Profile picture</label><label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-white/10 bg-[#191919] px-4 py-2.5 text-xs font-bold text-white transition hover:border-[#ed1b2f]/50"><FaCamera /> Choose image<input type="file" accept="image/*" onChange={handleProfilePicture} className="hidden" /></label><p className="mt-2 text-[11px] text-gray-600">Image files only, up to 1.5 MB.</p></div>
+              </div>
+              <div><label htmlFor="profile-display-name" className="mb-2 block text-xs font-bold uppercase tracking-wider text-gray-400">Display name</label><input id="profile-display-name" value={profileName} onChange={(event) => setProfileName(event.target.value)} maxLength={80} className="w-full rounded-lg border border-white/10 bg-[#080808] px-3 py-3 text-sm text-white outline-none focus:border-[#ed1b2f]" /></div>
+              <div><div className="mb-3"><h3 className="text-xs font-black uppercase tracking-wider text-white">Game identities</h3><p className="mt-1 text-[11px] text-gray-500">Add the IGN and UID you use for each game.</p></div><div className="space-y-3">{gameProfiles.map((gameProfile, index) => <div key={gameProfile.game} className="grid gap-2 rounded-lg border border-white/10 bg-[#0a0a0a] p-3 sm:grid-cols-[140px_1fr_1fr] sm:items-center"><p className="text-xs font-bold text-gray-300">{gameProfile.game}</p><input aria-label={`${gameProfile.game} IGN`} value={gameProfile.ign} onChange={(event) => setGameProfiles((current) => current.map((profile, profileIndex) => profileIndex === index ? { ...profile, ign: event.target.value } : profile))} maxLength={50} placeholder="In-game name (IGN)" className="min-w-0 rounded-md border border-white/10 bg-[#151515] px-3 py-2.5 text-xs text-white outline-none focus:border-[#ed1b2f]" /><input aria-label={`${gameProfile.game} UID`} value={gameProfile.uid} onChange={(event) => setGameProfiles((current) => current.map((profile, profileIndex) => profileIndex === index ? { ...profile, uid: event.target.value } : profile))} maxLength={80} placeholder="Player UID" className="min-w-0 rounded-md border border-white/10 bg-[#151515] px-3 py-2.5 text-xs text-white outline-none focus:border-[#ed1b2f]" /></div>)}</div></div>
+              {profileError && <p role="alert" className="rounded-lg border border-red-500/20 bg-red-500/10 p-3 text-xs font-semibold text-red-300">{profileError}</p>}
+              <footer className="flex flex-col-reverse justify-end gap-2 border-t border-white/10 pt-4 sm:flex-row"><button onClick={() => setShowProfileEditor(false)} className="rounded-lg border border-white/10 px-4 py-2.5 text-xs font-bold text-gray-300 hover:text-white">Cancel</button><button onClick={saveProfile} disabled={isSavingProfile || !profileName.trim()} className="flex items-center justify-center gap-2 rounded-lg bg-[#ed1b2f] px-4 py-2.5 text-xs font-black uppercase tracking-wider text-white hover:bg-[#c91427] disabled:cursor-not-allowed disabled:opacity-50"><FaFloppyDisk /> {isSavingProfile ? "Saving..." : "Save profile"}</button></footer>
+            </div>
+          </section>
+        </div>
+      )}
+      {profileSaved && <div role="status" className="fixed bottom-5 right-5 z-40 rounded-lg border border-emerald-500/30 bg-[#101a13] px-4 py-3 text-xs font-semibold text-emerald-300 shadow-xl">{profileSaved}</div>}
     </div>
   );
 };

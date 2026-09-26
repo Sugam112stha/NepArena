@@ -5,6 +5,8 @@ export interface User {
   fullName: string;
   username: string;
   email: string;
+  profilePicture?: string;
+  gameProfiles?: Array<{ game: string; ign: string; uid: string }>;
 }
 
 interface AuthContextType {
@@ -14,6 +16,7 @@ interface AuthContextType {
   signup: (data: { fullName: string; username: string; email: string; pass: string }) => Promise<void>;
   socialLogin: (provider: "google") => void;
   completeSocialLogin: (token: string, user: User) => void;
+  updateProfile: (profile: { fullName: string; profilePicture: string; gameProfiles: Array<{ game: string; ign: string; uid: string }> }) => Promise<void>;
   logout: () => void;
 }
 
@@ -109,6 +112,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem("neparena_token", token);
   };
 
+  const updateProfile = async (profile: { fullName: string; profilePicture: string; gameProfiles: Array<{ game: string; ign: string; uid: string }> }) => {
+    const token = localStorage.getItem("neparena_token");
+    const response = await fetch(`${apiUrl}/auth/profile`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token || ""}` },
+      body: JSON.stringify(profile),
+    });
+    const result = (await response.json().catch(() => ({}))) as AuthResponse;
+    if (!response.ok || !result.user) throw new Error(result.message || "Unable to update profile.");
+    setUser(result.user);
+    localStorage.setItem("neparena_user", JSON.stringify(result.user));
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem("neparena_user");
@@ -116,7 +132,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoggedIn: !!user, login, signup, socialLogin, completeSocialLogin, logout }}>
+    <AuthContext.Provider value={{ user, isLoggedIn: !!user, login, signup, socialLogin, completeSocialLogin, updateProfile, logout }}>
       {children}
     </AuthContext.Provider>
   );
