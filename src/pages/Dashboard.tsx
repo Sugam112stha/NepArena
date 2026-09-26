@@ -1,6 +1,5 @@
 import {
   FaArrowRight,
-  FaAward,
   FaBolt,
   FaChartLine,
   FaChevronRight,
@@ -18,6 +17,7 @@ import {
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/authContext";
+import { IoIosNotifications } from "react-icons/io";
 
 const sidebarLinks = [
   { label: "Overview", icon: FaHouse, path: "/dashboard" },
@@ -209,7 +209,7 @@ const Dashboard = () => {
               <div className="relative hidden sm:block">
               <button onClick={() => { setShowNotifications((current) => !current); if (notifications.some((notification) => !notification.read)) markNotificationsRead(); }} className="relative flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-[#111] text-gray-400 transition hover:text-white" aria-label="Notifications">
                 {notifications.some((notification) => !notification.read) && <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-[#ed1b2f]" />}
-                <FaAward size={16} />
+                <IoIosNotifications size={16} />
               </button>
               {showNotifications && <div className="absolute right-0 top-12 z-30 w-80 rounded-xl border border-white/10 bg-[#151515] p-3 shadow-2xl"><div className="flex items-center justify-between border-b border-white/10 px-2 pb-3"><p className="text-xs font-black uppercase tracking-wider text-white">Notifications</p><button onClick={markNotificationsRead} className="text-[10px] font-bold text-[#ed1b2f]">Mark read</button></div><div className="max-h-72 overflow-y-auto pt-2">{notifications.length === 0 ? <p className="px-2 py-5 text-xs text-gray-500">No updates yet.</p> : notifications.map((notification) => <div key={notification._id} className={`rounded-lg px-2 py-3 text-xs ${notification.read ? "text-gray-500" : "bg-[#ed1b2f]/10 text-gray-200"}`}><p>{notification.message}</p><p className="mt-1 text-[10px] text-gray-600">{new Date(notification.createdAt).toLocaleString()}</p></div>)}</div></div>}
               </div>
