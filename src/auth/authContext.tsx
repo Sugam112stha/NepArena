@@ -11,6 +11,7 @@ export interface User {
 interface AuthContextType {
   user: User | null;
   isLoggedIn: boolean;
+  isAuthLoading: boolean;
   login: (email: string, pass: string) => Promise<void>;
   signup: (data: { fullName: string; username: string; email: string; pass: string }) => Promise<void>;
   socialLogin: (provider: "google") => void;
@@ -82,21 +83,26 @@ const cacheUser = (user: User) => {
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("neparena_token");
-    if (token) {
-      localStorage.removeItem("neparena_user");
-      requestCurrentUser(token)
-        .then((currentUser) => {
-          setUser(currentUser);
-          cacheUser(currentUser);
-        })
-        .catch(() => {
+    if (!token) {
+      setIsAuthLoading(false);
+      return;
+    }
+
+    localStorage.removeItem("neparena_user");
+    requestCurrentUser(token)
+      .then((currentUser) => {
+        setUser(currentUser);
+        cacheUser(currentUser);
+      })
+      .catch(() => {
         localStorage.removeItem("neparena_user");
         localStorage.removeItem("neparena_token");
-        });
-    }
+      })
+      .finally(() => setIsAuthLoading(false));
   }, []);
 
   const login = async (email: string, pass: string) => {
@@ -148,7 +154,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoggedIn: !!user, login, signup, socialLogin, completeSocialLogin, updateProfile, logout }}>
+    <AuthContext.Provider value={{ user, isLoggedIn: !!user, isAuthLoading, login, signup, socialLogin, completeSocialLogin, updateProfile, logout }}>
       {children}
     </AuthContext.Provider>
   );
