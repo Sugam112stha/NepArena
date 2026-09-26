@@ -63,17 +63,34 @@ const requestCurrentUser = async (token: string) => {
   return result.user;
 };
 
+const cacheUser = (user: User) => {
+  const compactUser = {
+    id: user.id,
+    fullName: user.fullName,
+    username: user.username,
+    email: user.email,
+    gameProfiles: user.gameProfiles || [],
+  };
+
+  try {
+    localStorage.removeItem("neparena_user");
+    localStorage.setItem("neparena_user", JSON.stringify(compactUser));
+  } catch {
+    localStorage.removeItem("neparena_user");
+  }
+};
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("neparena_user");
     const token = localStorage.getItem("neparena_token");
-    if (storedUser && token) {
+    if (token) {
+      localStorage.removeItem("neparena_user");
       requestCurrentUser(token)
         .then((currentUser) => {
           setUser(currentUser);
-          localStorage.setItem("neparena_user", JSON.stringify(currentUser));
+          cacheUser(currentUser);
         })
         .catch(() => {
         localStorage.removeItem("neparena_user");
@@ -85,7 +102,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async (email: string, pass: string) => {
     const result = await requestAuth("login", { email, password: pass });
     setUser(result.user!);
-    localStorage.setItem("neparena_user", JSON.stringify(result.user));
+    cacheUser(result.user!);
     localStorage.setItem("neparena_token", result.token!);
   };
 
@@ -97,7 +114,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       password: pass,
     });
     setUser(result.user!);
-    localStorage.setItem("neparena_user", JSON.stringify(result.user));
+    cacheUser(result.user!);
     localStorage.setItem("neparena_token", result.token!);
   };
 
@@ -107,7 +124,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const completeSocialLogin = useCallback((token: string, socialUser: User) => {
   setUser(socialUser);
-  localStorage.setItem("neparena_user", JSON.stringify(socialUser));
+  cacheUser(socialUser);
   localStorage.setItem("neparena_token", token);
 }, []);
 
@@ -121,7 +138,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const result = (await response.json().catch(() => ({}))) as AuthResponse;
     if (!response.ok || !result.user) throw new Error(result.message || "Unable to update profile.");
     setUser(result.user);
-    localStorage.setItem("neparena_user", JSON.stringify(result.user));
+    cacheUser(result.user);
   };
 
   const logout = () => {
