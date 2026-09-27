@@ -12,9 +12,6 @@ import {
   FaQuoteLeft
 } from 'react-icons/fa6';
 import FreeFire from "../../assets/gameLogo/freefire.png";
-import PubG from "../../assets/gameLogo/pubg.png";
-import MobileLegend from "../../assets/gameLogo/mobileLegend.png";
-import eFootabll from "../../assets/gameLogo/eFootball.png";
 import { useAuth } from "../../auth/authContext";
 
 interface CreateTeamModalProps {
@@ -24,9 +21,6 @@ interface CreateTeamModalProps {
 
 const GAMES = [
   { id: 'free-fire', name: 'Free Fire', image: FreeFire },
-  { id: 'pubg-mobile', name: 'PUBG Mobile', image: PubG },
-  { id: 'mobile-legends', name: 'Mobile Legends', image: MobileLegend },
-  { id: 'efootball', name: 'eFootball', image: eFootabll },
 ];
 
 export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProps) {
@@ -235,20 +229,20 @@ export default function CreateTeamModal({ isOpen, onClose }: CreateTeamModalProp
                 <p className="mt-1 text-xs text-gray-500">Your game selection will shape your team profile and tournament eligibility.</p>
               </div>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {GAMES.map((game) => (
+                {GAMES.map(() => (
                   <div
-                    key={game.id}
-                    onClick={() => setSelectedGame(game.name)}
+                    key="free-fire"
+                    onClick={() => setSelectedGame('Free Fire')}
                     className={`group relative h-40 cursor-pointer overflow-hidden rounded-xl border-2 transition-all ${
-                      selectedGame === game.name ? 'border-[#E50914] ring-2 ring-[#E50914]/30' : 'border-white/10 hover:border-white/30'
+                      selectedGame === 'Free Fire' ? 'border-[#E50914] ring-2 ring-[#E50914]/30' : 'border-white/10 hover:border-white/30'
                     }`}
                   >
                     <div className="absolute inset-0 flex items-center justify-center bg-[#171717] p-5 sm:p-7">
-                      <img src={game.image} alt={game.name} className="h-full w-full object-contain transition duration-500 group-hover:scale-105" />
+                      <img src={FreeFire} alt="Free Fire" className="h-full w-full object-contain transition duration-500 group-hover:scale-105" />
                     </div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
-                    {selectedGame === game.name && <div className="absolute right-3 top-3 rounded-full bg-[#E50914] p-2 text-white"><FaCheck size={11} /></div>}
-                    <div className="absolute bottom-4 left-4"><p className="text-[10px] font-bold uppercase tracking-widest text-white/60">Arena title</p><h3 className="text-lg font-black uppercase text-white">{game.name}</h3></div>
+                    {selectedGame === 'Free Fire' && <div className="absolute right-3 top-3 rounded-full bg-[#E50914] p-2 text-white"><FaCheck size={11} /></div>}
+                    <div className="absolute bottom-4 left-4"><p className="text-[10px] font-bold uppercase tracking-widest text-white/60">Arena title</p><h3 className="text-lg font-black uppercase text-white">Free Fire</h3></div>
                   </div>
                 ))}
               </div>

@@ -12,11 +12,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/authContext';
 import { HiSparkles } from 'react-icons/hi2';
 import freefireshowdowm from "../assets/tournament/FreeFire.png"
-import epicbrawal from "../assets/tournament/EpicBrawl.png"
-import counterstrike from "../assets/tournament/Counterzstrike.png"
-import pubgcup from "../assets/tournament/PubgCup.png"
-import efootball from "../assets/tournament/efootballCup.png"
-import eternalleague from "../assets/tournament/EternalLeague.png"
 
 const ALL_TOURNAMENTS = [
   {
@@ -33,42 +28,6 @@ const ALL_TOURNAMENTS = [
     },
   {
     id: 2,
-    title: 'Counter Strike',
-    game: 'PUBG Mobile',
-    status: 'Registration Open',
-    filterCategory: 'Registration Open',
-    slots: '644 Teams',
-    date: 'Sep 05, 2026',
-    prize: 'Rs. 1,00,000',
-    mode: 'Squad (TPP)',
-    banner: counterstrike
-  },
-  {
-    id: 3,
-    title: 'Pubg Cup',
-    game: 'PUBG Mobile',
-    status: 'Ongoing',
-    filterCategory: 'Ongoing',
-    slots: '166 Teams',
-    date: 'Aug 22, 2026',
-    prize: 'Rs. 30,000',
-    mode: '1v1 Competitive',
-    banner: pubgcup
-  },
-  {
-    id: 4,
-    title: 'Mobile Legends Eternal League',
-    game: 'MLBB',
-    status: 'Registration Open',
-    filterCategory: 'Registration Open',
-    slots: '64 Teams',
-    date: 'Sep 12, 2026',
-    prize: 'Rs. 25,000',
-    mode: '5v5 Draft',
-    banner: eternalleague
-  },
-  {
-    id: 5,
     title: 'Pokhara Free Fire Showdown',
     game: 'Free Fire',
     status: 'Completed',
@@ -77,20 +36,8 @@ const ALL_TOURNAMENTS = [
     date: 'Jul 15, 2026',
     prize: 'Rs. 40,000',
     mode: 'Squad (Clash Squad)',
-    banner: epicbrawal
+    banner: freefireshowdowm
   },
-  {
-    id: 6,
-    title: 'eFootball Tournament',
-    game: ' eFootball',
-    status: 'Ongoing',
-    filterCategory: 'Ongoing',
-    slots: '60 Player',
-    date: 'Aug 20, 2026',
-    prize: 'Rs. 15,000',
-    mode: '1v1 (Classic)',
-    banner: efootball
-  }
 ];
 
 const FILTER_TABS = ['All', 'Upcoming', 'Registration Open', 'Ongoing', 'Completed'];
@@ -103,8 +50,7 @@ interface TournamentTeam {
 }
 
 const normalizeGame = (game: string) => {
-  const normalized = game.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
-  return normalized === 'mlbb' ? 'mobilelegends' : normalized;
+  return game.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
 };
 
 export default function TournamentsPage() {

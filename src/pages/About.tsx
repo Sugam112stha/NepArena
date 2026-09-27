@@ -86,7 +86,7 @@ export default function AboutPage() {
                 Despite Nepal's massive competitive gaming talent—demonstrated on international stages—the local ecosystem has historically suffered from fragmented tournament communication, unverified rosters, and a lack of standardized national rankings.
               </p>
               <p className="text-gray-400 text-sm leading-relaxed mb-6">
-                NepArena was designed to provide a robust technological backbone for competitive play. Beginning with titles like Free Fire, our game-independent infrastructure is built to scale across PUBG Mobile, Valorant, Mobile Legends, and future esports titles.
+                NepArena is built for Free Fire competition, bringing players together to form teams, enter tournaments, track matches, and climb the leaderboard.
               </p>
               <div className="inline-flex items-center gap-3 bg-[#050505] border border-white/10 p-4 rounded-xl">
                 <FaGamepad className="text-[#E50914] text-2xl" />

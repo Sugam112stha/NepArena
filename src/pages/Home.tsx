@@ -11,8 +11,6 @@ import { HiSparkles } from 'react-icons/hi2';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/authContext';
 import Gorkhalicup from "../assets/tournament/GorkhaliCup.png"
-import EpicBrawal from "../assets/tournament/EpicBrawl.png"
-import BattleOfGurkha from "../assets/tournament/BattleOfGurkha.png"
 
 const FEATURED_TOURNAMENTS = [
   {
@@ -24,26 +22,6 @@ const FEATURED_TOURNAMENTS = [
     date: 'Aug 28, 2026',
     prize: 'Rs. 50,000',
     banner: Gorkhalicup
-  },
-  {
-    id: 2,
-    title: 'Epic Brawal S-4',
-    game: 'PUBG Mobile',
-    status: 'Completed',
-    slots: '220 Teams',
-    date: 'Aug 05, 2026',
-    prize: 'INR. 10,000',
-    banner: EpicBrawal
-  },
-  {
-    id: 3,
-    title: 'Battle Of Gurkhas',
-    game: 'Mobile Legend',
-    status: 'Completed',
-    slots: '16 Teams',
-    date: 'Aug 22, 2026',
-    prize: 'Rs. 50,000',
-    banner: BattleOfGurkha
   }
 ];
 

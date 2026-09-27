@@ -28,11 +28,10 @@ const sidebarLinks = [
 ];
 
 const tournaments = [
-  { name: "Nepal Esports League", game: "PUBG Mobile", date: "Oct 18, 2026", status: "Registration open", tone: "red" },
   { name: "Gorkhali Clash S2", game: "Free Fire", date: "Oct 24, 2026", status: "Team required", tone: "slate" },
 ];
 
-const profileGames = ["Free Fire", "PUBG Mobile", "Mobile Legends", "eFootball"];
+const profileGames = ["Free Fire"];
 
 interface GameProfile {
   game: string;
