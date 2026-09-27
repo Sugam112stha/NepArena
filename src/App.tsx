@@ -8,6 +8,7 @@ import AuthCallback from "./auth/AuthCallback";
 import Tournament from "./pages/Tournaments";
 import Leaderboard from "./pages/Leaderboard";
 import Dashboard from "./pages/Dashboard";
+import Matches from "./pages/Matches";
 import MainLayout from "./pages/MainLayout";
 import CreateTeamModal from "./components/teams/CreateTeamModels";
 import { AuthProvider } from "./auth/authContext";
@@ -42,6 +43,7 @@ function App() {
 
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/matches" element={<Matches />} />
           </Route>
 
           {/* Standalone Auth Routes */}

@@ -23,7 +23,7 @@ import { IoIosNotifications } from "react-icons/io";
 const sidebarLinks = [
   { label: "Overview", icon: FaHouse, path: "/dashboard" },
   { label: "Team Management", icon: FaUsers, path: "/createteam" },
-  { label: "My Matches", icon: FaGamepad, path: "/tournaments" },
+  { label: "My Matches", icon: FaGamepad, path: "/matches" },
   { label: "Leaderboard", icon: FaChartLine, path: "/leaderboard" },
 ];
 
