@@ -22,7 +22,7 @@ import { IoIosNotifications } from "react-icons/io";
 
 const sidebarLinks = [
   { label: "Overview", icon: FaHouse, path: "/dashboard" },
-  { label: "Team Management", icon: FaUsers, path: "/createteam" },
+  { label: "My Team", icon: FaUsers, path: "/my-team" },
   { label: "My Matches", icon: FaGamepad, path: "/matches" },
   { label: "Leaderboard", icon: FaChartLine, path: "/leaderboard" },
 ];
@@ -321,13 +321,13 @@ const Dashboard = () => {
               <div className="rounded-xl border border-white/10 bg-[#101010] p-6">
                 <div className="flex items-start justify-between gap-4">
                   <div><p className="text-[10px] font-black uppercase tracking-[0.18em] text-gray-500">My teams</p><h2 className="mt-1 text-xl font-black text-white">Your competitive roster</h2></div>
-                  <Link to="/createteam" className="flex items-center gap-1 text-xs font-black uppercase tracking-wider text-[#ed1b2f] hover:text-white">Create <FaArrowRight size={11} /></Link>
+                  <Link to="/my-team" className="flex items-center gap-1 text-xs font-black uppercase tracking-wider text-[#ed1b2f] hover:text-white">My Team <FaArrowRight size={11} /></Link>
                 </div>
                 {isLoadingTeams ? <p className="mt-5 text-sm text-gray-500">Loading your teams...</p> : teams.length === 0 ? (
                   <div className="mt-5 flex items-center gap-4 rounded-lg border border-dashed border-white/15 bg-[#0b0b0b] p-5">
                     <div className="flex h-14 w-14 items-center justify-center rounded-xl border border-[#ed1b2f]/30 bg-[#ed1b2f]/10 text-[#ed1b2f]"><FaShieldHalved size={22} /></div>
                     <div className="flex-1"><p className="font-bold text-white">No active team yet</p><p className="mt-1 text-xs leading-5 text-gray-500">Choose a game, add your players, and unlock tournament registration.</p></div>
-                    <Link to="/createteam" className="hidden rounded-lg bg-[#ed1b2f] px-4 py-2.5 text-xs font-black uppercase tracking-wider text-white transition hover:bg-[#c91427] sm:block">Get started</Link>
+                    <Link to="/my-team" className="hidden rounded-lg bg-[#ed1b2f] px-4 py-2.5 text-xs font-black uppercase tracking-wider text-white transition hover:bg-[#c91427] sm:block">Get started</Link>
                   </div>
                 ) : teams.map((team) => (
                   <div key={team._id} className="mt-5 rounded-lg border border-white/10 bg-[#0b0b0b] p-5">

@@ -316,7 +316,7 @@ export default function TournamentsPage() {
               <div className="mt-6 border-y border-white/10 py-5">
                 <p className="text-sm font-bold text-white">No eligible teams found</p>
                 <p className="mt-1 text-xs leading-5 text-gray-500">Create a {selectedTournament.game.trim()} team before registering.</p>
-                <button onClick={() => navigate('/createteam')} className="mt-4 text-xs font-black uppercase tracking-wider text-[#ffb2a7] hover:text-white">Create a team</button>
+                <button onClick={() => navigate('/my-team')} className="mt-4 text-xs font-black uppercase tracking-wider text-[#ffb2a7] hover:text-white">Create a team</button>
               </div>
             ) : null}
 

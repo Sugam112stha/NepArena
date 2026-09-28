@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -9,8 +9,8 @@ import Tournament from "./pages/Tournaments";
 import Leaderboard from "./pages/Leaderboard";
 import Dashboard from "./pages/Dashboard";
 import Matches from "./pages/Matches";
+import MyTeam from "./pages/MyTeam";
 import MainLayout from "./pages/MainLayout";
-import CreateTeamModal from "./components/teams/CreateTeamModels";
 import { AuthProvider } from "./auth/authContext";
 import ProtectedRoute from "./auth/ProtectedRoute";
 
@@ -29,21 +29,14 @@ function App() {
 
             {/* Protected Routes (Requires Login) */}
             <Route element={<ProtectedRoute />}>
-              <Route
-                path="/createteam"
-                element={
-                  <CreateTeamModal
-                    isOpen={true}
-                    onClose={() => window.history.back()}
-                  />
-                }
-              />
+              <Route path="/createteam" element={<Navigate to="/my-team" replace />} />
             </Route>
           </Route>
 
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/matches" element={<Matches />} />
+            <Route path="/my-team" element={<MyTeam />} />
           </Route>
 
           {/* Standalone Auth Routes */}
