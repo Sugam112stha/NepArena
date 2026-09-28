@@ -222,7 +222,7 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white selection:bg-[#ed1b2f] selection:text-white">
       <div className="flex min-h-screen">
-        <aside className="hidden w-64 shrink-0 border-r border-white/10 bg-[#0d0d0d] lg:flex lg:flex-col">
+        <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 overflow-y-auto border-r border-white/10 bg-[#0d0d0d] lg:flex lg:flex-col">
           <div className="border-b border-white/10 px-7 py-7">
             <Link to="/" className="block">
               <span className="block text-xl font-black leading-none tracking-tight text-[#ffb2a7]">NEPARENA</span>
@@ -268,7 +268,7 @@ const Dashboard = () => {
           </div>
         </aside>
 
-        <main className="min-w-0 flex-1">
+        <main className="min-w-0 flex-1 lg:ml-64">
           <header className="flex items-center justify-between border-b border-white/10 px-5 py-5 sm:px-8 lg:px-12">
             <div>
               <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#ed1b2f]">Player dashboard</p>
