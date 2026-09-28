@@ -174,7 +174,7 @@ export default function AboutPage() {
             Create your team, verify your roster, and start competing for national rankings on NepArena today.
           </p>
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-            <button onClick={() => navigate('/createteam')}
+            <button onClick={() => navigate('/my-team')}
             className="w-full sm:w-auto bg-[#E50914] hover:bg-[#c20711] text-white font-bold px-8 py-4 rounded transition shadow-xl shadow-[#E50914]/25">
               Register Your Team
             </button>

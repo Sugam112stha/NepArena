@@ -72,9 +72,9 @@ export default function HomePage() {
   // Click handler enforcing authentication before creating a team
   const handleCreateTeamClick = () => {
     if (!isLoggedIn) {
-      navigate('/login', { state: { from: '/createteam' } });
+      navigate('/login', { state: { from: '/my-team' } });
     } else {
-      navigate('/createteam');
+      navigate('/my-team');
     }
   };
 
