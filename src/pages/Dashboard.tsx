@@ -237,6 +237,7 @@ const Dashboard = () => {
             <div className="min-w-0">
               <p className="truncate text-sm font-bold text-white">{user?.fullName || "Player"}</p>
               <p className="truncate text-[11px] text-gray-500">@{user?.username || "player"}</p>
+              <p className="mt-1 text-[10px] font-bold uppercase tracking-wider text-gray-400">Player ID <span className="text-[#ffb2a7]">{user?.playerId || "Assigning..."}</span></p>
               <p className="text-[10px] font-bold uppercase tracking-wider text-[#ffb2a7]">Rookie tier</p>
             </div>
           </div>

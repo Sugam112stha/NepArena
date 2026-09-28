@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 export interface User {
   id: string;
+  playerId?: string;
   fullName: string;
   username: string;
   email: string;
@@ -67,6 +68,7 @@ const requestCurrentUser = async (token: string) => {
 const cacheUser = (user: User) => {
   const compactUser = {
     id: user.id,
+    playerId: user.playerId,
     fullName: user.fullName,
     username: user.username,
     email: user.email,
