@@ -48,6 +48,7 @@ interface TeamPlayer {
 
 interface Team {
   _id: string;
+  owner: string;
   name: string;
   tag: string;
   game: string;
@@ -341,7 +342,7 @@ const Dashboard = () => {
                       </div>
                     ) : (
                       <>
-                        <div className="flex items-start justify-between gap-4"><div><p className="text-lg font-black text-white">{team.name} <span className="text-[#ed1b2f]">[{team.tag}]</span></p><p className="mt-1 text-xs font-bold uppercase tracking-wider text-gray-500">{team.game} <span className="mx-1 text-gray-700">•</span> {team.players.length}/6 players</p></div><div className="flex gap-2"><button onClick={() => startEditingTeam(team)} className="flex items-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-xs font-bold text-gray-400 hover:border-[#ed1b2f]/50 hover:text-white"><FaPenToSquare size={12} /> Edit</button><button onClick={() => deleteTeam(team)} className="flex items-center gap-2 rounded-lg border border-red-500/20 px-3 py-2 text-xs font-bold text-red-400 hover:bg-red-500/10"><FaTrashCan size={12} /> Delete</button></div></div>
+                        <div className="flex items-start justify-between gap-4"><div><p className="text-lg font-black text-white">{team.name} <span className="text-[#ed1b2f]">[{team.tag}]</span></p><p className="mt-1 text-xs font-bold uppercase tracking-wider text-gray-500">{team.game} <span className="mx-1 text-gray-700">•</span> {team.players.length}/6 players</p></div>{team.owner === user?.id ? <div className="flex gap-2"><button onClick={() => startEditingTeam(team)} className="flex items-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-xs font-bold text-gray-400 hover:border-[#ed1b2f]/50 hover:text-white"><FaPenToSquare size={12} /> Edit</button><button onClick={() => deleteTeam(team)} className="flex items-center gap-2 rounded-lg border border-red-500/20 px-3 py-2 text-xs font-bold text-red-400 hover:bg-red-500/10"><FaTrashCan size={12} /> Delete</button></div> : <span className="text-[10px] font-bold uppercase tracking-wider text-gray-600">Team owner controls edits</span>}</div>
                         {team.slogan && <p className="mt-3 text-xs italic text-gray-500">“{team.slogan}”</p>}
                         <div className="mt-4 grid gap-2 sm:grid-cols-2">{team.players.map((player) => <div key={player.username} className="flex items-center justify-between rounded-lg border border-white/5 bg-[#151515] px-3 py-2.5"><div><p className="text-xs font-bold text-white">{player.ign || `@${player.username}`}</p><p className="mt-1 text-[10px] text-gray-500">UID: {player.inGameId} <span className="mx-1 text-gray-700">•</span> @{player.username}</p></div><span className="text-[10px] font-black uppercase tracking-wider text-[#ed1b2f]">{player.role}</span></div>)}</div>
                       </>
