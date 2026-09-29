@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FaArrowRight, FaShieldHalved, FaUsers } from "react-icons/fa6";
+import { FaArrowRight, FaRightFromBracket, FaShieldHalved, FaTrashCan, FaUsers } from "react-icons/fa6";
 import CreateTeamModal from "../components/teams/CreateTeamModels";
 import { useAuth } from "../auth/authContext";
 
 interface TeamPlayer {
   username: string;
+  playerId?: string;
+  user?: string | { playerId?: string };
   ign?: string;
   inGameId: string;
   role: string;
@@ -13,6 +15,7 @@ interface TeamPlayer {
 
 interface Team {
   _id: string;
+  owner: string;
   name: string;
   tag: string;
   game: string;
@@ -26,6 +29,8 @@ export default function MyTeamPage() {
   const [team, setTeam] = useState<Team | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
+  const [actionMessage, setActionMessage] = useState("");
+  const [isActing, setIsActing] = useState(false);
   const [showCreateTeam, setShowCreateTeam] = useState(false);
   const apiUrl = `${import.meta.env.VITE_API_URL || "http://localhost:5001"}/api`;
 
@@ -49,6 +54,32 @@ export default function MyTeamPage() {
     void loadTeam();
   }, [loadTeam]);
 
+  const updateMembership = async (path: string, action: "leave" | "kick", playerName: string) => {
+    if (!team || isActing) return;
+    const prompt = action === "leave"
+      ? `Leave ${team.name}?${team.owner === user?.id ? " Leadership will transfer to the next player." : ""}`
+      : `Remove ${playerName} from ${team.name}?`;
+    if (!window.confirm(prompt)) return;
+
+    setIsActing(true);
+    setActionMessage("");
+    try {
+      const token = localStorage.getItem("neparena_token");
+      const response = await fetch(`${apiUrl}/teams/${team._id}/members/${path}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token || ""}` },
+      });
+      const result = await response.json() as { success?: boolean; message?: string };
+      if (!response.ok || !result.success) throw new Error(result.message || "Unable to update team membership.");
+      setActionMessage(result.message || "Team membership updated.");
+      await loadTeam();
+    } catch (error) {
+      setActionMessage(error instanceof Error ? error.message : "Unable to update team membership.");
+    } finally {
+      setIsActing(false);
+    }
+  };
+
   return (
     <main className="min-h-screen bg-[#0a0a0a] px-5 py-10 text-white sm:px-8 lg:px-12">
       <div className="mx-auto max-w-5xl">
@@ -60,6 +91,7 @@ export default function MyTeamPage() {
           </div>
           {team && <Link to="/matches" className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#ffb2a7] hover:text-white">My matches <FaArrowRight size={12} /></Link>}
         </header>
+        {actionMessage && <p role="status" className="mt-5 rounded-lg border border-white/10 bg-white/5 p-3 text-sm text-gray-300">{actionMessage}</p>}
 
         {isLoading ? <p className="py-10 text-sm text-gray-500">Loading your team...</p> : loadError ? (
           <p role="alert" className="mt-6 rounded-lg border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-300">{loadError}</p>
@@ -78,13 +110,21 @@ export default function MyTeamPage() {
             <div className="mt-6">
               <div className="mb-3 flex items-center gap-2"><FaShieldHalved className="text-[#ed1b2f]" /><h3 className="text-sm font-black uppercase tracking-wider">Team roster</h3></div>
               <div className="divide-y divide-white/10 border-y border-white/10">
-                {team.players.map((player) => (
-                  <article key={player.username} className="grid gap-2 py-4 sm:grid-cols-[1fr_1fr_150px] sm:items-center">
-                    <div><p className="font-bold text-white">{player.ign || player.username}</p><p className="mt-1 text-xs text-gray-500">@{player.username}</p></div>
+                {team.players.map((player) => {
+                  const playerId = player.playerId || (typeof player.user === "object" ? player.user.playerId : undefined);
+                  const isCurrentPlayer = player.username === user?.username;
+                  return (
+                  <article key={player.username} className="grid gap-3 py-4 sm:grid-cols-[1fr_1fr_120px_auto] sm:items-center">
+                    <div><p className="font-bold text-white">{player.ign || player.username}</p><p className="mt-1 text-xs text-gray-500">@{player.username}{playerId && <span> <span className="mx-1 text-gray-700">·</span> Player ID: {playerId}</span>}</p></div>
                     <p className="text-xs text-gray-400">Free Fire UID: <span className="font-semibold text-gray-200">{player.inGameId}</span></p>
                     <span className="text-[10px] font-black uppercase tracking-wider text-[#ffb2a7]">{player.role}</span>
+                    {isCurrentPlayer ? (
+                      <button disabled={isActing} onClick={() => void updateMembership("me", "leave", player.username)} className="inline-flex items-center justify-center gap-2 rounded-md border border-white/10 px-3 py-2 text-xs font-bold text-gray-300 hover:border-amber-400/40 hover:text-amber-200 disabled:opacity-50"><FaRightFromBracket size={12} /> Leave team</button>
+                    ) : team.owner === user?.id && playerId ? (
+                      <button disabled={isActing} onClick={() => void updateMembership(encodeURIComponent(playerId), "kick", player.ign || player.username)} className="inline-flex items-center justify-center gap-2 rounded-md border border-red-500/20 px-3 py-2 text-xs font-bold text-red-300 hover:bg-red-500/10 disabled:opacity-50"><FaTrashCan size={12} /> Kick</button>
+                    ) : <span />}
                   </article>
-                ))}
+                );})}
               </div>
             </div>
           </section>
