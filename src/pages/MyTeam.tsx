@@ -84,10 +84,13 @@ export default function MyTeamPage() {
     <main className="min-h-screen bg-[#0a0a0a] px-5 py-10 text-white sm:px-8 lg:px-12">
       <div className="mx-auto max-w-5xl">
         <header className="flex flex-col justify-between gap-4 border-b border-white/10 pb-6 sm:flex-row sm:items-end">
-          <div>
-            <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#ed1b2f]">Player hub</p>
-            <h1 className="mt-2 text-3xl font-black tracking-tight">My Team</h1>
-            <p className="mt-2 text-sm text-gray-500">Your Free Fire squad and registered roster.</p>
+          <div className="flex flex-col items-start gap-3">
+            <Link to="/dashboard" className="inline-flex items-center gap-2 text-xs font-bold text-gray-400 transition hover:text-white"><FaArrowRight className="rotate-180" size={12} /> Back to dashboard</Link>
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#ed1b2f]">Player hub</p>
+              <h1 className="mt-2 text-3xl font-black tracking-tight">My Team</h1>
+              <p className="mt-2 text-sm text-gray-500">Your Free Fire squad and registered roster.</p>
+            </div>
           </div>
           {team && <Link to="/matches" className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#ffb2a7] hover:text-white">My matches <FaArrowRight size={12} /></Link>}
         </header>
