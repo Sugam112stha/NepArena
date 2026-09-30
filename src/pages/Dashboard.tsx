@@ -59,6 +59,8 @@ interface Team {
 
 interface NotificationItem {
   _id: string;
+  type: "team_created" | "team_updated" | "team_deleted" | "team_invite";
+  team?: string;
   message: string;
   read: boolean;
   createdAt: string;
@@ -72,6 +74,7 @@ const Dashboard = () => {
   const [editTeam, setEditTeam] = useState<Team | null>(null);
   const [teamMessage, setTeamMessage] = useState("");
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
+  const [respondingToInvite, setRespondingToInvite] = useState<string | null>(null);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileEditor, setShowProfileEditor] = useState(false);
   const [profileName, setProfileName] = useState(user?.fullName || "");
@@ -170,8 +173,31 @@ const Dashboard = () => {
       const result = await response.json() as { notifications?: NotificationItem[] };
       if (response.ok) setNotifications(result.notifications || []);
     };
-    loadNotifications();
+    void loadNotifications();
+    const intervalId = window.setInterval(() => { void loadNotifications(); }, 15000);
+    return () => window.clearInterval(intervalId);
   }, [apiUrl]);
+
+  const respondToTeamInvite = async (notification: NotificationItem, decision: "accept" | "reject") => {
+    if (!notification.team || respondingToInvite) return;
+    setRespondingToInvite(notification._id);
+    try {
+      const token = localStorage.getItem("neparena_token");
+      const response = await fetch(`${apiUrl}/teams/${notification.team}/invitations/${notification._id}/respond`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token || ""}` },
+        body: JSON.stringify({ decision }),
+      });
+      const result = await response.json() as { success?: boolean; message?: string };
+      if (!response.ok || !result.success) throw new Error(result.message || "Unable to respond to invitation.");
+      setNotifications((current) => current.filter((item) => item._id !== notification._id));
+      setTeamMessage(result.message || (decision === "accept" ? "You joined the team." : "Invitation declined."));
+    } catch (error) {
+      setTeamMessage(error instanceof Error ? error.message : "Unable to respond to invitation.");
+    } finally {
+      setRespondingToInvite(null);
+    }
+  };
 
   const markNotificationsRead = async () => {
     const token = localStorage.getItem("neparena_token");
@@ -191,7 +217,7 @@ const Dashboard = () => {
     }
     setTeams((current) => current.filter((currentTeam) => currentTeam._id !== team._id));
     setTeamMessage(`${team.name} was deleted.`);
-    setNotifications((current) => [{ _id: `local-${Date.now()}`, message: `${team.name} was deleted.`, read: false, createdAt: new Date().toISOString() }, ...current]);
+    setNotifications((current) => [{ _id: `local-${Date.now()}`, type: "team_deleted", message: `${team.name} was deleted.`, read: false, createdAt: new Date().toISOString() }, ...current]);
   };
 
   const startEditingTeam = (team: Team) => {
@@ -279,12 +305,12 @@ const Dashboard = () => {
               <p className="mt-1 text-xs text-gray-500">@{user?.username || "player"} <span className="mx-1 text-gray-700">•</span> Season 14 <span className="mx-1 text-gray-700">•</span> Global rank pending</p>
             </div>
             <div className="flex items-center gap-3">
-              <div className="relative hidden sm:block">
+              <div className="relative">
               <button onClick={() => { setShowNotifications((current) => !current); if (notifications.some((notification) => !notification.read)) markNotificationsRead(); }} className="relative flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-[#111] text-gray-400 transition hover:text-white" aria-label="Notifications">
                 {notifications.some((notification) => !notification.read) && <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-[#ed1b2f]" />}
                 <IoIosNotifications size={16} />
               </button>
-              {showNotifications && <div className="absolute right-0 top-12 z-30 w-80 rounded-xl border border-white/10 bg-[#151515] p-3 shadow-2xl"><div className="flex items-center justify-between border-b border-white/10 px-2 pb-3"><p className="text-xs font-black uppercase tracking-wider text-white">Notifications</p><button onClick={markNotificationsRead} className="text-[10px] font-bold text-[#ed1b2f]">Mark read</button></div><div className="max-h-72 overflow-y-auto pt-2">{notifications.length === 0 ? <p className="px-2 py-5 text-xs text-gray-500">No updates yet.</p> : notifications.map((notification) => <div key={notification._id} className={`rounded-lg px-2 py-3 text-xs ${notification.read ? "text-gray-500" : "bg-[#ed1b2f]/10 text-gray-200"}`}><p>{notification.message}</p><p className="mt-1 text-[10px] text-gray-600">{new Date(notification.createdAt).toLocaleString()}</p></div>)}</div></div>}
+              {showNotifications && <div className="absolute right-0 top-12 z-30 w-[min(22rem,calc(100vw-2rem))] rounded-xl border border-white/10 bg-[#151515] p-3 shadow-2xl"><div className="flex items-center justify-between border-b border-white/10 px-2 pb-3"><p className="text-xs font-black uppercase tracking-wider text-white">Notifications</p><button onClick={markNotificationsRead} className="text-[10px] font-bold text-[#ed1b2f]">Mark read</button></div><div className="max-h-96 overflow-y-auto pt-2">{notifications.length === 0 ? <p className="px-2 py-5 text-xs text-gray-500">No updates yet.</p> : notifications.map((notification) => <div key={notification._id} className={`rounded-lg px-2 py-3 text-xs ${notification.read ? "text-gray-500" : "bg-[#ed1b2f]/10 text-gray-200"}`}><p>{notification.message}</p><p className="mt-1 text-[10px] text-gray-600">{new Date(notification.createdAt).toLocaleString()}</p>{notification.type === "team_invite" && <div className="mt-3 flex gap-2"><button disabled={respondingToInvite === notification._id} onClick={() => void respondToTeamInvite(notification, "accept")} className="rounded-md bg-emerald-700 px-3 py-2 text-[10px] font-black uppercase tracking-wider text-white hover:bg-emerald-600 disabled:opacity-50">{respondingToInvite === notification._id ? "Working..." : "Accept"}</button><button disabled={respondingToInvite === notification._id} onClick={() => void respondToTeamInvite(notification, "reject")} className="rounded-md border border-white/10 px-3 py-2 text-[10px] font-black uppercase tracking-wider text-gray-300 hover:border-red-400/50 hover:text-red-300 disabled:opacity-50">Reject</button></div>}</div>)}</div></div>}
               </div>
               <button onClick={openProfileEditor} aria-label="Edit user profile" title="Edit profile" className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg border border-[#ed1b2f]/30 bg-[#ed1b2f]/10 text-sm font-black text-[#ffb2a7] transition hover:border-[#ed1b2f]">
                 {user?.profilePicture ? <img src={user.profilePicture} alt="Profile" className="h-full w-full object-cover" /> : initials}
